@@ -32,15 +32,28 @@ npm run build
 npm run start
 ```
 
+## Validação antes de deploy
+
+```bash
+npm run lint
+npm run typecheck
+npm run build
+```
+
 ## Deploy na Vercel
 
 1. Suba o repositório no GitHub.
 2. Acesse a Vercel e clique em `Add New Project`.
 3. Importe o repositório e mantenha:
    - Install Command: `npm install`
-   - Build Command: `npm run build`
+   - Build Command: `npm run vercel-build`
    - Output: padrão do Next.js
 4. Clique em `Deploy`.
+
+### Variáveis de ambiente
+
+Atualmente o projeto não exige variáveis obrigatórias para subir.
+Se no futuro você adicionar integrações externas, configure as variáveis no painel da Vercel antes do deploy.
 
 ### Opcional: deploy via CLI
 

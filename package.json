@@ -9,8 +9,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "vercel-build": "npm run typecheck && npm run build"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",

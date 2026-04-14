@@ -10,15 +10,18 @@ export const SiteHeader = () => {
   const { query, setQuery, results } = useModuleSearch();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-bg/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-slate-700/70 bg-bg/90 backdrop-blur-md light:border-slate-200">
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
-        <Link href="/" className="text-base font-bold tracking-tight text-white sm:text-lg">
+        <Link href="/" className="text-base font-bold tracking-tight text-slate-100 sm:text-lg light:text-slate-900">
           Front-Edge Academy
         </Link>
 
-        <nav className="hidden items-center gap-4 text-sm text-slate-300 md:flex">
-          <Link href="/trilhas" className="transition hover:text-white">Trilhas</Link>
-          <Link href="/sobre" className="transition hover:text-white">Sobre</Link>
+        <nav className="hidden items-center gap-4 text-sm text-slate-300 md:flex light:text-slate-600">
+          <Link href="/trilhas" className="transition-colors hover:text-slate-100 light:hover:text-slate-900">Trilhas</Link>
+          <Link href="/como-estudar" className="transition-colors hover:text-slate-100 light:hover:text-slate-900">Como estudar</Link>
+          <Link href="/roadmap-front-end" className="transition-colors hover:text-slate-100 light:hover:text-slate-900">Roadmap</Link>
+          <Link href="/exercicios-desafios" className="hidden transition-colors hover:text-slate-100 light:hover:text-slate-900 lg:inline-flex">Exercicios</Link>
+          <Link href="/documentacoes-oficiais" className="hidden transition-colors hover:text-slate-100 light:hover:text-slate-900 lg:inline-flex">Referencias</Link>
         </nav>
 
         <div className="relative ml-auto w-full max-w-md">
@@ -27,19 +30,19 @@ export const SiteHeader = () => {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Buscar modulo, tecnologia..."
-            className="w-full rounded-xl border border-white/15 bg-white/5 py-2 pl-9 pr-3 text-sm text-slate-100 outline-none ring-cyan-300/40 placeholder:text-slate-400 focus:ring"
+            className="w-full rounded-xl border border-slate-600/70 bg-slate-800/65 py-2 pl-9 pr-3 text-sm text-slate-100 outline-none ring-blue-300/45 transition-colors placeholder:text-slate-400 focus:border-slate-500 focus:ring light:border-slate-300 light:bg-white light:text-slate-700 light:placeholder:text-slate-500 light:focus:border-slate-400"
           />
           {!!query && (
-            <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] rounded-xl border border-white/15 bg-bg-elevated p-2 shadow-glow">
+            <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] rounded-xl border border-slate-700/70 bg-bg-elevated p-2 shadow-glow light:border-slate-200 light:bg-white">
               {results.length ? (
                 <ul className="space-y-1">
                   {results.map((item) => (
                     <li key={item.id}>
                       <Link
                         href={`/tecnologias/${item.trackSlug}?module=${item.id}`}
-                        className="block rounded-lg px-2 py-2 text-sm text-slate-200 transition hover:bg-white/10"
+                        className="block rounded-lg px-2 py-2 text-sm text-slate-200 transition-colors hover:bg-slate-800/70 light:text-slate-700 light:hover:bg-slate-100"
                       >
-                        <p className="font-medium text-white">{item.title}</p>
+                        <p className="font-medium text-slate-100 light:text-slate-900">{item.title}</p>
                         <p className="text-xs text-slate-400">{item.trackTitle}</p>
                       </Link>
                     </li>

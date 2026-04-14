@@ -2,11 +2,13 @@
 
 import dynamic from 'next/dynamic';
 import { Copy, Play, RotateCcw } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useTheme } from 'next-themes';
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { playgroundSnippets } from '@/data/playgroundSnippets';
+import { useMounted } from '@/hooks/useMounted';
 import { PlaygroundSnippet } from '@/types/course';
 
 const Editor = dynamic(() => import('@monaco-editor/react'), { ssr: false });
@@ -15,9 +17,9 @@ const htmlShell = (content: string) => `<!doctype html>
 <html>
   <head>
     <style>
-      body { font-family: ui-sans-serif, system-ui; margin: 24px; color: #e2e8f0; background: #020617; }
-      .hero { border: 1px solid rgba(148, 163, 184, .2); border-radius: 12px; padding: 20px; background: rgba(15, 23, 42, .8); }
-      button { background: #22d3ee; border: 0; color: #0f172a; border-radius: 10px; padding: 10px 14px; font-weight: 700; cursor: pointer; }
+      body { font-family: ui-sans-serif, system-ui; margin: 24px; color: #e2e8f0; background: #0f172a; }
+      .hero { border: 1px solid rgba(148, 163, 184, .3); border-radius: 12px; padding: 20px; background: rgba(15, 23, 42, .75); }
+      button { background: #3b82f6; border: 0; color: #fff; border-radius: 10px; padding: 10px 14px; font-weight: 700; cursor: pointer; }
     </style>
   </head>
   <body>${content}</body>
@@ -28,15 +30,15 @@ const cssShell = (content: string) => `<!doctype html>
   <head><style>${content}</style></head>
   <body>
     <div class="card">
-      <h2>Card de exemplo</h2>
-      <p>Visual de estudo com foco em UI premium.</p>
+      <h2>Card de estudo</h2>
+      <p>Resumo do modulo com leitura confortavel.</p>
     </div>
   </body>
 </html>`;
 
 const jsShell = (content: string) => `<!doctype html>
 <html>
-  <body style="font-family: ui-sans-serif, system-ui; background: #020617; color: #e2e8f0; padding: 20px;">
+  <body style="font-family: ui-sans-serif, system-ui; background: #0f172a; color: #e2e8f0; padding: 20px;">
     <button>Executar acao</button>
     <p id="output">Aguardando clique...</p>
     <script>${content}</script>
@@ -57,8 +59,12 @@ const getPreview = (snippet: PlaygroundSnippet, code: string) => {
   return jsShell(tsToJs(code));
 };
 
-export const MiniIDE = () => {
-  const [selectedId, setSelectedId] = useState(playgroundSnippets[0].id);
+const getSnippetById = (id?: string) => playgroundSnippets.find((snippet) => snippet.id === id) ?? playgroundSnippets[0];
+
+export const MiniIDE = ({ initialSnippetId }: { initialSnippetId?: string }) => {
+  const { resolvedTheme } = useTheme();
+  const mounted = useMounted();
+  const [selectedId, setSelectedId] = useState(getSnippetById(initialSnippetId).id);
   const selectedSnippet = useMemo(
     () => playgroundSnippets.find((snippet) => snippet.id === selectedId) ?? playgroundSnippets[0],
     [selectedId]
@@ -101,18 +107,28 @@ export const MiniIDE = () => {
     setError(null);
   };
 
+  useEffect(() => {
+    const next = getSnippetById(initialSnippetId);
+    setSelectedId(next.id);
+    setCode(next.code);
+    setPreview(getPreview(next, next.code));
+    setError(null);
+  }, [initialSnippetId]);
+
+  const editorTheme = !mounted || resolvedTheme === 'dark' ? 'vs-dark' : 'light';
+
   return (
     <Card className="space-y-4 p-0">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-700/70 p-4 light:border-slate-200">
         <div>
-          <h3 className="text-lg font-semibold text-white">Mini IDE integrada</h3>
+          <h3 className="text-lg font-semibold text-slate-100 light:text-slate-900">Mini IDE integrada</h3>
           <p className="text-sm text-slate-300">{selectedSnippet.description}</p>
         </div>
 
         <select
           value={selectedSnippet.id}
           onChange={(event) => onSnippetChange(event.target.value)}
-          className="rounded-lg border border-white/15 bg-bg-elevated px-3 py-2 text-sm text-slate-100"
+          className="rounded-lg border border-slate-600/70 bg-bg-elevated px-3 py-2 text-sm text-slate-100 transition-colors focus:border-slate-500 focus:outline-none light:border-slate-300 light:bg-white light:text-slate-700"
         >
           {playgroundSnippets.map((snippet) => (
             <option key={snippet.id} value={snippet.id}>
@@ -123,13 +139,13 @@ export const MiniIDE = () => {
       </div>
 
       <div className="grid gap-4 p-4 lg:grid-cols-2">
-        <div className="overflow-hidden rounded-xl border border-white/10">
+        <div className="overflow-hidden rounded-xl border border-slate-700/70 light:border-slate-200">
           <Editor
             height="380px"
             language={selectedSnippet.language === 'javascript' ? 'javascript' : selectedSnippet.language}
             value={code}
             onChange={(value) => setCode(value ?? '')}
-            theme="vs-dark"
+            theme={editorTheme}
             options={{
               minimap: { enabled: false },
               fontSize: 14,
@@ -140,12 +156,12 @@ export const MiniIDE = () => {
           />
         </div>
 
-        <div className="overflow-hidden rounded-xl border border-white/10 bg-black/20">
+        <div className="overflow-hidden rounded-xl border border-slate-700/70 bg-slate-900/80 light:border-slate-200 light:bg-slate-50">
           <iframe title="preview" srcDoc={preview} className="h-[380px] w-full" sandbox="allow-scripts" />
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2 border-t border-white/10 p-4">
+      <div className="flex flex-wrap items-center gap-2 border-t border-slate-700/70 p-4 light:border-slate-200">
         <Button onClick={run} className="gap-2">
           <Play className="h-4 w-4" /> Executar
         </Button>
@@ -156,7 +172,7 @@ export const MiniIDE = () => {
           <Copy className="h-4 w-4" /> Copiar
         </Button>
 
-        {error && <p className="ml-auto text-sm text-cyan-200">{error}</p>}
+        {error && <p className="ml-auto text-sm text-blue-300 light:text-blue-700">{error}</p>}
       </div>
     </Card>
   );

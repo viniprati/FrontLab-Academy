@@ -12,7 +12,7 @@ const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mo
 
 export const metadata: Metadata = {
   title: 'Front-Edge Academy',
-  description: 'Plataforma premium para estudar Front-End com trilhas, docs didaticas e mini IDE.'
+  description: 'Plataforma de estudos Front-End com trilhas, conteudo didatico e mini IDE.'
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -22,7 +22,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <ThemeProvider>
           <div className="relative flex min-h-screen flex-col">
             <SiteHeader />
-            <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">{children}</main>
+            <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-10 sm:px-6 lg:px-8">{children}</main>
             <SiteFooter />
           </div>
         </ThemeProvider>

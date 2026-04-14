@@ -3,29 +3,29 @@
 import { Button } from '@/components/ui/button';
 
 export const HeroSection = () => (
-  <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 p-8 shadow-glow sm:p-12">
-    <div className="pointer-events-none absolute inset-0 bg-grid bg-[size:42px_42px] opacity-40" />
+  <section className="relative overflow-hidden rounded-3xl border border-slate-700/70 bg-slate-900/80 p-8 shadow-glow sm:p-12 light:border-slate-200 light:bg-white">
+    <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-slate-700/20 to-transparent light:from-slate-200/60" />
     <div className="relative max-w-3xl space-y-6">
-      <span className="inline-flex items-center rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-200">
-        Plataforma Premium de Ensino
+      <span className="inline-flex items-center rounded-full border border-blue-400/30 bg-blue-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-blue-200 light:border-blue-500/20 light:bg-blue-50 light:text-blue-700">
+        Plataforma de Estudos Front-End
       </span>
-      <h1 className="text-3xl font-extrabold leading-tight text-white sm:text-5xl">
-        Domine Front-End com trilhas didaticas, documentacao guiada e playground interativo.
+      <h1 className="text-3xl font-extrabold leading-tight text-slate-100 sm:text-5xl light:text-slate-900">
+        Aprenda Front-End com trilhas didaticas, pratica guiada e progresso por modulo.
       </h1>
-      <p className="max-w-2xl text-base text-slate-300 sm:text-lg">
-        Estude tecnologias modernas com material organizado por modulo, exemplos praticos e mini IDE integrada para experimentar codigo sem sair da plataforma.
+      <p className="max-w-2xl text-base text-slate-300 light:text-slate-600 sm:text-lg">
+        Estude com explicacoes claras, exemplos comentados, exercicios e mini IDE integrada. A referencia oficial entra como complemento, nao como ponto de partida.
       </p>
       <div className="flex flex-wrap gap-3">
-        <Button href="/trilhas">Comecar agora</Button>
-        <Button href="/trilhas" variant="secondary">Explorar trilhas</Button>
+        <Button href="/trilhas">Comecar pelas trilhas</Button>
+        <Button href="/como-estudar" variant="secondary">Ver guia de estudo</Button>
       </div>
-      <div className="grid gap-4 pt-2 text-sm text-slate-300 sm:grid-cols-3">
-        <div><p className="text-2xl font-bold text-white">11</p><p>Tecnologias iniciais</p></div>
-        <div><p className="text-2xl font-bold text-white">+35</p><p>Modulos didaticos</p></div>
-        <div><p className="text-2xl font-bold text-white">100%</p><p>Foco em pratica</p></div>
+      <div className="grid gap-4 pt-2 text-sm text-slate-300 light:text-slate-600 sm:grid-cols-3">
+        <div><p className="text-2xl font-bold text-slate-100 light:text-slate-900">11</p><p>Trilhas tecnicas</p></div>
+        <div><p className="text-2xl font-bold text-slate-100 light:text-slate-900">+35</p><p>Modulos de estudo</p></div>
+        <div><p className="text-2xl font-bold text-slate-100 light:text-slate-900">1</p><p>Fluxo: aprender, praticar, revisar</p></div>
       </div>
-      <Link href="/tecnologias/nextjs" className="inline-flex text-sm font-medium text-cyan-200 hover:text-cyan-100">
-        Ver demo de pagina interna de estudo
+      <Link href="/roadmap-front-end" className="inline-flex text-sm font-medium text-blue-300 transition-colors hover:text-blue-200 light:text-blue-700 light:hover:text-blue-600">
+        Ver roadmap sugerido de estudos
       </Link>
     </div>
   </section>

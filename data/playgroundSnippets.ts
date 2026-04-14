@@ -3,30 +3,30 @@
 export const playgroundSnippets: PlaygroundSnippet[] = [
   {
     id: 'landing-html',
-    label: 'Landing HTML',
+    label: 'HTML semantico',
     language: 'html',
-    description: 'Estrutura inicial de uma pagina com hero e CTA.',
-    code: `<main class="hero">\n  <h1>Aprenda Front-End</h1>\n  <p>Do basico ao avancado com projetos guiados.</p>\n  <button>Comecar trilha</button>\n</main>`
+    description: 'Estruture um bloco semantico com titulo, texto e acao.',
+    code: `<main class="hero">\n  <h1>Guia de estudo Front-End</h1>\n  <p>Aprenda um conceito por vez e pratique no mesmo bloco.</p>\n  <button>Iniciar modulo</button>\n</main>`
   },
   {
     id: 'card-css',
-    label: 'Card CSS',
+    label: 'Card CSS didatico',
     language: 'css',
-    description: 'Cartao premium com glassmorphism leve.',
-    code: `.card {\n  background: rgba(16, 23, 43, 0.7);\n  border: 1px solid rgba(148, 163, 184, 0.2);\n  border-radius: 1rem;\n  padding: 1.25rem;\n  box-shadow: 0 24px 64px rgba(2, 6, 23, 0.55);\n}`
+    description: 'Card limpo com foco em legibilidade e espaçamento.',
+    code: `.card {\n  background: #ffffff;\n  border: 1px solid #e2e8f0;\n  border-radius: 1rem;\n  padding: 1.25rem;\n  max-width: 320px;\n  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);\n}\n\n.card h2 {\n  margin: 0 0 0.5rem;\n  color: #0f172a;\n}\n\n.card p {\n  margin: 0;\n  color: #475569;\n}`
   },
   {
     id: 'dom-js',
-    label: 'DOM JS',
+    label: 'DOM e eventos',
     language: 'javascript',
-    description: 'Interacao basica com evento de clique.',
-    code: `const button = document.querySelector('button');\nconst output = document.querySelector('#output');\n\nbutton?.addEventListener('click', () => {\n  if (output) output.textContent = 'Codigo executado com sucesso!';\n});`
+    description: 'Atualize a interface em resposta ao clique do usuario.',
+    code: `const button = document.querySelector('button');\nconst output = document.querySelector('#output');\n\nbutton?.addEventListener('click', () => {\n  if (!output) return;\n  output.textContent = 'Acao executada: conteudo atualizado com JavaScript.';\n});`
   },
   {
     id: 'typed-ts',
-    label: 'Tipos TS',
+    label: 'TypeScript basico',
     language: 'typescript',
-    description: 'Exemplo curto de tipagem e inferencia.',
-    code: `type Lesson = {\n  title: string;\n  duration: number;\n};\n\nconst lessons: Lesson[] = [\n  { title: 'Hooks', duration: 20 },\n  { title: 'Server Components', duration: 25 }\n];\n\nconst total = lessons.reduce((sum, lesson) => sum + lesson.duration, 0);\nconsole.log('Tempo total:', total);`
+    description: 'Tipagem simples para lista de modulos e calculo total.',
+    code: `type Module = {\n  title: string;\n  duration: number;\n};\n\nconst modules: Module[] = [\n  { title: 'Semantica HTML', duration: 25 },\n  { title: 'Flexbox na pratica', duration: 30 }\n];\n\nconst totalMinutes = modules.reduce((sum, module) => sum + module.duration, 0);\nconsole.log('Tempo total de estudo:', totalMinutes);`
   }
 ];

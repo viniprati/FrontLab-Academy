@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 export const Card = ({ children, className }: { children: ReactNode; className?: string }) => (
   <article
     className={cn(
-      'rounded-2xl border border-white/10 bg-gradient-to-b from-white/10 to-white/[0.03] p-5 shadow-[0_16px_56px_rgba(2,8,20,0.45)] backdrop-blur',
+      'rounded-2xl border border-slate-700/70 bg-slate-900/72 p-5 shadow-[0_8px_28px_rgba(15,23,42,0.2)] backdrop-blur-sm light:border-slate-200 light:bg-white light:shadow-[0_8px_24px_rgba(15,23,42,0.06)]',
       className
     )}
   >

@@ -16,21 +16,18 @@ module.exports = {
       },
       colors: {
         bg: {
-          DEFAULT: '#0a0f1f',
-          elevated: '#10172b',
-          soft: '#18223d'
+          DEFAULT: '#0f172a',
+          elevated: '#111827',
+          soft: '#1e293b'
         },
         accent: {
-          DEFAULT: '#22d3ee',
-          strong: '#06b6d4',
-          soft: '#67e8f9'
+          DEFAULT: '#60a5fa',
+          strong: '#3b82f6',
+          soft: '#dbeafe'
         }
       },
       boxShadow: {
-        glow: '0 0 0 1px rgba(34, 211, 238, 0.2), 0 24px 80px rgba(2, 8, 20, 0.55)'
-      },
-      backgroundImage: {
-        grid: "linear-gradient(rgba(34,211,238,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.06) 1px, transparent 1px)"
+        glow: '0 0 0 1px rgba(148, 163, 184, 0.22), 0 12px 40px rgba(15, 23, 42, 0.28)'
       }
     }
   },

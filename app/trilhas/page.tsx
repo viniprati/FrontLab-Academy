@@ -23,10 +23,10 @@ export default function TracksPage() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-        <h1 className="text-3xl font-bold text-white">Trilhas e tecnologias</h1>
+      <section className="rounded-2xl border border-slate-700/70 bg-slate-900/60 p-6 light:border-slate-200 light:bg-white">
+        <h1 className="text-3xl font-bold text-slate-100 light:text-slate-900">Trilhas e tecnologias</h1>
         <p className="mt-2 text-slate-300">
-          Navegue por linguagens, frameworks e ferramentas com modulos orientados a pratica e documentacao didatica.
+          Escolha uma trilha para estudar com sequencia didatica: conceito, exemplo, aplicacao pratica e exercicios.
         </p>
       </section>
 
@@ -39,7 +39,7 @@ export default function TracksPage() {
           ))}
         </section>
       ) : (
-        <p className="rounded-xl border border-dashed border-white/20 p-5 text-slate-400">
+        <p className="rounded-xl border border-dashed border-slate-600/70 bg-slate-900/45 p-5 text-slate-400 light:border-slate-300 light:bg-white">
           Nenhuma trilha encontrada com os filtros selecionados.
         </p>
       )}
