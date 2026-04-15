@@ -5,6 +5,7 @@ import { ExternalLink, Pause, Play, Square } from 'lucide-react';
 
 import { Card } from '@/components/ui/card';
 import { getGeneratedModuleDidacticContent, moduleDidacticContent } from '@/data/didactic-content';
+import { normalizeSpeechText, resolvePreferredVoice, splitSpeechText } from '@/lib/speech';
 import { CourseModule } from '@/types/course';
 import { cn } from '@/lib/utils';
 
@@ -88,12 +89,6 @@ const CodeBlock = ({ code }: { code: string }) => {
   );
 };
 
-const normalizeSpeechText = (value: string) =>
-  value
-    .replace(/\s+/g, ' ')
-    .replace(/\bTS\b/g, 'TypeScript')
-    .trim();
-
 export const StudyModuleContent = ({ module }: { module: CourseModule }) => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const speakingSectionIndex = useRef(0);
@@ -104,6 +99,8 @@ export const StudyModuleContent = ({ module }: { module: CourseModule }) => {
   const [isPaused, setIsPaused] = useState(false);
   const [narrationRate, setNarrationRate] = useState(1);
   const [activeNarrationId, setActiveNarrationId] = useState<string | null>(null);
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [selectedVoiceURI, setSelectedVoiceURI] = useState<string>('');
 
   const didactic = moduleDidacticContent[module.id];
   const generated = getGeneratedModuleDidacticContent(module);
@@ -163,6 +160,8 @@ export const StudyModuleContent = ({ module }: { module: CourseModule }) => {
   const speakSection = useCallback(
     (index: number) => {
       if (typeof window === 'undefined') return;
+      const selectedVoice = availableVoices.find((voice) => voice.voiceURI === selectedVoiceURI) ?? resolvePreferredVoice(availableVoices);
+
       const run = (currentIndex: number) => {
         if (currentIndex >= narrationSections.length) {
           stopNarration();
@@ -171,29 +170,43 @@ export const StudyModuleContent = ({ module }: { module: CourseModule }) => {
 
         speakingSectionIndex.current = currentIndex;
         const section = narrationSections[currentIndex];
-        const utterance = new SpeechSynthesisUtterance(`${section.title}. ${normalizeSpeechText(section.text)}`);
-        utterance.lang = 'pt-BR';
-        utterance.rate = narrationRate;
+        const chunks = splitSpeechText(`${section.title}. ${normalizeSpeechText(section.text)}`);
+        let chunkIndex = 0;
 
-        utterance.onstart = () => {
-          setActiveNarrationId(section.id);
+        const runChunk = () => {
+          if (chunkIndex >= chunks.length) {
+            run(currentIndex + 1);
+            return;
+          }
+
+          const utterance = new SpeechSynthesisUtterance(chunks[chunkIndex]);
+          utterance.lang = selectedVoice?.lang ?? 'pt-BR';
+          utterance.rate = narrationRate;
+          if (selectedVoice) utterance.voice = selectedVoice;
+
+          utterance.onstart = () => {
+            setActiveNarrationId(section.id);
+          };
+
+          utterance.onend = () => {
+            if (isCancellingNarration.current) return;
+            chunkIndex += 1;
+            runChunk();
+          };
+
+          utterance.onerror = () => {
+            stopNarration();
+          };
+
+          window.speechSynthesis.speak(utterance);
         };
 
-        utterance.onend = () => {
-          if (isCancellingNarration.current) return;
-          run(currentIndex + 1);
-        };
-
-        utterance.onerror = () => {
-          stopNarration();
-        };
-
-        window.speechSynthesis.speak(utterance);
+        runChunk();
       };
 
       run(index);
     },
-    [narrationRate, narrationSections, stopNarration]
+    [availableVoices, narrationRate, narrationSections, selectedVoiceURI, stopNarration]
   );
 
   const startNarration = useCallback(() => {
@@ -222,6 +235,23 @@ export const StudyModuleContent = ({ module }: { module: CourseModule }) => {
     if (typeof window === 'undefined') return;
     setSpeechSupported('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window);
   }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !speechSupported) return;
+
+    const loadVoices = () => {
+      const voices = window.speechSynthesis.getVoices();
+      setAvailableVoices(voices);
+      if (!selectedVoiceURI) {
+        const preferred = resolvePreferredVoice(voices);
+        if (preferred) setSelectedVoiceURI(preferred.voiceURI);
+      }
+    };
+
+    loadVoices();
+    window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
+    return () => window.speechSynthesis.removeEventListener('voiceschanged', loadVoices);
+  }, [selectedVoiceURI, speechSupported]);
 
   useEffect(() => {
     titleRef.current?.focus();
@@ -319,6 +349,28 @@ export const StudyModuleContent = ({ module }: { module: CourseModule }) => {
                 <option value={1}>1x</option>
                 <option value={1.15}>1.15x</option>
                 <option value={1.3}>1.3x</option>
+              </select>
+            </label>
+
+            <label className="flex w-fit items-center gap-2 text-sm text-slate-300 light:text-slate-700">
+              Voz:
+              <select
+                value={selectedVoiceURI}
+                onChange={(event) => setSelectedVoiceURI(event.target.value)}
+                className="max-w-[18rem] rounded-lg border border-slate-600/70 bg-slate-800/65 px-2 py-1.5 text-sm text-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/70 light:border-slate-300 light:bg-white light:text-slate-700"
+              >
+                {availableVoices.length ? (
+                  (availableVoices.filter((voice) => voice.lang.toLowerCase().startsWith('pt')).length
+                    ? availableVoices.filter((voice) => voice.lang.toLowerCase().startsWith('pt'))
+                    : availableVoices
+                  ).map((voice) => (
+                    <option key={voice.voiceURI} value={voice.voiceURI}>
+                      {voice.name} ({voice.lang})
+                    </option>
+                  ))
+                ) : (
+                  <option value="">Carregando vozes...</option>
+                )}
               </select>
             </label>
 

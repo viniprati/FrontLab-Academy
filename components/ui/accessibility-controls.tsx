@@ -4,6 +4,7 @@ import { Accessibility, Contrast, Pause, Play, Square, Type, Volume2, Waves, X }
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useAccessibilityPreferences } from '@/hooks/useAccessibilityPreferences';
+import { resolvePreferredVoice, splitSpeechText } from '@/lib/speech';
 import { useMounted } from '@/hooks/useMounted';
 import { cn } from '@/lib/utils';
 
@@ -21,6 +22,8 @@ export const AccessibilityControls = () => {
   const [isReading, setIsReading] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [speechRate, setSpeechRate] = useState(1);
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [selectedVoiceURI, setSelectedVoiceURI] = useState('');
   const { preferences, setFontScale, setContrast, toggleReadableFont, toggleReduceMotion } = useAccessibilityPreferences();
 
   const speechLabel = useMemo(() => {
@@ -34,6 +37,23 @@ export const AccessibilityControls = () => {
     if (typeof window === 'undefined') return;
     setSpeechSupported('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window);
   }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !speechSupported) return;
+
+    const loadVoices = () => {
+      const voices = window.speechSynthesis.getVoices();
+      setAvailableVoices(voices);
+      if (!selectedVoiceURI) {
+        const preferred = resolvePreferredVoice(voices);
+        if (preferred) setSelectedVoiceURI(preferred.voiceURI);
+      }
+    };
+
+    loadVoices();
+    window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
+    return () => window.speechSynthesis.removeEventListener('voiceschanged', loadVoices);
+  }, [selectedVoiceURI, speechSupported]);
 
   useEffect(() => {
     if (!open) return;
@@ -75,7 +95,12 @@ export const AccessibilityControls = () => {
     const moduleMain = document.querySelector('#module-main-content');
     const main = document.querySelector('main');
     const source = moduleMain ?? main ?? document.body;
-    const text = source.textContent?.replace(/\s+/g, ' ').trim();
+    const readableSelectors = 'h1, h2, h3, h4, p, li, summary';
+    const collected = Array.from(source.querySelectorAll(readableSelectors))
+      .map((node) => node.textContent?.trim() ?? '')
+      .filter(Boolean)
+      .join('. ');
+    const text = collected.replace(/\s+/g, ' ').trim();
     return text ?? '';
   };
 
@@ -86,21 +111,37 @@ export const AccessibilityControls = () => {
     if (!text) return;
 
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'pt-BR';
-    utterance.rate = speechRate;
-    utterance.onend = () => {
-      setIsReading(false);
-      setIsPaused(false);
-    };
-    utterance.onerror = () => {
-      setIsReading(false);
-      setIsPaused(false);
+    const chunks = splitSpeechText(text);
+    const selectedVoice = availableVoices.find((voice) => voice.voiceURI === selectedVoiceURI) ?? resolvePreferredVoice(availableVoices);
+    let chunkIndex = 0;
+
+    const speakChunk = () => {
+      if (chunkIndex >= chunks.length) {
+        setIsReading(false);
+        setIsPaused(false);
+        return;
+      }
+
+      const utterance = new SpeechSynthesisUtterance(chunks[chunkIndex]);
+      utterance.lang = selectedVoice?.lang ?? 'pt-BR';
+      utterance.rate = speechRate;
+      if (selectedVoice) utterance.voice = selectedVoice;
+
+      utterance.onend = () => {
+        chunkIndex += 1;
+        speakChunk();
+      };
+      utterance.onerror = () => {
+        setIsReading(false);
+        setIsPaused(false);
+      };
+
+      window.speechSynthesis.speak(utterance);
     };
 
     setIsReading(true);
     setIsPaused(false);
-    window.speechSynthesis.speak(utterance);
+    speakChunk();
   };
 
   const togglePauseReading = () => {
@@ -217,6 +258,28 @@ export const AccessibilityControls = () => {
                   <option value={1}>1x</option>
                   <option value={1.15}>1.15x</option>
                   <option value={1.3}>1.3x</option>
+                </select>
+              </label>
+              <label className="mt-2 flex items-center gap-2 text-xs text-slate-300 light:text-slate-700">
+                Voz
+                <select
+                  value={selectedVoiceURI}
+                  onChange={(event) => setSelectedVoiceURI(event.target.value)}
+                  className="max-w-[12rem] rounded-lg border border-slate-600/70 bg-slate-800/65 px-2 py-1 text-xs text-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/70 light:border-slate-300 light:bg-white light:text-slate-700"
+                  disabled={!speechSupported}
+                >
+                  {availableVoices.length ? (
+                    (availableVoices.filter((voice) => voice.lang.toLowerCase().startsWith('pt')).length
+                      ? availableVoices.filter((voice) => voice.lang.toLowerCase().startsWith('pt'))
+                      : availableVoices
+                    ).map((voice) => (
+                      <option key={voice.voiceURI} value={voice.voiceURI}>
+                        {voice.name}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">Carregando...</option>
+                  )}
                 </select>
               </label>
               <p className="mt-2 text-xs text-slate-400" role="status" aria-live="polite">
