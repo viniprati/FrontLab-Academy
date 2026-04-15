@@ -21,31 +21,18 @@ body {
 
 .light body {
   @apply bg-slate-50 text-slate-900;
-  background-image: radial-gradient(circle at 18% 8%, rgba(226, 232, 240, 0.95), transparent 43%),
-    radial-gradient(circle at 82% 0%, rgba(224, 231, 255, 0.85), transparent 44%),
-    linear-gradient(180deg, #f8fafc 0%, #f5f7fa 100%);
+  background-image: radial-gradient(circle at 12% 6%, rgba(226, 232, 240, 0.75), transparent 42%),
+    radial-gradient(circle at 88% 0%, rgba(219, 234, 254, 0.55), transparent 40%),
+    linear-gradient(180deg, #f8fafc 0%, #f3f6fb 100%);
 }
 
 .light .bg-bg,
 .light .bg-bg\/90,
 .light .bg-bg-elevated,
 .light .bg-bg-elevated\/70 {
-  @apply bg-white text-slate-900;
+  @apply bg-white;
 }
 
-.light .text-slate-300 {
-  @apply text-slate-600;
-}
-
-.light .text-slate-400 {
-  @apply text-slate-600;
-}
-
-.light .text-slate-100,
-.light .text-white {
-  @apply text-slate-900;
-}
-
-.light .text-slate-200 {
-  @apply text-slate-700;
+.light .surface-soft {
+  @apply border-slate-200 bg-slate-50;
 }
