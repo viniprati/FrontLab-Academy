@@ -29,11 +29,15 @@ export const StudySidebar = ({
   const completed = track.modules.filter((module) => progress.completedModuleIds.includes(module.id)).length;
 
   return (
-    <aside className="space-y-4 rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4 light:border-slate-200 light:bg-white">
+    <aside aria-label="Navegacao de modulos da trilha" className="space-y-4 rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4 light:border-slate-200 light:bg-white">
       <div>
         <p className="text-sm text-slate-300">Progresso da trilha</p>
         <p className="text-lg font-semibold text-slate-100 light:text-slate-900">{completed}/{track.modules.length} modulos</p>
-        <ProgressBar value={toPercent(completed, track.modules.length)} className="mt-2" />
+        <ProgressBar
+          value={toPercent(completed, track.modules.length)}
+          className="mt-2"
+          ariaLabel={`Progresso da trilha: ${completed} de ${track.modules.length} modulos concluidos`}
+        />
       </div>
 
       <label className="block">
@@ -41,12 +45,13 @@ export const StudySidebar = ({
         <input
           value={search}
           onChange={(event) => setSearch(event.target.value)}
+          aria-label="Buscar modulo por titulo ou descricao"
           placeholder="Buscar modulo..."
-          className="w-full rounded-lg border border-slate-600/70 bg-bg-elevated px-3 py-2 text-sm text-slate-100 transition-colors focus:border-slate-500 focus:outline-none light:border-slate-300 light:bg-white light:text-slate-700"
+          className="w-full rounded-lg border border-slate-600/70 bg-bg-elevated px-3 py-2 text-sm text-slate-100 transition-colors focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-300/70 light:border-slate-300 light:bg-white light:text-slate-700"
         />
       </label>
 
-      <ul className="space-y-2">
+      <ul className="space-y-2" aria-label="Lista de modulos">
         {modules.map((module) => {
           const active = module.id === currentModuleId;
           const done = progress.completedModuleIds.includes(module.id);
@@ -59,7 +64,9 @@ export const StudySidebar = ({
                   onSelectModule(module.id);
                   pushRecentModule(module.id);
                 }}
-                className={`w-full rounded-lg px-2 py-1.5 text-left text-sm transition ${
+                aria-current={active ? 'true' : undefined}
+                aria-label={`${module.title}${done ? '. Modulo concluido.' : ''}${active ? '. Modulo atual.' : ''}`}
+                className={`w-full rounded-lg px-2 py-1.5 text-left text-sm transition focus:outline-none focus:ring-2 focus:ring-blue-300/70 ${
                   active
                     ? 'bg-blue-500/12 text-blue-200 light:bg-blue-50 light:text-blue-700'
                     : 'text-slate-200 hover:bg-slate-800/70 light:text-slate-700 light:hover:bg-slate-100'
@@ -72,7 +79,9 @@ export const StudySidebar = ({
                 <button
                   type="button"
                   onClick={() => toggleModule(module.id)}
-                  className="text-xs text-slate-300 transition-colors hover:text-slate-100 light:hover:text-slate-900"
+                  aria-pressed={done}
+                  aria-label={done ? `Desmarcar ${module.title} como concluido` : `Marcar ${module.title} como concluido`}
+                  className="text-xs text-slate-300 transition-colors hover:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-300/70 light:hover:text-slate-900"
                 >
                   {done ? 'Concluido' : 'Marcar'}
                 </button>

@@ -1,6 +1,6 @@
 ﻿'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import { Breadcrumbs } from '@/components/course/breadcrumbs';
@@ -25,6 +25,7 @@ export const StudyPageClient = ({ track }: { track: TechTrack }) => {
   const params = useSearchParams();
   const selectedByQuery = params.get('module') ?? track.modules[0]?.id;
   const [currentModuleId, setCurrentModuleId] = useState(selectedByQuery);
+  const [announcement, setAnnouncement] = useState('');
 
   const currentModule = useMemo(
     () => track.modules.find((module) => module.id === currentModuleId) ?? track.modules[0],
@@ -49,12 +50,26 @@ export const StudyPageClient = ({ track }: { track: TechTrack }) => {
           ? 'typed-ts'
           : 'dom-js';
 
+  useEffect(() => {
+    if (!currentModule) return;
+    setAnnouncement(`Modulo atual: ${currentModule.title}.`);
+  }, [currentModule]);
+
   if (!currentModule) {
     return <p className="text-slate-300">Nenhum modulo disponivel nesta trilha.</p>;
   }
 
   return (
     <div className="space-y-6">
+      <a
+        href="#module-main-content"
+        className="sr-only rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:outline-none focus:ring-2 focus:ring-white/90"
+      >
+        Pular para o conteudo principal do modulo
+      </a>
+      <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {announcement}
+      </p>
       <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Trilhas', href: '/trilhas' }, { label: track.title }]} />
 
       <Card>
@@ -168,7 +183,8 @@ export const StudyPageClient = ({ track }: { track: TechTrack }) => {
           <button
             type="button"
             onClick={() => setCurrentModuleId(nextModule.id)}
-            className="rounded-xl border border-blue-400/25 bg-blue-500/10 px-4 py-3 text-left text-sm text-blue-200 transition-colors hover:bg-blue-500/20 light:border-blue-200 light:bg-blue-50 light:text-blue-700"
+            aria-label={`Ir para o proximo modulo: ${nextModule.title}`}
+            className="rounded-xl border border-blue-400/25 bg-blue-500/10 px-4 py-3 text-left text-sm text-blue-200 transition-colors hover:bg-blue-500/20 focus:outline-none focus:ring-2 focus:ring-blue-300/70 light:border-blue-200 light:bg-blue-50 light:text-blue-700"
           >
             <span className="block text-xs uppercase tracking-wide">Proximo modulo</span>
             <span className="mt-1 block font-semibold">{nextModule.title}</span>

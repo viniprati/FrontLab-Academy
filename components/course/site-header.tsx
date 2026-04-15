@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Search } from 'lucide-react';
 
 import { useModuleSearch } from '@/hooks/useModuleSearch';
+import { AccessibilityControls } from '@/components/ui/accessibility-controls';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 export const SiteHeader = () => {
@@ -55,6 +56,7 @@ export const SiteHeader = () => {
           )}
         </div>
 
+        <AccessibilityControls />
         <ThemeToggle />
       </div>
     </header>

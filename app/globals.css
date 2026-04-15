@@ -19,6 +19,42 @@ body {
   line-height: 1.65;
 }
 
+body[data-font-scale='large'] {
+  font-size: 1.0625rem;
+}
+
+body[data-font-scale='xlarge'] {
+  font-size: 1.125rem;
+}
+
+body[data-readable-font='true'] {
+  font-family: Arial, Verdana, Tahoma, sans-serif;
+}
+
+body[data-contrast='high'] {
+  color: #f8fafc;
+  background-image: linear-gradient(180deg, #000 0%, #020617 100%);
+}
+
+.light body[data-contrast='high'] {
+  color: #020617;
+  background-image: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+}
+
+body[data-contrast='high'] a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+body[data-reduce-motion='true'] *,
+body[data-reduce-motion='true'] *::before,
+body[data-reduce-motion='true'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
 .light body {
   @apply bg-slate-50 text-slate-900;
   background-image: radial-gradient(circle at 12% 6%, rgba(226, 232, 240, 0.75), transparent 42%),
