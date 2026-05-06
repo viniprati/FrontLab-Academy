@@ -1,6 +1,0 @@
-{
-  "framework": "nextjs",
-  "installCommand": "npm install",
-  "buildCommand": "npm run vercel-build",
-  "devCommand": "npm run dev"
-}
