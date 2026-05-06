@@ -3,5 +3,8 @@
   "installCommand": "cd \"Front Edge\" && npm ci",
   "buildCommand": "cd \"Front Edge\" && npm run build",
   "outputDirectory": "Front Edge/dist",
-  "cleanUrls": true
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/([^/.]+)$", "dest": "/$1.html" }
+  ]
 }
