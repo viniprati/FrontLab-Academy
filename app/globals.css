@@ -1,9 +1,9 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  color-scheme: dark light;
+  color-scheme: dark;
 }
 
 html,
@@ -12,63 +12,29 @@ body {
 }
 
 body {
-  @apply bg-bg text-slate-200 antialiased;
-  background-image: radial-gradient(circle at 18% 8%, rgba(148, 163, 184, 0.12), transparent 44%),
-    radial-gradient(circle at 84% 0%, rgba(99, 102, 241, 0.1), transparent 46%),
-    linear-gradient(180deg, #0f172a 0%, #111827 100%);
-  line-height: 1.65;
+  font-family: var(--font-inter), Inter, sans-serif;
+  background: #060816;
+  color: #ffffff;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
 }
 
-body[data-font-scale='large'] {
-  font-size: 1.0625rem;
+* {
+  border-color: #1d294d;
 }
 
-body[data-font-scale='xlarge'] {
-  font-size: 1.125rem;
+::selection {
+  background: #7b5cff;
+  color: #ffffff;
 }
 
-body[data-readable-font='true'] {
-  font-family: Arial, Verdana, Tahoma, sans-serif;
-}
-
-body[data-contrast='high'] {
-  color: #f8fafc;
-  background-image: linear-gradient(180deg, #000 0%, #020617 100%);
-}
-
-.light body[data-contrast='high'] {
-  color: #020617;
-  background-image: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
-}
-
-body[data-contrast='high'] a {
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-}
-
-body[data-reduce-motion='true'] *,
-body[data-reduce-motion='true'] *::before,
-body[data-reduce-motion='true'] *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-  scroll-behavior: auto !important;
-}
-
-.light body {
-  @apply bg-slate-50 text-slate-900;
-  background-image: radial-gradient(circle at 12% 6%, rgba(226, 232, 240, 0.75), transparent 42%),
-    radial-gradient(circle at 88% 0%, rgba(219, 234, 254, 0.55), transparent 40%),
-    linear-gradient(180deg, #f8fafc 0%, #f3f6fb 100%);
-}
-
-.light .bg-bg,
-.light .bg-bg\/90,
-.light .bg-bg-elevated,
-.light .bg-bg-elevated\/70 {
-  @apply bg-white;
-}
-
-.light .surface-soft {
-  @apply border-slate-200 bg-slate-50;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
