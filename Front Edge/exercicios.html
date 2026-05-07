@@ -1,1 +1,198 @@
-﻿<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link rel="icon" type="image/png" href="/assets/04_favicon_app_icon_4k_transparente.png" /><title>Exercícios - Front-Edge Academy</title><script src="https://cdn.tailwindcss.com"></script><script>tailwind.config={theme:{extend:{fontFamily:{inter:['Inter','ui-sans-serif','system-ui']},colors:{bgMain:'#060816',bgSecondary:'#0B1023',card:'#10172D',cardHover:'#161F3B',borderEdge:'#1D294D',textMain:'#FFFFFF',textSecondary:'#AAB3D1',textMuted:'#6E7AA5',purple:'#7B5CFF',purpleHover:'#947BFF',blue:'#3B82F6',cyan:'#22D3EE',green:'#22C55E',yellow:'#FACC15',red:'#EF4444'}}}}</script><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/><link rel="stylesheet" href="/styles.css"/></head><body class="font-inter bg-bgMain text-textMain"><div class="bg-grid"></div><header class="site-header mx-auto mt-5 w-[94%] max-w-[1280px] rounded-2xl border border-borderEdge/90 bg-bgSecondary/65 px-5 py-4 backdrop-blur"><div class="flex items-center justify-between gap-4"><div class="brand-wrap"><img id="brand-logo-header" class="brand-logo-header" src="/assets/01_logo_horizontal_header_4k_transparente.png" alt="Front-Edge Academy Logo Horizontal"/><img id="brand-logo-compact" class="brand-logo-compact" src="/assets/02_logo_compacta_navbar_4k_transparente.png" alt="Front-Edge Academy Logo Compacto"/></div><button id="mobileMenuBtn" class="md:hidden rounded-lg border border-borderEdge px-3 py-2 text-textSecondary">Menu</button><nav id="mainNav" class="hidden gap-8 text-sm text-textSecondary md:flex"><a href="/trilhas.html">Trilhas</a><a href="/roadmap.html">Roadmap</a><a href="/exercicios.html">Exercícios</a><a href="/desafios.html">Desafios</a><a href="/projetos.html">Projetos</a><a href="/docs.html">Docs</a><a href="/mini-ide.html">Mini IDE</a><a href="/sobre.html">Sobre</a></nav><a href="/index.html" class="hidden rounded-lg bg-purple px-4 py-2 text-sm font-semibold shadow-[0_8px_30px_rgba(123,92,255,.35)] transition hover:bg-purpleHover md:inline-block">Home</a></div><nav id="mobileNav" class="mt-4 hidden flex-col gap-2 border-t border-borderEdge/80 pt-4 text-sm text-textSecondary md:hidden"><a href="/trilhas.html">Trilhas</a><a href="/roadmap.html">Roadmap</a><a href="/exercicios.html">Exercícios</a><a href="/desafios.html">Desafios</a><a href="/projetos.html">Projetos</a><a href="/docs.html">Docs</a><a href="/mini-ide.html">Mini IDE</a><a href="/sobre.html">Sobre</a></nav></header><main class="mx-auto w-[94%] max-w-[1280px] py-8"><section class="section-block"><div class="section-head"><h2>Exercícios úteis para fixação real</h2><p>Exercícios com foco em tarefas que aparecem em freelas, squads de produto e entrevistas técnicas.</p></div><div class="grid gap-3 md:grid-cols-2"><article class="content-card"><h3>HTML + Acessibilidade</h3><p>Refatorar páginas semânticas, formularios com label correto, navegação por teclado e landmarks.</p></article><article class="content-card"><h3>CSS de interface</h3><p>Implementar layout responsivo de painel administrativo, estados de botão e feedback visual de erro/sucesso.</p></article><article class="content-card"><h3>JavaScript de produto</h3><p>Filtros combinados, ordenação, paginação local e persistência de preferências com LocalStorage.</p></article><article class="content-card"><h3>DOM e eventos</h3><p>Modal acessível, dropdown com clique fora, tabs com teclado e validação de formulário em tempo real.</p></article><article class="content-card"><h3>API e estados de tela</h3><p>Buscar dados com loading, erro, vazio e retry. Tratar timeouts e render parcial sem quebrar interface.</p></article><article class="content-card"><h3>Refatoração</h3><p>Reduzir duplicação, separar responsabilidades e melhorar legibilidade sem alterar comportamento.</p></article></div></section><section class="section-block"><div class="section-head"><h2>Como usar os exercícios</h2></div><div class="grid gap-3 md:grid-cols-3"><article class="content-card"><h3>1. Ler critério de aceite</h3><p>Entenda o que define exercício concluído.</p></article><article class="content-card"><h3>2. Implementar incrementalmente</h3><p>Resolva em etapas pequenas e testáveis.</p></article><article class="content-card"><h3>3. Revisar com checklist</h3><p>Valide acessibilidade, responsividade e qualidade de código.</p></article></div></section></main><footer class="mx-auto mb-8 mt-8 w-[94%] max-w-[1280px] rounded-2xl border border-borderEdge/90 bg-bgSecondary/60 p-5"><p class="text-textSecondary">Front-Edge Academy é uma plataforma gratuita para estudar, praticar e evoluir em front-end com trilhas, exercícios, desafios e projetos reais.</p><div class="mt-3 flex flex-wrap gap-3 text-sm text-textSecondary"><a href="/trilhas.html">Trilhas</a><a href="/exercicios.html">Exercícios</a><a href="/desafios.html">Desafios</a><a href="/projetos.html">Projetos</a><a href="/docs.html">Docs</a><a href="/roadmap.html">Roadmap</a></div><p class="mt-3 text-sm text-textMuted">Contato: prativiniciusgmail.com</p><p class="text-sm text-textMuted">GitHub: <a class="text-cyan" href="https://github.com/viniprati" target="_blank" rel="noreferrer">github.com/viniprati</a></p></footer><script type="module" src="/script.js"></script></body></html>
+﻿<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/assets/04_favicon_app_icon_4k_transparente.png"
+    />
+    <title>Exercícios - Front-Edge Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { inter: ["Inter", "ui-sans-serif", "system-ui"] },
+            colors: {
+              bgMain: "#060816",
+              bgSecondary: "#0B1023",
+              card: "#10172D",
+              cardHover: "#161F3B",
+              borderEdge: "#1D294D",
+              textMain: "#FFFFFF",
+              textSecondary: "#AAB3D1",
+              textMuted: "#6E7AA5",
+              purple: "#7B5CFF",
+              purpleHover: "#947BFF",
+              blue: "#3B82F6",
+              cyan: "#22D3EE",
+              green: "#22C55E",
+              yellow: "#FACC15",
+              red: "#EF4444",
+            },
+          },
+        },
+      };
+    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="font-inter bg-bgMain text-textMain">
+    <div class="bg-grid"></div>
+    <header
+      class="site-header mx-auto mt-5 w-[94%] max-w-[1280px] rounded-2xl border border-borderEdge/90 bg-bgSecondary/65 px-5 py-4 backdrop-blur"
+    >
+      <div class="flex items-center justify-between gap-4">
+        <div class="brand-wrap">
+          <img
+            id="brand-logo-header"
+            class="brand-logo-header"
+            src="/assets/01_logo_horizontal_header_4k_transparente.png"
+            alt="Front-Edge Academy Logo Horizontal"
+          /><img
+            id="brand-logo-compact"
+            class="brand-logo-compact"
+            src="/assets/02_logo_compacta_navbar_4k_transparente.png"
+            alt="Front-Edge Academy Logo Compacto"
+          />
+        </div>
+        <button
+          id="mobileMenuBtn"
+          class="md:hidden rounded-lg border border-borderEdge px-3 py-2 text-textSecondary"
+        >
+          Menu
+        </button>
+        <nav
+          id="mainNav"
+          class="hidden gap-8 text-sm text-textSecondary md:flex"
+        >
+          <a href="/trilhas.html">Trilhas</a><a href="/roadmap.html">Roadmap</a
+          ><a href="/exercicios.html">Exercícios</a
+          ><a href="/desafios.html">Desafios</a
+          ><a href="/projetos.html">Projetos</a><a href="/docs.html">Docs</a
+          ><a href="/mini-ide.html">Mini IDE</a><a href="/sobre.html">Sobre</a>
+        </nav>
+        <a
+          href="/index.html"
+          class="hidden rounded-lg bg-purple px-4 py-2 text-sm font-semibold shadow-[0_8px_30px_rgba(123,92,255,.35)] transition hover:bg-purpleHover md:inline-block"
+          >Home</a
+        >
+      </div>
+      <nav
+        id="mobileNav"
+        class="mt-4 hidden flex-col gap-2 border-t border-borderEdge/80 pt-4 text-sm text-textSecondary md:hidden"
+      >
+        <a href="/trilhas.html">Trilhas</a><a href="/roadmap.html">Roadmap</a
+        ><a href="/exercicios.html">Exercícios</a
+        ><a href="/desafios.html">Desafios</a
+        ><a href="/projetos.html">Projetos</a><a href="/docs.html">Docs</a
+        ><a href="/mini-ide.html">Mini IDE</a><a href="/sobre.html">Sobre</a>
+      </nav>
+    </header>
+    <main class="mx-auto w-[94%] max-w-[1280px] py-8">
+      <section class="section-block">
+        <div class="section-head">
+          <h2>Exercícios úteis para fixação real</h2>
+          <p>
+            Exercícios com foco em tarefas que aparecem em freelas, squads de
+            produto e entrevistas técnicas.
+          </p>
+        </div>
+        <div class="grid gap-3 md:grid-cols-2">
+          <article class="content-card">
+            <h3>HTML + Acessibilidade</h3>
+            <p>
+              Refatorar páginas semânticas, formularios com label correto,
+              navegação por teclado e landmarks.
+            </p>
+          </article>
+          <article class="content-card">
+            <h3>CSS de interface</h3>
+            <p>
+              Implementar layout responsivo de painel administrativo, estados de
+              botão e feedback visual de erro/sucesso.
+            </p>
+          </article>
+          <article class="content-card">
+            <h3>JavaScript de produto</h3>
+            <p>
+              Filtros combinados, ordenação, paginação local e persistência de
+              preferências com LocalStorage.
+            </p>
+          </article>
+          <article class="content-card">
+            <h3>DOM e eventos</h3>
+            <p>
+              Modal acessível, dropdown com clique fora, tabs com teclado e
+              validação de formulário em tempo real.
+            </p>
+          </article>
+          <article class="content-card">
+            <h3>API e estados de tela</h3>
+            <p>
+              Buscar dados com loading, erro, vazio e retry. Tratar timeouts e
+              render parcial sem quebrar interface.
+            </p>
+          </article>
+          <article class="content-card">
+            <h3>Refatoração</h3>
+            <p>
+              Reduzir duplicação, separar responsabilidades e melhorar
+              legibilidade sem alterar comportamento.
+            </p>
+          </article>
+        </div>
+      </section>
+      <section class="section-block">
+        <div class="section-head"><h2>Como usar os exercícios</h2></div>
+        <div class="grid gap-3 md:grid-cols-3">
+          <article class="content-card">
+            <h3>1. Ler critério de aceite</h3>
+            <p>Entenda o que define exercício concluído.</p>
+          </article>
+          <article class="content-card">
+            <h3>2. Implementar incrementalmente</h3>
+            <p>Resolva em etapas pequenas e testáveis.</p>
+          </article>
+          <article class="content-card">
+            <h3>3. Revisar com checklist</h3>
+            <p>Valide acessibilidade, responsividade e qualidade de código.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+    <footer
+      class="mx-auto mb-8 mt-8 w-[94%] max-w-[1280px] rounded-2xl border border-borderEdge/90 bg-bgSecondary/60 p-5"
+    >
+      <p class="text-textSecondary">
+        Front-Edge Academy é uma plataforma gratuita para estudar, praticar e
+        evoluir em front-end com trilhas, exercícios, desafios e projetos reais.
+      </p>
+      <div class="mt-3 flex flex-wrap gap-3 text-sm text-textSecondary">
+        <a href="/trilhas.html">Trilhas</a
+        ><a href="/exercicios.html">Exercícios</a
+        ><a href="/desafios.html">Desafios</a
+        ><a href="/projetos.html">Projetos</a><a href="/docs.html">Docs</a
+        ><a href="/roadmap.html">Roadmap</a>
+      </div>
+      <p class="mt-3 text-sm text-textMuted">Contato: prativinicius@gmail.com</p>
+      <p class="text-sm text-textMuted">
+        GitHub:
+        <a
+          class="text-cyan"
+          href="https://github.com/viniprati"
+          target="_blank"
+          rel="noreferrer"
+          >github.com/viniprati</a
+        >
+      </p>
+    </footer>
+    <script type="module" src="/script.js"></script>
+  </body>
+</html>
+

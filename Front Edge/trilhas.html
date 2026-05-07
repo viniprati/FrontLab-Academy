@@ -3,37 +3,109 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/assets/04_favicon_app_icon_4k_transparente.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/assets/04_favicon_app_icon_4k_transparente.png"
+    />
     <title>Trilhas - Front-Edge Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
-            fontFamily: { inter: ['Inter', 'ui-sans-serif', 'system-ui'] },
+            fontFamily: { inter: ["Inter", "ui-sans-serif", "system-ui"] },
             colors: {
-              bgMain: '#060816', bgSecondary: '#0B1023', card: '#10172D', cardHover: '#161F3B',
-              borderEdge: '#1D294D', textMain: '#FFFFFF', textSecondary: '#AAB3D1', textMuted: '#6E7AA5',
-              purple: '#7B5CFF', purpleHover: '#947BFF', blue: '#3B82F6', cyan: '#22D3EE',
-              green: '#22C55E', yellow: '#FACC15', red: '#EF4444'
-            }
-          }
-        }
-      }
+              bgMain: "#060816",
+              bgSecondary: "#0B1023",
+              card: "#10172D",
+              cardHover: "#161F3B",
+              borderEdge: "#1D294D",
+              textMain: "#FFFFFF",
+              textSecondary: "#AAB3D1",
+              textMuted: "#6E7AA5",
+              purple: "#7B5CFF",
+              purpleHover: "#947BFF",
+              blue: "#3B82F6",
+              cyan: "#22D3EE",
+              green: "#22C55E",
+              yellow: "#FACC15",
+              red: "#EF4444",
+            },
+          },
+        },
+      };
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body class="font-inter bg-bgMain text-textMain">
     <div class="bg-grid"></div>
 
-    <header class="site-header mx-auto mt-5 w-[94%] max-w-[1280px] rounded-2xl border border-borderEdge/90 bg-bgSecondary/65 px-5 py-4 backdrop-blur"><div class="flex items-center justify-between gap-4"><div class="brand-wrap"><img id="brand-logo-header" class="brand-logo-header" src="/assets/01_logo_horizontal_header_4k_transparente.png" alt="Front-Edge Academy Logo Horizontal"/><img id="brand-logo-compact" class="brand-logo-compact" src="/assets/02_logo_compacta_navbar_4k_transparente.png" alt="Front-Edge Academy Logo Compacto"/></div><button id="mobileMenuBtn" class="md:hidden rounded-lg border border-borderEdge px-3 py-2 text-textSecondary">Menu</button><nav id="mainNav" class="hidden gap-8 text-sm text-textSecondary md:flex"><a href="/trilhas.html" class="hover:text-white">Trilhas</a><a href="/roadmap.html" class="hover:text-white">Roadmap</a><a href="/exercicios.html" class="hover:text-white">Exercícios</a><a href="/desafios.html" class="hover:text-white">Desafios</a><a href="/projetos.html" class="hover:text-white">Projetos</a><a href="/docs.html" class="hover:text-white">Docs</a><a href="/mini-ide.html" class="hover:text-white">Mini IDE</a><a href="/sobre.html" class="hover:text-white">Sobre</a></nav><a href="/index.html" class="hidden rounded-lg bg-purple px-4 py-2 text-sm font-semibold shadow-[0_8px_30px_rgba(123,92,255,.35)] transition hover:bg-purpleHover md:inline-block">Home</a></div><nav id="mobileNav" class="mt-4 hidden flex-col gap-2 border-t border-borderEdge/80 pt-4 text-sm text-textSecondary md:hidden"><a href="/trilhas.html">Trilhas</a><a href="/roadmap.html">Roadmap</a><a href="/exercicios.html">Exercícios</a><a href="/desafios.html">Desafios</a><a href="/projetos.html">Projetos</a><a href="/docs.html">Docs</a><a href="/mini-ide.html">Mini IDE</a><a href="/sobre.html">Sobre</a></nav></header>
+    <header
+      class="site-header mx-auto mt-5 w-[94%] max-w-[1280px] rounded-2xl border border-borderEdge/90 bg-bgSecondary/65 px-5 py-4 backdrop-blur"
+    >
+      <div class="flex items-center justify-between gap-4">
+        <div class="brand-wrap">
+          <img
+            id="brand-logo-header"
+            class="brand-logo-header"
+            src="/assets/01_logo_horizontal_header_4k_transparente.png"
+            alt="Front-Edge Academy Logo Horizontal"
+          /><img
+            id="brand-logo-compact"
+            class="brand-logo-compact"
+            src="/assets/02_logo_compacta_navbar_4k_transparente.png"
+            alt="Front-Edge Academy Logo Compacto"
+          />
+        </div>
+        <button
+          id="mobileMenuBtn"
+          class="md:hidden rounded-lg border border-borderEdge px-3 py-2 text-textSecondary"
+        >
+          Menu
+        </button>
+        <nav
+          id="mainNav"
+          class="hidden gap-8 text-sm text-textSecondary md:flex"
+        >
+          <a href="/trilhas.html" class="hover:text-white">Trilhas</a
+          ><a href="/roadmap.html" class="hover:text-white">Roadmap</a
+          ><a href="/exercicios.html" class="hover:text-white">Exercícios</a
+          ><a href="/desafios.html" class="hover:text-white">Desafios</a
+          ><a href="/projetos.html" class="hover:text-white">Projetos</a
+          ><a href="/docs.html" class="hover:text-white">Docs</a
+          ><a href="/mini-ide.html" class="hover:text-white">Mini IDE</a
+          ><a href="/sobre.html" class="hover:text-white">Sobre</a>
+        </nav>
+        <a
+          href="/index.html"
+          class="hidden rounded-lg bg-purple px-4 py-2 text-sm font-semibold shadow-[0_8px_30px_rgba(123,92,255,.35)] transition hover:bg-purpleHover md:inline-block"
+          >Home</a
+        >
+      </div>
+      <nav
+        id="mobileNav"
+        class="mt-4 hidden flex-col gap-2 border-t border-borderEdge/80 pt-4 text-sm text-textSecondary md:hidden"
+      >
+        <a href="/trilhas.html">Trilhas</a><a href="/roadmap.html">Roadmap</a
+        ><a href="/exercicios.html">Exercícios</a
+        ><a href="/desafios.html">Desafios</a
+        ><a href="/projetos.html">Projetos</a><a href="/docs.html">Docs</a
+        ><a href="/mini-ide.html">Mini IDE</a><a href="/sobre.html">Sobre</a>
+      </nav>
+    </header>
 
     <main class="mx-auto w-[94%] max-w-[1280px] py-8">
       <section id="trilhas" class="section-block">
         <div class="section-head">
           <h2>Trilhas principais</h2>
-          <p>Conteúdo organizado para estudo progressivo e revisão direcionada.</p>
+          <p>
+            Conteúdo organizado para estudo progressivo e revisão direcionada.
+          </p>
         </div>
 
         <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -41,10 +113,17 @@
             <button data-filter="all" class="pill active">Todas</button>
             <button data-filter="iniciante" class="pill">Iniciante</button>
             <button data-filter="basico" class="pill">Básico</button>
-            <button data-filter="intermediario" class="pill">Intermediário</button>
+            <button data-filter="intermediario" class="pill">
+              Intermediário
+            </button>
             <button data-filter="avancado" class="pill">Avançado</button>
           </div>
-          <input id="trackSearch" class="search-input" type="text" placeholder="Buscar trilha por nome, tag ou conteúdo..." />
+          <input
+            id="trackSearch"
+            class="search-input"
+            type="text"
+            placeholder="Buscar trilha por nome, tag ou conteúdo..."
+          />
         </div>
 
         <div id="trackList" class="grid gap-3"></div>
@@ -53,13 +132,35 @@
       <div class="mt-4">
         <a href="/index.html" class="pill">Voltar para Home</a>
       </div>
-    </main><footer class="mx-auto mb-8 mt-8 w-[94%] max-w-[1280px] rounded-2xl border border-borderEdge/90 bg-bgSecondary/60 p-5"><p class="text-textSecondary">Front-Edge Academy é uma plataforma gratuita para estudar, praticar e evoluir em front-end com trilhas, exercícios, desafios e projetos reais.</p><div class="mt-3 flex flex-wrap gap-3 text-sm text-textSecondary"><a href="/trilhas.html">Trilhas</a><a href="/exercicios.html">Exercícios</a><a href="/desafios.html">Desafios</a><a href="/projetos.html">Projetos</a><a href="/docs.html">Docs</a><a href="/roadmap.html">Roadmap</a></div><p class="mt-3 text-sm text-textMuted">Contato: prativiniciusgmail.com</p><p class="text-sm text-textMuted">GitHub: <a class="text-cyan" href="https://github.com/viniprati" target="_blank" rel="noreferrer">github.com/viniprati</a></p></footer>
+    </main>
+    <footer
+      class="mx-auto mb-8 mt-8 w-[94%] max-w-[1280px] rounded-2xl border border-borderEdge/90 bg-bgSecondary/60 p-5"
+    >
+      <p class="text-textSecondary">
+        Front-Edge Academy é uma plataforma gratuita para estudar, praticar e
+        evoluir em front-end com trilhas, exercícios, desafios e projetos reais.
+      </p>
+      <div class="mt-3 flex flex-wrap gap-3 text-sm text-textSecondary">
+        <a href="/trilhas.html">Trilhas</a
+        ><a href="/exercicios.html">Exercícios</a
+        ><a href="/desafios.html">Desafios</a
+        ><a href="/projetos.html">Projetos</a><a href="/docs.html">Docs</a
+        ><a href="/roadmap.html">Roadmap</a>
+      </div>
+      <p class="mt-3 text-sm text-textMuted">Contato: prativinicius@gmail.com</p>
+      <p class="text-sm text-textMuted">
+        GitHub:
+        <a
+          class="text-cyan"
+          href="https://github.com/viniprati"
+          target="_blank"
+          rel="noreferrer"
+          >github.com/viniprati</a
+        >
+      </p>
+    </footer>
 
     <script type="module" src="/script.js"></script>
   </body>
 </html>
-
-
-
-
 
