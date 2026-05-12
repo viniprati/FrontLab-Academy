@@ -78,8 +78,7 @@
           ><a href="/mini-ide.html">Mini IDE</a><a href="/sobre.html">Sobre</a>
         </nav>
         <a
-          href="/index.html"
-          class="hidden rounded-lg bg-purple px-4 py-2 text-sm font-semibold shadow-[0_8px_30px_rgba(123,92,255,.35)] transition hover:bg-purpleHover md:inline-block"
+          href="/index.html" data-home-link="true" class="hidden rounded-lg bg-purple px-4 py-2 text-sm font-semibold shadow-[0_8px_30px_rgba(123,92,255,.35)] transition hover:bg-purpleHover md:inline-block"
           >Home</a
         >
       </div>
@@ -136,9 +135,7 @@
                 ><button class="tab-btn" data-tab="js">script.js</button>
               </div>
               <div class="flex gap-2">
-                <button id="newProject" class="pill">Novo projeto</button
-                ><button
-                  id="runCode"
+                <button id="newProject" class="pill">Novo projeto</button><button id="resetCode" class="pill">Resetar</button><button id="copyCode" class="pill">Copiar código</button><button id="runCode"
                   class="rounded-lg bg-purple px-3 py-2 text-sm font-semibold hover:bg-purpleHover"
                 >
                   Executar
@@ -188,4 +185,6 @@
     <script type="module" src="/script.js"></script>
   </body>
 </html>
+
+
 

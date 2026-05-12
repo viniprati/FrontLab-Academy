@@ -559,6 +559,14 @@ body.page-leaving {
   object-fit: contain;
 }
 
+.home-stack-item .stack-icon {
+  width: 1.65rem !important;
+  height: 1.65rem !important;
+  max-width: 1.65rem;
+  max-height: 1.65rem;
+  object-fit: contain;
+}
+
 .home-stack-item span {
   font-size: 0.78rem;
   color: var(--text-secondary);

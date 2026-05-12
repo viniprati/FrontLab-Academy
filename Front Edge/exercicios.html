@@ -78,8 +78,7 @@
           ><a href="/mini-ide.html">Mini IDE</a><a href="/sobre.html">Sobre</a>
         </nav>
         <a
-          href="/index.html"
-          class="hidden rounded-lg bg-purple px-4 py-2 text-sm font-semibold shadow-[0_8px_30px_rgba(123,92,255,.35)] transition hover:bg-purpleHover md:inline-block"
+          href="/index.html" data-home-link="true" class="hidden rounded-lg bg-purple px-4 py-2 text-sm font-semibold shadow-[0_8px_30px_rgba(123,92,255,.35)] transition hover:bg-purpleHover md:inline-block"
           >Home</a
         >
       </div>
@@ -95,59 +94,7 @@
       </nav>
     </header>
     <main class="mx-auto w-[94%] max-w-[1280px] py-8">
-      <section class="section-block">
-        <div class="section-head">
-          <h2>Exercícios úteis para fixação real</h2>
-          <p>
-            Exercícios com foco em tarefas que aparecem em freelas, squads de
-            produto e entrevistas técnicas.
-          </p>
-        </div>
-        <div class="grid gap-3 md:grid-cols-2">
-          <article class="content-card">
-            <h3>HTML + Acessibilidade</h3>
-            <p>
-              Refatorar páginas semânticas, formularios com label correto,
-              navegação por teclado e landmarks.
-            </p>
-          </article>
-          <article class="content-card">
-            <h3>CSS de interface</h3>
-            <p>
-              Implementar layout responsivo de painel administrativo, estados de
-              botão e feedback visual de erro/sucesso.
-            </p>
-          </article>
-          <article class="content-card">
-            <h3>JavaScript de produto</h3>
-            <p>
-              Filtros combinados, ordenação, paginação local e persistência de
-              preferências com LocalStorage.
-            </p>
-          </article>
-          <article class="content-card">
-            <h3>DOM e eventos</h3>
-            <p>
-              Modal acessível, dropdown com clique fora, tabs com teclado e
-              validação de formulário em tempo real.
-            </p>
-          </article>
-          <article class="content-card">
-            <h3>API e estados de tela</h3>
-            <p>
-              Buscar dados com loading, erro, vazio e retry. Tratar timeouts e
-              render parcial sem quebrar interface.
-            </p>
-          </article>
-          <article class="content-card">
-            <h3>Refatoração</h3>
-            <p>
-              Reduzir duplicação, separar responsabilidades e melhorar
-              legibilidade sem alterar comportamento.
-            </p>
-          </article>
-        </div>
-      </section>
+      <section class="section-block">`n        <div class="section-head">`n          <h2>Exercícios por trilha</h2>`n          <p>Prática organizada com objetivo, critérios de aceite e acesso direto para IDE.</p>`n        </div>`n        <div id="exerciseList" class="grid gap-3 md:grid-cols-2"></div>`n      </section>
       <section class="section-block">
         <div class="section-head"><h2>Como usar os exercícios</h2></div>
         <div class="grid gap-3 md:grid-cols-3">
@@ -163,6 +110,21 @@
             <h3>3. Revisar com checklist</h3>
             <p>Valide acessibilidade, responsividade e qualidade de código.</p>
           </article>
+        </div>
+        <div
+          class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-borderEdge/80 bg-bgSecondary/60 p-4"
+        >
+          <p class="text-textSecondary">
+            Quer praticar agora? Abra um exemplo pronto na Mini IDE e edite do
+            seu jeito.
+          </p>
+          <a
+            href="/mini-ide.html?exemplo=botao"
+            target="_blank"
+            rel="noreferrer"
+            class="rounded-lg bg-purple px-4 py-2 text-sm font-semibold shadow-[0_8px_30px_rgba(123,92,255,.35)] transition hover:bg-purpleHover"
+            >Abrir exemplo na Mini IDE</a
+          >
         </div>
       </section>
     </main>
@@ -195,4 +157,6 @@
     <script type="module" src="/script.js"></script>
   </body>
 </html>
+
+
 

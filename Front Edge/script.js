@@ -1,4 +1,10 @@
-﻿function slugify(text) {
+
+const STORAGE_KEYS = {
+  completedModules: 'frontedge:completed-modules',
+  ideState: 'frontedge:ide-state'
+}
+
+function slugify(text) {
   return text
     .toLowerCase()
     .normalize('NFD')
@@ -17,315 +23,232 @@ function mkStarter(title, color, log) {
 
 const tracks = [
   {
-    name: 'Preparação do aluno',
+    name: 'HTML',
     level: 'iniciante',
     levelLabel: 'Iniciante',
-    tags: ['Front-end', 'Internet', 'VS Code', 'Terminal', 'GitHub', 'Deploy'],
-    accent: '#22C55E',
-    iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg',
-    description: 'Entenda o que é front-end, como a internet funciona, como usar VS Code, terminal, GitHub e como publicar seus primeiros projetos.',
+    description: 'Aprenda estrutura de páginas, HTML semântico, formulários, SEO e acessibilidade.',
+    estimatedHours: '22h',
+    technologies: ['HTML', 'Semântica', 'Acessibilidade', 'SEO'],
+    status: 'nao-iniciado',
+    accent: '#F97316',
+    iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
     modules: [
-      { title: 'Fundamentos da web e do front-end', learn: ['Como navegador, servidor e HTTP se conectam', 'Diferença entre front-end e back-end', 'Ciclo básico de desenvolvimento web'], practice: 'Monte um mapa simples da arquitetura cliente-servidor.', exercise: 'Explique em um README o fluxo completo de uma requisição.', starter: mkStarter('Arquitetura Web', '#16a34a', 'Arquitetura web') },
-      { title: 'VS Code para produtividade', learn: ['Configurações essenciais', 'Extensões úteis para front-end', 'Snippets e organização'], practice: 'Configure um workspace com lint e format on save.', exercise: 'Crie um checklist de setup do VS Code.', starter: mkStarter('Setup VS Code', '#15803d', 'VS Code pronto') },
-      { title: 'Terminal e linha de comando', learn: ['Navegação por diretórios', 'Comandos de criação e organização', 'Scripts npm'], practice: 'Simule estrutura de projeto usando terminal.', exercise: 'Monte guia com 15 comandos de uso diário.', starter: mkStarter('Terminal Essencial', '#22c55e', 'Terminal') },
-      { title: 'Git, GitHub e deploy inicial', learn: ['Commits semânticos', 'Fluxo de branch', 'Deploy de site estático'], practice: 'Versione e publique um projeto simples.', exercise: 'Crie repositório com histórico de commits claro.', starter: mkStarter('Deploy inicial', '#16a34a', 'Deploy') }
-    ],
-    challenge: {
-      title: 'Desafio final: Setup profissional de projeto',
-      brief: 'Crie um repositório modelo de front-end com estrutura de pastas, README, convenções de commit e deploy funcional.',
-      portfolio: 'Entregáveis: link do repositório, link do deploy e documentação de onboarding.'
-    }
+      { title: 'Estrutura base de documento', objective: 'Entender a base de qualquer página HTML.', explanation: 'Você vai montar a estrutura mínima e os metadados essenciais.', example: '<!doctype html><html lang="pt-BR"><head>...</head><body>...</body></html>', exercise: 'Criar estrutura base de uma landing page.', challenge: 'Refatorar uma página com semântica ruim.', commonErrors: 'Pular hierarquia de headings e esquecer metadados.', projectUse: 'Página institucional acessível.', docs: 'https://developer.mozilla.org/pt-BR/docs/Web/HTML', starter: mkStarter('Estrutura HTML', '#f97316', 'HTML estrutura') },
+      { title: 'Semântica e landmarks', objective: 'Criar páginas navegáveis por pessoas e leitores de tela.', explanation: 'Use tags semânticas para estruturar conteúdo e navegação.', example: '<header><nav>...</nav></header><main>...</main><footer>...</footer>', exercise: 'Corrigir heading tree e landmarks.', challenge: 'Transformar um layout com divs em estrutura semântica.', commonErrors: 'Usar div para tudo e perder contexto.', projectUse: 'Blog com leitura confortável e navegação clara.', docs: 'https://developer.mozilla.org/pt-BR/docs/Glossary/Semantics', starter: mkStarter('Semântica HTML', '#ea580c', 'HTML semântico') },
+      { title: 'Formulários completos', objective: 'Criar formulários funcionais e acessíveis.', explanation: 'Você vai conectar inputs, labels, validação nativa e mensagens claras.', example: '<label for="email">Email</label><input id="email" type="email" required>', exercise: 'Criar formulário de contato completo.', challenge: 'Adicionar validações e feedback de erro/sucesso.', commonErrors: 'Inputs sem label e sem regras mínimas.', projectUse: 'Cadastro e contato em produto real.', docs: 'https://developer.mozilla.org/pt-BR/docs/Learn_web_development/Extensions/Forms', starter: mkStarter('Formulários HTML', '#fb923c', 'Formulários') }
+    ]
   },
   {
-    name: 'HTML', level: 'iniciante', levelLabel: 'Iniciante',
-    tags: ['HTML', 'Semântica', 'Formulários', 'SEO', 'Acessibilidade'],
-    accent: '#F97316', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
-    description: 'Aprenda estrutura de páginas, HTML semântico, links, imagens, mídia, listas, tabelas, formulários e acessibilidade básica.',
+    name: 'CSS',
+    level: 'basico',
+    levelLabel: 'Básico',
+    description: 'Domine layout, tipografia, responsividade e microinterações.',
+    estimatedHours: '26h',
+    technologies: ['CSS', 'Flexbox', 'Grid', 'Responsividade'],
+    status: 'nao-iniciado',
+    accent: '#3B82F6',
+    iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg',
     modules: [
-      { title: 'Estrutura base de documento', learn: ['doctype, head, body', 'metadados essenciais', 'organização de seções'], practice: 'Montar esqueleto de página real.', exercise: 'Criar estrutura base de uma landing page.', starter: mkStarter('Estrutura HTML', '#f97316', 'HTML estrutura') },
-      { title: 'Semântica e headings', learn: ['header/main/footer', 'section/article/aside', 'hierarquia de títulos'], practice: 'Refatorar página com divs excessivas.', exercise: 'Corrigir heading tree e landmarks.', starter: mkStarter('Semântica HTML', '#ea580c', 'HTML semântico') },
-      { title: 'Links, listas e navegação', learn: ['âncoras internas', 'listas ordenadas e não ordenadas', 'navegação contextual'], practice: 'Criar página de documentação com índice.', exercise: 'Construir navegação com âncoras funcionais.', starter: mkStarter('Navegação e links', '#fb923c', 'Links') },
-      { title: 'Mídia e conteúdo rico', learn: ['img, picture e figure', 'audio e video', 'legendas e fallback'], practice: 'Criar seção de mídia acessível.', exercise: 'Montar galeria com descrições corretas.', starter: mkStarter('Mídia no HTML', '#f59e0b', 'Mídia') },
-      { title: 'Tabelas e dados estruturados', learn: ['thead/tbody/tfoot', 'scope e caption', 'dados comparativos'], practice: 'Criar tabela de planos.', exercise: 'Corrigir tabela sem semântica.', starter: mkStarter('Tabelas HTML', '#fb7185', 'Tabelas') },
-      { title: 'Formulários completos', learn: ['input types', 'label/fieldset/legend', 'validação nativa'], practice: 'Criar formulário de contato.', exercise: 'Adicionar feedback de erro e sucesso.', starter: mkStarter('Formulários HTML', '#f97316', 'Formulário') },
-      { title: 'SEO e acessibilidade base', learn: ['title/description', 'alt e aria', 'navegação por teclado'], practice: 'Auditar uma página e corrigir A11y.', exercise: 'Entregar checklist com melhorias aplicadas.', starter: mkStarter('SEO + A11y', '#f97316', 'SEO e A11y') }
-    ],
-    challenge: { title: 'Desafio final: Site institucional semântico', brief: 'Construa um site institucional multi-seções com HTML semântico, formulário funcional e foco em acessibilidade.', portfolio: 'Entregáveis: deploy, auditoria A11y e documentação da estrutura semântica.' }
+      { title: 'Cascata e especificidade', objective: 'Controlar conflitos de estilo sem gambiarra.', explanation: 'Entenda como o navegador resolve regras CSS.', example: '.card .title { color: #fff; }', exercise: 'Refatorar CSS duplicado.', challenge: 'Resolver conflitos visuais sem !important.', commonErrors: 'Excesso de seletores e baixa previsibilidade.', projectUse: 'Design system consistente.', docs: 'https://developer.mozilla.org/pt-BR/docs/Web/CSS', starter: mkStarter('Seletores CSS', '#3b82f6', 'Seletores') },
+      { title: 'Flexbox e Grid', objective: 'Montar layouts reais com previsibilidade.', explanation: 'Combine grid macro com flex micro para compor telas.', example: '.layout{display:grid;grid-template-columns:280px 1fr}', exercise: 'Construir dashboard responsivo.', challenge: 'Recriar layout complexo sem quebrar mobile.', commonErrors: 'Misturar regras sem estratégia.', projectUse: 'Páginas de produto e painéis.', docs: 'https://developer.mozilla.org/pt-BR/docs/Learn_web_development/Core/CSS_layout', starter: mkStarter('Layout moderno', '#2563eb', 'Layout') },
+      { title: 'Responsividade e estados', objective: 'Manter experiência consistente em qualquer tela.', explanation: 'Aplicar abordagem mobile-first e estados de interação.', example: '@media (min-width: 768px) { ... }', exercise: 'Eliminar overflow horizontal em uma tela.', challenge: 'Criar componentes com estados hover/focus/disabled.', commonErrors: 'Desktop-first sem testes em telas menores.', projectUse: 'UI pronta para produção.', docs: 'https://web.dev/responsive-web-design-basics/', starter: mkStarter('Responsividade', '#60a5fa', 'Responsivo') }
+    ]
   },
   {
-    name: 'CSS', level: 'basico', levelLabel: 'Básico',
-    tags: ['CSS', 'Flexbox', 'Grid', 'Responsividade', 'Animações'],
-    accent: '#3B82F6', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg',
-    description: 'Domine seletores, box model, cores, fontes, unidades, Flexbox, Grid, responsividade, animações e CSS moderno.',
+    name: 'JavaScript',
+    level: 'intermediario',
+    levelLabel: 'Intermediário',
+    description: 'Domine lógica, DOM, eventos, APIs e persistência local.',
+    estimatedHours: '32h',
+    technologies: ['JavaScript', 'DOM', 'Eventos', 'Fetch API'],
+    status: 'nao-iniciado',
+    accent: '#FACC15',
+    iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
     modules: [
-      { title: 'Seletores e cascata', learn: ['especificidade', 'herança', 'boas práticas de naming'], practice: 'Organizar estilos de uma página real.', exercise: 'Refatorar CSS duplicado.', starter: mkStarter('Seletores CSS', '#3b82f6', 'Seletores') },
-      { title: 'Box model e espaçamento', learn: ['margin/padding/border', 'box-sizing', 'unidades'], practice: 'Ajustar layout com consistência de spacing.', exercise: 'Corrigir bug visual de overflow.', starter: mkStarter('Box model', '#2563eb', 'Box model') },
-      { title: 'Tipografia e cores', learn: ['escala tipográfica', 'contraste', 'sistema de cores'], practice: 'Definir tokens visuais.', exercise: 'Criar tema com contraste acessível.', starter: mkStarter('Tipografia e cores', '#60a5fa', 'Tipografia') },
-      { title: 'Flexbox', learn: ['eixos', 'alinhamentos', 'componentes flexíveis'], practice: 'Criar navbar e cards com flex.', exercise: 'Converter layout float para flexbox.', starter: mkStarter('Flexbox', '#1d4ed8', 'Flexbox') },
-      { title: 'CSS Grid', learn: ['grid areas', 'fr units', 'layout avançado'], practice: 'Montar dashboard com grid.', exercise: 'Criar grade responsiva de projetos.', starter: mkStarter('CSS Grid', '#3b82f6', 'Grid') },
-      { title: 'Responsividade', learn: ['media queries', 'clamp', 'mobile first'], practice: 'Ajustar tela para 3 breakpoints.', exercise: 'Eliminar quebra em mobile.', starter: mkStarter('Responsividade', '#0ea5e9', 'Responsividade') },
-      { title: 'Transições e animações', learn: ['transition', 'transform', 'keyframes'], practice: 'Criar microinterações úteis.', exercise: 'Animar hover e entrada de cards.', starter: mkStarter('Animações CSS', '#38bdf8', 'Animações') }
-    ],
-    challenge: { title: 'Desafio final: Landing premium responsiva', brief: 'Construa uma landing page premium com sistema visual, layout responsivo completo e microinterações.', portfolio: 'Entregáveis: deploy, guia de tokens CSS e biblioteca de componentes visuais.' }
+      { title: 'Lógica e funções', objective: 'Resolver problemas com clareza e previsibilidade.', explanation: 'Estruture decisões e reutilize funções pequenas.', example: 'const isAdult = (age) => age >= 18', exercise: 'Criar verificador de regras de negócio.', challenge: 'Refatorar bloco condicional complexo.', commonErrors: 'Funções gigantes e sem responsabilidade única.', projectUse: 'Regras de produto no front-end.', docs: 'https://developer.mozilla.org/pt-BR/docs/Web/JavaScript', starter: mkStarter('Lógica JS', '#facc15', 'Lógica') },
+      { title: 'DOM e eventos', objective: 'Criar interfaces interativas e robustas.', explanation: 'Aprenda a renderizar, ouvir eventos e manter estado visual.', example: "button.addEventListener('click', onClick)", exercise: 'Criar lista com adição e remoção dinâmica.', challenge: 'Montar tabs acessíveis com teclado.', commonErrors: 'Manipulação excessiva sem abstração.', projectUse: 'Componentes de interação em qualquer app.', docs: 'https://developer.mozilla.org/pt-BR/docs/Web/API/Document_Object_Model', starter: mkStarter('DOM e eventos', '#eab308', 'DOM') },
+      { title: 'Fetch e LocalStorage', objective: 'Trabalhar com dados externos e persistência local.', explanation: 'Implemente loading, erro e sincronização de interface.', example: 'const data = await fetch(url).then(r => r.json())', exercise: 'Consumir API e persistir preferências.', challenge: 'Criar fluxo com retry e estado vazio.', commonErrors: 'Não tratar erros de rede.', projectUse: 'Apps de catálogo, filtros e favoritos.', docs: 'https://developer.mozilla.org/pt-BR/docs/Web/API/Fetch_API', starter: mkStarter('Fetch + LocalStorage', '#f59e0b', 'Fetch') }
+    ]
   },
   {
-    name: 'JavaScript e lógica', level: 'intermediario', levelLabel: 'Básico ao intermediário',
-    tags: ['JavaScript', 'Lógica', 'DOM', 'Eventos', 'API'],
-    accent: '#FACC15', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
-    description: 'Treine variáveis, operadores, condicionais, loops, arrays, objetos, funções, strings, datas, DOM, eventos, Fetch API e LocalStorage.',
+    name: 'Git e GitHub',
+    level: 'iniciante',
+    levelLabel: 'Iniciante',
+    description: 'Versionamento, colaboração e fluxo de entrega com pull request.',
+    estimatedHours: '12h',
+    technologies: ['Git', 'GitHub', 'Pull Request'],
+    status: 'nao-iniciado',
+    accent: '#818CF8',
+    iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg',
     modules: [
-      { title: 'Sintaxe e controle de fluxo', learn: ['variáveis', 'operadores', 'if/switch'], practice: 'Resolver problemas condicionais.', exercise: 'Criar verificador de regras de negócio.', starter: mkStarter('Fluxo JS', '#eab308', 'Fluxo') },
-      { title: 'Loops e funções', learn: ['for/while', 'funções puras', 'escopo'], practice: 'Criar utilitários de repetição.', exercise: 'Gerar relatório com loops e funções.', starter: mkStarter('Loops e funções', '#facc15', 'Loops') },
-      { title: 'Arrays e métodos', learn: ['map/filter/reduce', 'find/some/every', 'imutabilidade'], practice: 'Tratar lista de produtos.', exercise: 'Aplicar filtros combinados.', starter: mkStarter('Arrays', '#f59e0b', 'Arrays') },
-      { title: 'Objetos e estruturas', learn: ['objetos aninhados', 'desestruturação', 'spread/rest'], practice: 'Modelar dados de usuário/pedido.', exercise: 'Refatorar estrutura de dados confusa.', starter: mkStarter('Objetos', '#eab308', 'Objetos') },
-      { title: 'DOM e eventos', learn: ['seleção de elementos', 'delegação', 'renderização dinâmica'], practice: 'Construir componente interativo.', exercise: 'Criar todo list com edição.', starter: mkStarter('DOM e eventos', '#facc15', 'DOM') },
-      { title: 'Fetch API', learn: ['async/await', 'tratamento de erro', 'estado de carregamento'], practice: 'Consumir API e renderizar lista.', exercise: 'Adicionar fallback de erro.', starter: mkStarter('Fetch API', '#fde047', 'API') },
-      { title: 'LocalStorage', learn: ['persistência local', 'serialização JSON', 'sincronização UI'], practice: 'Salvar preferências do usuário.', exercise: 'Persistir tarefas e restaurar ao abrir.', starter: mkStarter('LocalStorage', '#facc15', 'LocalStorage') }
-    ],
-    challenge: { title: 'Desafio final: Organizador de rotina inteligente', brief: 'Crie um app de rotina com tarefas, filtros, persistência local e integração com API para dados auxiliares.', portfolio: 'Entregáveis: app publicado, README técnico e vídeo de demonstração do fluxo completo.' }
+      { title: 'Fundamentos de versionamento', objective: 'Versionar com histórico limpo.', explanation: 'Comandos essenciais para o dia a dia.', example: 'git add . && git commit -m "feat: ..."', exercise: 'Criar histórico semântico.', challenge: 'Resolver conflito de merge em branch de feature.', commonErrors: 'Commits genéricos e longos.', projectUse: 'Fluxo de squad.', docs: 'https://git-scm.com/docs', starter: mkStarter('Git base', '#818cf8', 'Git') },
+      { title: 'Pull Request e revisão', objective: 'Colaborar com qualidade técnica.', explanation: 'Abra PR com checklist e comunicação clara.', example: 'PR com contexto, evidências e checklist.', exercise: 'Abrir PR com template de revisão.', challenge: 'Aplicar feedback sem quebrar feature.', commonErrors: 'PR sem contexto de negócio.', projectUse: 'Entrega profissional em equipe.', docs: 'https://docs.github.com/pt/pull-requests', starter: mkStarter('PR e Review', '#6366f1', 'PR') }
+    ]
   },
   {
-    name: 'TypeScript', level: 'intermediario', levelLabel: 'Intermediário',
-    tags: ['TypeScript', 'Tipos', 'Interfaces', 'Generics'],
-    accent: '#3178C6', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
-    description: 'Aprenda tipagem básica, interfaces, type aliases, union types, generics, narrowing e tipagem de funções, eventos e APIs.',
+    name: 'Tailwind CSS',
+    level: 'basico',
+    levelLabel: 'Básico',
+    description: 'Construção rápida de UI com utilitários e padrão visual consistente.',
+    estimatedHours: '14h',
+    technologies: ['Tailwind', 'UI', 'Componentes'],
+    status: 'nao-iniciado',
+    accent: '#22D3EE',
+    iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg',
     modules: [
-      { title: 'Tipos básicos e inferência', learn: ['tipos primitivos', 'inference', 'strict mode'], practice: 'Tipar utilitários simples.', exercise: 'Remover any de um arquivo utilitário.', starter: mkStarter('Tipos básicos TS', '#3178c6', 'TS básicos') },
-      { title: 'Interfaces e aliases', learn: ['interface', 'type alias', 'composição'], practice: 'Modelar entidades de produto e usuário.', exercise: 'Criar modelos coesos para domínio.', starter: mkStarter('Interfaces TS', '#2563eb', 'Interfaces') },
-      { title: 'Union e narrowing', learn: ['union types', 'guards', 'discriminated unions'], practice: 'Tratar respostas de API heterogêneas.', exercise: 'Implementar guards seguros.', starter: mkStarter('Narrowing TS', '#1d4ed8', 'Narrowing') },
-      { title: 'Generics', learn: ['funções genéricas', 'constraints', 'reuso'], practice: 'Criar helpers genéricos de lista.', exercise: 'Implementar paginate<T>.', starter: mkStarter('Generics TS', '#3b82f6', 'Generics') },
-      { title: 'Tipagem de funções e eventos', learn: ['assinaturas', 'callbacks', 'event typing'], practice: 'Tipar handlers de formulário.', exercise: 'Refatorar eventos com tipos corretos.', starter: mkStarter('Eventos TS', '#60a5fa', 'Eventos') },
-      { title: 'Tipagem de API', learn: ['DTOs', 'erros tipados', 'mapeamento de resposta'], practice: 'Tipar camada de service.', exercise: 'Criar client tipado com fallback.', starter: mkStarter('API TS', '#0ea5e9', 'API TS') },
-      { title: 'Organização de tipos', learn: ['pastas de types', 'barrels', 'reuso entre módulos'], practice: 'Estruturar types de projeto real.', exercise: 'Separar tipos por domínio.', starter: mkStarter('Arquitetura de tipos', '#3178c6', 'Tipos organizados') }
-    ],
-    challenge: { title: 'Desafio final: Painel tipado de gestão', brief: 'Construa uma interface com domínio tipado de ponta a ponta (estado, formulários, API e validações).', portfolio: 'Entregáveis: repositório com arquitetura de tipos documentada e aplicação em produção.' }
+      { title: 'Fundamentos do Tailwind', objective: 'Entender classes utilitárias e composição.', explanation: 'Organize layout e estados com classes pequenas.', example: 'class="rounded-lg border px-4 py-2"', exercise: 'Converter card CSS tradicional para Tailwind.', challenge: 'Criar seção hero responsiva.', commonErrors: 'Acoplamento de classes sem padrão.', projectUse: 'Design delivery ágil.', docs: 'https://tailwindcss.com/docs', starter: mkStarter('Tailwind base', '#22d3ee', 'Tailwind') },
+      { title: 'Componentização visual', objective: 'Padronizar componentes reutilizáveis.', explanation: 'Use convenções para manter legibilidade e escala.', example: 'botão primário, secundário e ghost.', exercise: 'Montar biblioteca de botões e cards.', challenge: 'Criar página inteira com tokens consistentes.', commonErrors: 'Estilos duplicados por página.', projectUse: 'Produto consistente em escala.', docs: 'https://tailwindcss.com/docs/reusing-styles', starter: mkStarter('Tailwind componentes', '#06b6d4', 'Tailwind comp') }
+    ]
   },
   {
-    name: 'Frameworks front-end', level: 'avancado', levelLabel: 'Intermediário ao avançado',
-    tags: ['React', 'Vue', 'Angular', 'Svelte', 'Next.js'],
-    accent: '#7B5CFF', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-    description: 'Conheça React, Vue, Angular, Svelte, SolidJS, Next.js e Astro para criar interfaces modernas e aplicações mais completas.',
+    name: 'React',
+    level: 'intermediario',
+    levelLabel: 'Intermediário',
+    description: 'Componentes, estado, props e integração de dados em aplicações reais.',
+    estimatedHours: '38h',
+    technologies: ['React', 'Componentes', 'Estado', 'Hooks'],
+    status: 'nao-iniciado',
+    accent: '#7B5CFF',
+    iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
     modules: [
-      { title: 'Arquitetura por componentes', learn: ['composição', 'props', 'estado local'], practice: 'Quebrar tela complexa em componentes.', exercise: 'Refatorar tela monolítica.', starter: mkStarter('Componentes', '#7b5cff', 'Componentes') },
-      { title: 'Roteamento em SPA', learn: ['rotas', 'parâmetros', 'layouts'], practice: 'Construir navegação multi-seções.', exercise: 'Implementar rota dinâmica de detalhe.', starter: mkStarter('Roteamento', '#8b5cf6', 'Rotas') },
-      { title: 'Estado compartilhado', learn: ['lifting state', 'stores', 'contexto'], practice: 'Sincronizar estado entre componentes.', exercise: 'Criar carrinho com estado global.', starter: mkStarter('Estado global', '#a78bfa', 'Estado') },
-      { title: 'Formulários e validação', learn: ['controlled/uncontrolled', 'regras de validação', 'feedback de erro'], practice: 'Construir formulário robusto.', exercise: 'Validar formulário multi-etapas.', starter: mkStarter('Formulários', '#7c3aed', 'Form') },
-      { title: 'Consumo de APIs', learn: ['fetch em componentes', 'cache', 'retries'], practice: 'Listagem com filtros e paginação.', exercise: 'Adicionar loading/skeleton e erro.', starter: mkStarter('API em framework', '#6d28d9', 'API framework') },
-      { title: 'Renderização e performance', learn: ['SSR/SSG/CSR', 'lazy loading', 'memoização'], practice: 'Comparar estratégias de renderização.', exercise: 'Otimizar uma tela lenta.', starter: mkStarter('Performance', '#7b5cff', 'Perf framework') },
-      { title: 'Estrutura de app escalável', learn: ['pastas por domínio', 'camadas', 'boas práticas de manutenção'], practice: 'Organizar um app médio.', exercise: 'Documentar arquitetura da aplicação.', starter: mkStarter('Arquitetura app', '#8b5cf6', 'Arquitetura') }
-    ],
-    challenge: { title: 'Desafio final: Plataforma de conteúdo técnico', brief: 'Crie uma aplicação front-end completa com roteamento, busca, filtros, páginas de detalhe e integração com APIs.', portfolio: 'Entregáveis: app publicado, documentação de arquitetura e decisões técnicas.' }
-  },
-  {
-    name: 'Ferramentas', level: 'intermediario', levelLabel: 'Básico ao intermediário',
-    tags: ['Git', 'GitHub', 'npm', 'Vite', 'ESLint', 'Prettier'],
-    accent: '#6366F1', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg',
-    description: 'Estude Git, GitHub, npm, Node.js, Vite, Webpack, ESLint, Prettier e ferramentas essenciais do ecossistema front-end.',
-    modules: [
-      { title: 'Git no fluxo diário', learn: ['branching', 'commit limpo', 'merge/rebase'], practice: 'Simular ciclo de feature.', exercise: 'Montar histórico de commits semânticos.', starter: mkStarter('Git fluxo', '#6366f1', 'Git') },
-      { title: 'GitHub e colaboração', learn: ['PR', 'review', 'issues'], practice: 'Criar fluxo de revisão em dupla.', exercise: 'Abrir PR com checklist técnico.', starter: mkStarter('GitHub colaboração', '#4f46e5', 'GitHub') },
-      { title: 'npm scripts', learn: ['scripts utilitários', 'build/test/lint', 'versionamento'], practice: 'Padronizar scripts do projeto.', exercise: 'Criar script de quality gate.', starter: mkStarter('npm scripts', '#4338ca', 'npm') },
-      { title: 'Vite e ambiente', learn: ['config básica', 'env vars', 'aliases'], practice: 'Configurar ambientes local/stage/prod.', exercise: 'Separar configurações por ambiente.', starter: mkStarter('Vite setup', '#6366f1', 'Vite') },
-      { title: 'ESLint e qualidade', learn: ['regras', 'plugins', 'autocorreção'], practice: 'Aplicar padrão em base legada.', exercise: 'Resolver violações críticas sem quebrar.', starter: mkStarter('ESLint', '#818cf8', 'ESLint') },
-      { title: 'Prettier e consistência', learn: ['formatação unificada', 'integração IDE', 'hooks'], practice: 'Padronizar estilo de código do time.', exercise: 'Integrar Prettier + lint-staged.', starter: mkStarter('Prettier', '#6366f1', 'Prettier') },
-      { title: 'Pipeline local', learn: ['pre-commit', 'testes automáticos', 'build check'], practice: 'Automatizar verificações antes de push.', exercise: 'Configurar pipeline local reproduzível.', starter: mkStarter('Pipeline local', '#6366f1', 'Pipeline') }
-    ],
-    challenge: { title: 'Desafio final: Starter kit de equipe front-end', brief: 'Crie um template completo com scripts, lint, format, convenções e documentação de contribuição.', portfolio: 'Entregáveis: template público reutilizável e guia de onboarding técnico.' }
-  },
-  {
-    name: 'Qualidade e boas práticas', level: 'intermediario', levelLabel: 'Intermediário',
-    tags: ['Acessibilidade', 'Performance', 'PWA', 'Testes'],
-    accent: '#10B981', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg',
-    description: 'Aprenda acessibilidade, performance, PWA, testes, organização de código, responsividade e boas práticas para projetos reais.',
-    modules: [
-      { title: 'Acessibilidade prática', learn: ['teclado e foco', 'semântica avançada', 'ARIA'], practice: 'Auditar interface existente.', exercise: 'Aplicar correções A11y em fluxo crítico.', starter: mkStarter('Acessibilidade', '#10b981', 'A11y') },
-      { title: 'Performance web', learn: ['LCP/CLS/INP', 'otimização de imagens', 'code splitting'], practice: 'Melhorar métricas de uma página.', exercise: 'Documentar antes/depois das métricas.', starter: mkStarter('Performance', '#059669', 'Performance') },
-      { title: 'Responsividade robusta', learn: ['layout resiliente', 'conteúdo fluido', 'testes cross-device'], practice: 'Eliminar quebras em telas pequenas.', exercise: 'Ajustar interface para 4 larguras.', starter: mkStarter('Responsividade', '#10b981', 'Responsive') },
-      { title: 'Testes unitários', learn: ['assertions', 'mocks', 'cobertura'], practice: 'Cobrir funções de negócio.', exercise: 'Criar testes para regras críticas.', starter: mkStarter('Testes unitários', '#34d399', 'Unit tests') },
-      { title: 'Testes de interface', learn: ['Testing Library', 'fluxo do usuário', 'acessibilidade em testes'], practice: 'Testar formulário e navegação.', exercise: 'Cobrir cenários feliz/erro.', starter: mkStarter('Testes UI', '#10b981', 'UI tests') },
-      { title: 'PWA e offline', learn: ['manifest', 'service worker', 'cache'], practice: 'Adicionar modo offline básico.', exercise: 'Criar fallback para perda de conexão.', starter: mkStarter('PWA offline', '#059669', 'PWA') },
-      { title: 'Manutenção e governança', learn: ['boas práticas de código', 'documentação viva', 'checklists de revisão'], practice: 'Criar padrão de revisão técnica.', exercise: 'Montar checklist de release front-end.', starter: mkStarter('Governança front-end', '#10b981', 'Governança') }
-    ],
-    challenge: { title: 'Desafio final: Upgrade de qualidade em projeto real', brief: 'Pegue um projeto existente e aplique melhorias de acessibilidade, performance, testes e experiência offline.', portfolio: 'Entregáveis: relatório técnico, métricas comparativas e branch pública com melhorias implementadas.' }
+      { title: 'Componentes e props', objective: 'Modelar interfaces em blocos reutilizáveis.', explanation: 'Quebre telas em componentes pequenos com props claras.', example: 'function Card({ title }) { ... }', exercise: 'Refatorar landing em componentes.', challenge: 'Criar composição com variações de card.', commonErrors: 'Componentes grandes e pouco reutilizáveis.', projectUse: 'Escalabilidade de front-end.', docs: 'https://react.dev/learn', starter: mkStarter('React componentes', '#7b5cff', 'React') },
+      { title: 'Estado e efeitos', objective: 'Gerenciar dados e efeitos colaterais com segurança.', explanation: 'Use hooks para manter UI e dados sincronizados.', example: 'const [items, setItems] = useState([])', exercise: 'Criar filtro dinâmico de lista.', challenge: 'Conectar API com estados de loading/erro.', commonErrors: 'Efeito sem dependências corretas.', projectUse: 'App de produto real.', docs: 'https://react.dev/reference/react', starter: mkStarter('React estado', '#8b5cf6', 'React state') }
+    ]
   }
-].map((track) => ({ ...track, slug: slugify(track.name) }))
-
-const roadmap = [
-  { title: '01. Como a web funciona (request/response)', trail: 'preparacao-do-aluno', mod: 0 },
-  { title: '02. Estrutura de projeto front-end', trail: 'preparacao-do-aluno', mod: 0 },
-  { title: '03. Setup do VS Code para produtividade', trail: 'preparacao-do-aluno', mod: 1 },
-  { title: '04. Extensões e snippets essenciais', trail: 'preparacao-do-aluno', mod: 1 },
-  { title: '05. Terminal: navegação e comandos base', trail: 'preparacao-do-aluno', mod: 2 },
-  { title: '06. Terminal: automação com scripts', trail: 'preparacao-do-aluno', mod: 2 },
-  { title: '07. Git: init, add, commit', trail: 'preparacao-do-aluno', mod: 3 },
-  { title: '08. GitHub: push, PR e revisão', trail: 'preparacao-do-aluno', mod: 3 },
-
-  { title: '09. HTML: estrutura base', trail: 'html', mod: 0 },
-  { title: '10. HTML: metadados e SEO base', trail: 'html', mod: 0 },
-  { title: '11. HTML semântico: landmarks', trail: 'html', mod: 1 },
-  { title: '12. HTML semântico: heading tree', trail: 'html', mod: 1 },
-  { title: '13. Navegação e links internos', trail: 'html', mod: 2 },
-  { title: '14. Listas e conteúdo estruturado', trail: 'html', mod: 2 },
-  { title: '15. Imagens e mídia acessível', trail: 'html', mod: 3 },
-  { title: '16. Tabelas com semântica correta', trail: 'html', mod: 4 },
-  { title: '17. Formulários: campos e validação', trail: 'html', mod: 5 },
-  { title: '18. Acessibilidade base em HTML', trail: 'html', mod: 6 },
-
-  { title: '19. CSS: cascata e especificidade', trail: 'css', mod: 0 },
-  { title: '20. CSS: box model na prática', trail: 'css', mod: 1 },
-  { title: '21. Espaçamento e escala visual', trail: 'css', mod: 1 },
-  { title: '22. Tipografia e hierarquia', trail: 'css', mod: 2 },
-  { title: '23. Sistema de cores e contraste', trail: 'css', mod: 2 },
-  { title: '24. Flexbox: alinhamento e distribuição', trail: 'css', mod: 3 },
-  { title: '25. Flexbox: layout de navegação', trail: 'css', mod: 3 },
-  { title: '26. Grid: colunas e áreas', trail: 'css', mod: 4 },
-  { title: '27. Grid: composição de dashboards', trail: 'css', mod: 4 },
-  { title: '28. Responsividade: mobile first', trail: 'css', mod: 5 },
-  { title: '29. Responsividade: breakpoints reais', trail: 'css', mod: 5 },
-  { title: '30. Motion: transições úteis', trail: 'css', mod: 6 },
-  { title: '31. Motion: animação de estado', trail: 'css', mod: 6 },
-
-  { title: '32. JS: variáveis e tipos', trail: 'javascript-e-logica', mod: 0 },
-  { title: '33. JS: condicionais', trail: 'javascript-e-logica', mod: 0 },
-  { title: '34. JS: loops e iteração', trail: 'javascript-e-logica', mod: 1 },
-  { title: '35. JS: funções e escopo', trail: 'javascript-e-logica', mod: 1 },
-  { title: '36. Arrays: map/filter/reduce', trail: 'javascript-e-logica', mod: 2 },
-  { title: '37. Arrays: buscas e ordenação', trail: 'javascript-e-logica', mod: 2 },
-  { title: '38. Objetos: modelagem de dados', trail: 'javascript-e-logica', mod: 3 },
-  { title: '39. Objetos: destructuring e spread', trail: 'javascript-e-logica', mod: 3 },
-  { title: '40. DOM: seleção e atualização', trail: 'javascript-e-logica', mod: 4 },
-  { title: '41. Eventos: clique, input, submit', trail: 'javascript-e-logica', mod: 4 },
-  { title: '42. Fetch API: loading e erro', trail: 'javascript-e-logica', mod: 5 },
-  { title: '43. Fetch API: transformação de dados', trail: 'javascript-e-logica', mod: 5 },
-  { title: '44. LocalStorage: persistência de estado', trail: 'javascript-e-logica', mod: 6 },
-  { title: '45. LocalStorage: sincronização de UI', trail: 'javascript-e-logica', mod: 6 },
-
-  { title: '46. TypeScript: inferência e tipos primitivos', trail: 'typescript', mod: 0 },
-  { title: '47. TypeScript: strict mode', trail: 'typescript', mod: 0 },
-  { title: '48. Interfaces e type aliases', trail: 'typescript', mod: 1 },
-  { title: '49. Modelagem de domínio com interfaces', trail: 'typescript', mod: 1 },
-  { title: '50. Union types e narrowing', trail: 'typescript', mod: 2 },
-  { title: '51. Guards de tipo reutilizáveis', trail: 'typescript', mod: 2 },
-  { title: '52. Generics: funções e utilitários', trail: 'typescript', mod: 3 },
-  { title: '53. Generics com constraints', trail: 'typescript', mod: 3 },
-  { title: '54. Tipagem de eventos de UI', trail: 'typescript', mod: 4 },
-  { title: '55. Tipagem de callbacks e handlers', trail: 'typescript', mod: 4 },
-  { title: '56. DTOs e contratos de API', trail: 'typescript', mod: 5 },
-  { title: '57. Estrutura de tipos por domínio', trail: 'typescript', mod: 6 },
-
-  { title: '58. Frameworks: arquitetura por componentes', trail: 'frameworks-front-end', mod: 0 },
-  { title: '59. Frameworks: composição e reutilização', trail: 'frameworks-front-end', mod: 0 },
-  { title: '60. Roteamento: páginas e parâmetros', trail: 'frameworks-front-end', mod: 1 },
-  { title: '61. Roteamento: layouts e navegação', trail: 'frameworks-front-end', mod: 1 },
-  { title: '62. Estado compartilhado entre telas', trail: 'frameworks-front-end', mod: 2 },
-  { title: '63. Organização de estado por domínio', trail: 'frameworks-front-end', mod: 2 },
-  { title: '64. Formulários em framework', trail: 'frameworks-front-end', mod: 3 },
-  { title: '65. Validação e feedback de formulário', trail: 'frameworks-front-end', mod: 3 },
-  { title: '66. Consumo de API em SPA', trail: 'frameworks-front-end', mod: 4 },
-  { title: '67. Estados de loading/erro/vazio', trail: 'frameworks-front-end', mod: 4 },
-  { title: '68. Renderização e performance', trail: 'frameworks-front-end', mod: 5 },
-  { title: '69. SSR/SSG/CSR na prática', trail: 'frameworks-front-end', mod: 5 },
-  { title: '70. Arquitetura escalável de app', trail: 'frameworks-front-end', mod: 6 },
-
-  { title: '71. Git avançado para equipes', trail: 'ferramentas', mod: 0 },
-  { title: '72. Code review com Pull Request', trail: 'ferramentas', mod: 1 },
-  { title: '73. npm scripts para produtividade', trail: 'ferramentas', mod: 2 },
-  { title: '74. npm workspaces e organização', trail: 'ferramentas', mod: 2 },
-  { title: '75. Vite: aliases e envs', trail: 'ferramentas', mod: 3 },
-  { title: '76. Vite: build e preview', trail: 'ferramentas', mod: 3 },
-  { title: '77. ESLint: regras e consistência', trail: 'ferramentas', mod: 4 },
-  { title: '78. Prettier: formatação automática', trail: 'ferramentas', mod: 5 },
-  { title: '79. Pipeline local de qualidade', trail: 'ferramentas', mod: 6 },
-  { title: '80. Pipeline de release', trail: 'ferramentas', mod: 6 },
-
-  { title: '81. Acessibilidade: teclado e foco', trail: 'qualidade-e-boas-praticas', mod: 0 },
-  { title: '82. Acessibilidade: semântica avançada', trail: 'qualidade-e-boas-praticas', mod: 0 },
-  { title: '83. Performance: imagens e fontes', trail: 'qualidade-e-boas-praticas', mod: 1 },
-  { title: '84. Performance: render e bundle', trail: 'qualidade-e-boas-praticas', mod: 1 },
-  { title: '85. Responsividade robusta', trail: 'qualidade-e-boas-praticas', mod: 2 },
-  { title: '86. Testes unitários de regra', trail: 'qualidade-e-boas-praticas', mod: 3 },
-  { title: '87. Testes de interface e fluxo', trail: 'qualidade-e-boas-praticas', mod: 4 },
-  { title: '88. PWA: manifest e cache', trail: 'qualidade-e-boas-praticas', mod: 5 },
-  { title: '89. Governança e manutenção', trail: 'qualidade-e-boas-praticas', mod: 6 },
-
-  { title: '90. Projeto final: planejamento', trail: 'qualidade-e-boas-praticas', mod: 6 },
-  { title: '91. Projeto final: arquitetura', trail: 'frameworks-front-end', mod: 6 },
-  { title: '92. Projeto final: implementação UI', trail: 'css', mod: 6 },
-  { title: '93. Projeto final: integração de dados', trail: 'javascript-e-logica', mod: 5 },
-  { title: '94. Projeto final: tipagem', trail: 'typescript', mod: 5 },
-  { title: '95. Projeto final: validação e testes', trail: 'qualidade-e-boas-praticas', mod: 4 },
-  { title: '96. Projeto final: otimização de performance', trail: 'qualidade-e-boas-praticas', mod: 1 },
-  { title: '97. Projeto final: checklist de acessibilidade', trail: 'qualidade-e-boas-praticas', mod: 0 },
-  { title: '98. Projeto final: documentação técnica', trail: 'ferramentas', mod: 6 },
-  { title: '99. Projeto final: deploy e revisão final', trail: 'preparacao-do-aluno', mod: 3 },
-  { title: '100. Pronto para portfólio e entrevista', trail: 'qualidade-e-boas-praticas', mod: 6 }
 ]
-const editorState = {
-  html: `<main style="font-family: Inter, sans-serif; padding: 24px;"><h1 style="margin:0 0 8px;">Front-Edge Academy</h1><p>Pratique front-end com trilhas e exercícios reais.</p></main>`,
-  css: `body { margin: 0; background: #f8fafc; color: #0f172a; }`,
-  js: `console.log('Prática front-end ativa.');`
-}
 
-let activeFilter = 'all'
-let activeTab = 'html'
+tracks.forEach((track) => {
+  track.slug = slugify(track.name)
+  track.moduleCount = track.modules.length
+})
+
+const exercises = [
+  { title: 'Landing semântica', technology: 'HTML', difficulty: 'Iniciante', estimated: '35 min', objective: 'Criar landing com estrutura semântica.', acceptance: '1 h1, landmarks e formulário com labels.', trail: 'html' },
+  { title: 'Grid responsivo de cards', technology: 'CSS', difficulty: 'Básico', estimated: '45 min', objective: 'Montar grade adaptável.', acceptance: 'Sem overflow em 360px e 768px.', trail: 'css' },
+  { title: 'Filtro de catálogo', technology: 'JavaScript', difficulty: 'Intermediário', estimated: '60 min', objective: 'Filtrar itens por categoria e busca.', acceptance: 'Filtro combinado + estado vazio.', trail: 'javascript' },
+  { title: 'Conventional commits', technology: 'Git/GitHub', difficulty: 'Iniciante', estimated: '25 min', objective: 'Criar histórico claro de commits.', acceptance: 'Ao menos 5 commits semânticos.', trail: 'git-e-github' }
+]
+
+const challenges = [
+  { title: 'Bugfix: menu mobile travado', theme: 'bugfix', difficulty: 'Básico', estimated: '40 min', technologies: 'HTML, CSS, JavaScript', context: 'Header de uma plataforma educacional.', problem: 'Menu não fecha ao navegar.', requirements: 'Fechar no clique de item e no ESC.', acceptance: 'Sem regressão em desktop e teclado funcional.' },
+  { title: 'Refatoração: cards duplicados', theme: 'refatoracao', difficulty: 'Intermediário', estimated: '55 min', technologies: 'JavaScript', context: 'Página de trilhas com render manual.', problem: 'Markup duplicado em múltiplas páginas.', requirements: 'Criar função reutilizável de render.', acceptance: 'Mesma aparência e menos duplicação.' },
+  { title: 'A11y: formulário de contato', theme: 'acessibilidade', difficulty: 'Intermediário', estimated: '50 min', technologies: 'HTML, A11y', context: 'Formulário com baixa usabilidade.', problem: 'Inputs sem rótulo e foco ruim.', requirements: 'Label, aria-describedby e foco visível.', acceptance: 'Navegação completa por teclado.' }
+]
+const portfolioProjects = [
+  { title: 'Dashboard de Suporte', level: 'Intermediário', technology: 'HTML, CSS, JavaScript', estimated: '10-14h', objective: 'Criar painel com fluxo de tickets.', brief: 'Equipe precisa priorizar atendimento por status e SLA.', functional: 'Lista, filtros, detalhe e histórico local.', visual: 'Tema escuro premium com hierarquia clara.', checklist: 'Responsivo, A11y base, loading, vazio e erro.' },
+  { title: 'Portal de Vagas Front-End', level: 'Básico', technology: 'JavaScript, API', estimated: '8-12h', objective: 'Organizar vagas com filtros e favoritos.', brief: 'Usuário quer encontrar vaga compatível rapidamente.', functional: 'Busca, filtro, salvar favoritos.', visual: 'Cards legíveis e CTA claros.', checklist: 'Estados de carregamento e persistência local.' },
+  { title: 'Gestor de Conteúdo', level: 'Avançado', technology: 'React, Tailwind', estimated: '16-24h', objective: 'Aplicação de CRUD com UX consistente.', brief: 'Editor precisa criar e revisar conteúdo com preview.', functional: 'Listagem, edição, preview e rascunho.', visual: 'Layout profissional de produto SaaS.', checklist: 'Arquitetura modular e documentação técnica.' }
+]
+
+const roadmapPhases = [
+  { number: 1, title: 'Fundamentos', description: 'Base da web, editor e fluxo de estudo.', difficulty: 'Iniciante', estimated: '1 semana', trail: 'html' },
+  { number: 2, title: 'HTML', description: 'Semântica, formulários e acessibilidade.', difficulty: 'Iniciante', estimated: '2 semanas', trail: 'html' },
+  { number: 3, title: 'CSS', description: 'Estilo, componentes e tipografia.', difficulty: 'Básico', estimated: '2 semanas', trail: 'css' },
+  { number: 4, title: 'Layout', description: 'Flexbox, Grid e responsividade.', difficulty: 'Básico', estimated: '2 semanas', trail: 'css' },
+  { number: 5, title: 'JavaScript', description: 'Lógica e manipulação de dados.', difficulty: 'Intermediário', estimated: '3 semanas', trail: 'javascript' },
+  { number: 6, title: 'DOM', description: 'Interatividade real e eventos.', difficulty: 'Intermediário', estimated: '2 semanas', trail: 'javascript' },
+  { number: 7, title: 'Git/GitHub', description: 'Colaboração e versionamento profissional.', difficulty: 'Iniciante', estimated: '1 semana', trail: 'git-e-github' },
+  { number: 8, title: 'Frameworks', description: 'Componentes e estado com React.', difficulty: 'Intermediário', estimated: '4 semanas', trail: 'react' },
+  { number: 9, title: 'Projetos', description: 'Entrega de portfólio com padrão profissional.', difficulty: 'Intermediário', estimated: 'contínuo', trail: 'react' }
+]
+
+const docsItems = [
+  { category: 'Essencial para iniciantes', title: 'MDN - HTML', url: 'https://developer.mozilla.org/pt-BR/docs/Web/HTML', summary: 'Referência oficial para estrutura e semântica.' },
+  { category: 'Essencial para iniciantes', title: 'MDN - CSS', url: 'https://developer.mozilla.org/pt-BR/docs/Web/CSS', summary: 'Base para layout, estilos e responsividade.' },
+  { category: 'Essencial para iniciantes', title: 'MDN - JavaScript', url: 'https://developer.mozilla.org/pt-BR/docs/Web/JavaScript', summary: 'Fundamentos de lógica e APIs web.' },
+  { category: 'Acessibilidade', title: 'WCAG Overview', url: 'https://www.w3.org/WAI/standards-guidelines/wcag/', summary: 'Princípios de acessibilidade web.' },
+  { category: 'SEO', title: 'Google Search Essentials', url: 'https://developers.google.com/search/docs/fundamentals/creating-helpful-content', summary: 'Boas práticas de indexação e conteúdo.' },
+  { category: 'Git e colaboração', title: 'GitHub Docs', url: 'https://docs.github.com/pt', summary: 'Fluxo de pull request e revisão.' },
+  { category: 'React', title: 'React.dev', url: 'https://react.dev/learn', summary: 'Aprendizado oficial de React.' },
+  { category: 'Tailwind', title: 'Tailwind Docs', url: 'https://tailwindcss.com/docs', summary: 'Documentação de utilitários e componentes.' }
+]
 
 const trackList = document.getElementById('trackList')
 const filterContainer = document.getElementById('trackFilters')
 const searchInput = document.getElementById('trackSearch')
 const roadmapSteps = document.getElementById('roadmapSteps')
+const exerciseList = document.getElementById('exerciseList')
+const challengeList = document.getElementById('challengeList')
+const projectList = document.getElementById('projectList')
+const docsList = document.getElementById('docsList')
 const editor = document.getElementById('editor')
 const preview = document.getElementById('preview')
 const editorTabs = document.getElementById('editorTabs')
 const runCode = document.getElementById('runCode')
-const newProject = document.getElementById('newProject')
+const resetCode = document.getElementById('resetCode')
+const copyCode = document.getElementById('copyCode')
 const mobileMenuBtn = document.getElementById('mobileMenuBtn')
 const mobileNav = document.getElementById('mobileNav')
 
 const moduleTrailTitle = document.getElementById('moduleTrailTitle')
 const moduleTrailDescription = document.getElementById('moduleTrailDescription')
 const moduleTrailMeta = document.getElementById('moduleTrailMeta')
+const moduleProgressText = document.getElementById('moduleProgressText')
+const moduleProgressFill = document.getElementById('moduleProgressFill')
 const moduleMenuList = document.getElementById('moduleMenuList')
 const moduleMenuToggle = document.getElementById('moduleMenuToggle')
 const moduleContent = document.getElementById('moduleContent')
-const finalChallengeBox = document.getElementById('finalChallengeBox')
+
+let activeFilter = 'all'
+let activeTab = 'html'
+
+const ideDefaults = {
+  html: '<main>\n  <h1>Front-Edge Academy</h1>\n  <p>Pratique front-end com trilhas e exercícios reais.</p>\n</main>',
+  css: 'body { margin: 0; padding: 24px; font-family: Inter, sans-serif; background: #f8fafc; color: #0f172a; }',
+  js: "console.log('Prática front-end ativa.');"
+}
+
+const editorState = loadIdeState()
+
+function loadIdeState() {
+  const saved = localStorage.getItem(STORAGE_KEYS.ideState)
+  if (!saved) return { ...ideDefaults }
+  try {
+    const parsed = JSON.parse(saved)
+    return { ...ideDefaults, ...parsed }
+  } catch {
+    return { ...ideDefaults }
+  }
+}
+
+function saveIdeState() {
+  localStorage.setItem(STORAGE_KEYS.ideState, JSON.stringify(editorState))
+}
+function getCompletedModules() {
+  const raw = localStorage.getItem(STORAGE_KEYS.completedModules)
+  if (!raw) return {}
+  try {
+    return JSON.parse(raw)
+  } catch {
+    return {}
+  }
+}
+
+function setCompletedModules(data) {
+  localStorage.setItem(STORAGE_KEYS.completedModules, JSON.stringify(data))
+}
+
+function statusLabel(status) {
+  if (status === 'concluido') return 'Concluído'
+  if (status === 'em-andamento') return 'Em andamento'
+  return 'Não iniciado'
+}
 
 function initPageTransitions() {
   document.body.classList.add('page-ready')
-  const links = document.querySelectorAll('a[href]')
-  links.forEach((link) => {
-    link.addEventListener('click', (event) => {
-      const href = link.getAttribute('href')
-      if (!href) return
-      const isInternal = href.startsWith('/') || href.startsWith('./') || href.startsWith('../')
-      const isAnchor = href.startsWith('#')
-      const isNewTab = link.target === '_blank'
-      if (!isInternal || isAnchor || isNewTab) return
-      event.preventDefault()
-      document.body.classList.remove('page-ready')
-      document.body.classList.add('page-leaving')
-      window.setTimeout(() => {
-        window.location.href = href
-      }, 220)
-    })
-  })
 }
 
 function markActiveNavLink() {
   const path = window.location.pathname.toLowerCase()
-  const navLinks = document.querySelectorAll('#mainNav a')
-  navLinks.forEach((link) => {
+  const allLinks = document.querySelectorAll('#mainNav a, #mobileNav a, a[data-home-link]')
+  allLinks.forEach((link) => {
     const href = (link.getAttribute('href') || '').toLowerCase()
     if (!href.endsWith('.html')) return
-    const isHome = href === '/index.html'
-    const active = isHome ? (path === '/' || path.endsWith('/index.html')) : path.endsWith(href)
+    const active = href === '/index.html' ? path === '/' || path.endsWith('/index.html') : path.endsWith(href)
     link.classList.toggle('nav-active', active)
+    if (active) link.setAttribute('aria-current', 'page')
+    else link.removeAttribute('aria-current')
   })
-}
-
-function getTrackFromQuery() {
-  const params = new URLSearchParams(window.location.search)
-  const slug = params.get('trilha')
-  return tracks.find((track) => track.slug === slug)
 }
 
 function renderTracks() {
@@ -337,23 +260,28 @@ function renderTracks() {
     const matchesSearch =
       track.name.toLowerCase().includes(query) ||
       track.description.toLowerCase().includes(query) ||
-      track.tags.join(' ').toLowerCase().includes(query)
+      track.technologies.join(' ').toLowerCase().includes(query)
     return matchesFilter && matchesSearch
   })
 
   trackList.innerHTML = filtered.map((track) => {
-    const tagsMarkup = track.tags.map((tag) => `<span class="track-tag">${tag}</span>`).join('')
+    const tagsMarkup = track.technologies.map((tag) => `<span class="track-tag">${tag}</span>`).join('')
     return `
       <article class="content-card track-card" style="--track-accent:${track.accent}">
-        <a class="track-click" href="/modulos.html?trilha=${track.slug}">
-          <div class="track-main">
-            <div class="track-icon"><img src="${track.iconUrl}" alt="Ícone ${track.name}" loading="lazy" /></div>
-            <div><div class="track-tags">${tagsMarkup}</div><h3>${track.name}</h3><p>${track.description}</p></div>
+        <div class="track-main">
+          <div class="track-icon"><img src="${track.iconUrl}" alt="Ícone ${track.name}" loading="lazy" /></div>
+          <div>
+            <h3>${track.name}</h3>
+            <p>${track.description}</p>
+            <div class="track-tags">${tagsMarkup}</div>
+            <p class="track-meta">Nível: ${track.levelLabel} · ${track.moduleCount} módulos · ${track.estimatedHours}</p>
+            <p class="track-meta">Status: ${statusLabel(track.status)}</p>
           </div>
-          <p class="track-meta">Nível: ${track.levelLabel}</p>
-          <p class="track-open">Abrir módulos</p>
-          <div><div class="mb-2 text-xs text-text-secondary">Foco: prática aplicada</div><div class="progress-shell"><div class="progress-fill" style="width:100%"></div></div></div>
-        </a>
+        </div>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <a class="pill" href="/modulos.html?trilha=${track.slug}">Ver módulos</a>
+          <a class="pill" href="/modulos.html?trilha=${track.slug}#mod-0">Começar trilha</a>
+        </div>
       </article>
     `
   }).join('')
@@ -361,13 +289,25 @@ function renderTracks() {
 
 function renderRoadmap() {
   if (!roadmapSteps) return
-  roadmapSteps.innerHTML = roadmap.map((step, index) => `
-    <a class="road-step ${index === 0 ? 'active' : ''}" href="/modulos.html?trilha=${step.trail}#mod-${step.mod}">
-      <span class="road-num">${index + 1}</span>
-      <h3>${step.title}</h3>
-      <p class="text-textMuted text-sm">Abrir módulo recomendado</p>
-    </a>
-  `).join('')
+  roadmapSteps.innerHTML = roadmapPhases.map((phase) => {
+    const track = tracks.find((item) => item.slug === phase.trail)
+    return `
+      <article class="road-step">
+        <span class="road-num">${phase.number}</span>
+        <h3>${phase.title}</h3>
+        <p class="text-textSecondary text-sm">${phase.description}</p>
+        <p class="track-meta">Dificuldade: ${phase.difficulty} · Tempo: ${phase.estimated}</p>
+        <p class="track-meta">Trilha: ${track ? track.name : 'Em breve'}</p>
+        <a class="pill mt-2 inline-flex" href="/modulos.html?trilha=${phase.trail}">Abrir trilha</a>
+      </article>
+    `
+  }).join('')
+}
+
+function getTrackFromQuery() {
+  const params = new URLSearchParams(window.location.search)
+  const slug = params.get('trilha')
+  return tracks.find((track) => track.slug === slug)
 }
 
 function runModuleIde(moduleCard) {
@@ -377,41 +317,58 @@ function runModuleIde(moduleCard) {
   const previewFrame = moduleCard.querySelector('.module-preview')
   if (!htmlInput || !cssInput || !jsInput || !previewFrame) return
 
-  const source = `<!doctype html><html><head><style>${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<' + '/script></body></html>`
+  const source = `<!doctype html><html><head><style>${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<\/script></body></html>`
   previewFrame.srcdoc = source
 }
 
+function renderModuleProgress(track) {
+  const doneMap = getCompletedModules()
+  const doneCount = track.modules.filter((_, index) => doneMap[`${track.slug}:${index}`]).length
+  if (moduleProgressText) moduleProgressText.textContent = `${doneCount}/${track.modules.length} módulos concluídos`
+  if (moduleProgressFill) {
+    const percentage = Math.round((doneCount / track.modules.length) * 100)
+    moduleProgressFill.style.width = `${percentage}%`
+  }
+}
 function renderModulesPage() {
-  if (!moduleContent || !moduleTrailTitle || !moduleTrailDescription || !moduleTrailMeta || !moduleMenuList || !finalChallengeBox) return
+  if (!moduleContent || !moduleTrailTitle || !moduleTrailDescription || !moduleTrailMeta || !moduleMenuList) return
   const track = getTrackFromQuery()
 
   if (!track) {
     moduleTrailTitle.textContent = 'Trilha não encontrada'
-    moduleTrailDescription.textContent = 'Volte para trilhas e escolha uma trilha válida.'
-    moduleTrailMeta.textContent = ''
-    moduleMenuList.innerHTML = ''
+    moduleTrailDescription.textContent = 'Volte para Trilhas e escolha uma trilha válida.'
     moduleContent.innerHTML = '<article class="content-card"><p>Não foi possível carregar os módulos.</p></article>'
-    finalChallengeBox.innerHTML = ''
+    moduleMenuList.innerHTML = ''
     return
   }
 
-  moduleTrailTitle.textContent = `${track.name} - módulos de estudo`
+  moduleTrailTitle.textContent = `${track.name} · plano de estudo`
   moduleTrailDescription.textContent = track.description
-  moduleTrailMeta.textContent = `Nível: ${track.levelLabel} | Tags: ${track.tags.join(', ')}`
+  moduleTrailMeta.textContent = `Nível ${track.levelLabel} · ${track.moduleCount} módulos · ${track.estimatedHours}`
 
-  moduleMenuList.innerHTML = track.modules.map((module, index) => `
-    <a href="#mod-${index}" class="module-link" data-target="mod-${index}">Módulo ${index + 1}: ${module.title}</a>
-  `).join('')
+  moduleMenuList.innerHTML = track.modules.map((module, index) => {
+    const done = getCompletedModules()[`${track.slug}:${index}`]
+    return `<a href="#mod-${index}" class="module-link" data-target="mod-${index}">${done ? '? ' : ''}Módulo ${index + 1}: ${module.title}</a>`
+  }).join('')
 
   moduleContent.innerHTML = track.modules.map((module, index) => {
-    const learnItems = module.learn.map((item) => `<li>${item}</li>`).join('')
+    const done = getCompletedModules()[`${track.slug}:${index}`]
     return `
       <article id="mod-${index}" class="content-card module-card" style="--track-accent:${track.accent}">
-        <h3>Módulo ${index + 1}: ${module.title}</h3>
-        <p><strong>O que você vai aprender:</strong></p>
-        <ul class="module-list">${learnItems}</ul>
-        <p><strong>Experiência prática:</strong> ${module.practice}</p>
-        <p><strong>Exercício de fixação:</strong> ${module.exercise}</p>
+        <h3>Módulo ${index + 1} de ${track.modules.length}: ${module.title}</h3>
+        <p><strong>Objetivo:</strong> ${module.objective}</p>
+        <p><strong>Explicação curta:</strong> ${module.explanation}</p>
+        <p><strong>Exemplo:</strong> <code>${module.example.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></p>
+        <p><strong>Exercício:</strong> ${module.exercise}</p>
+        <p><strong>Desafio:</strong> ${module.challenge}</p>
+        <p><strong>Erros comuns:</strong> ${module.commonErrors}</p>
+        <p><strong>Aplicação real:</strong> ${module.projectUse}</p>
+        <p><strong>Docs recomendada:</strong> <a class="text-cyan" href="${module.docs}" target="_blank" rel="noopener noreferrer">Abrir referência</a></p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <a class="pill" href="#mod-${Math.max(0, index - 1)}">Anterior</a>
+          <a class="pill" href="#mod-${Math.min(track.modules.length - 1, index + 1)}">Próximo</a>
+          <button class="pill mark-complete" data-track="${track.slug}" data-module="${index}">${done ? 'Concluído' : 'Marcar como concluído'}</button>
+        </div>
         <div class="module-ide">
           <h4>Mini IDE do módulo</h4>
           <div class="module-ide-grid">
@@ -419,29 +376,21 @@ function renderModulesPage() {
             <label>style.css<textarea data-type="css">${module.starter.css}</textarea></label>
             <label>script.js<textarea data-type="js">${module.starter.js}</textarea></label>
           </div>
-          <button class="pill run-module-ide">Executar módulo</button>
+          <button class="pill run-module-ide">Executar</button>
           <iframe class="preview-frame module-preview" title="Preview módulo ${index + 1}"></iframe>
         </div>
       </article>
     `
   }).join('')
 
-  finalChallengeBox.innerHTML = `
-    <article class="content-card" style="--track-accent:${track.accent}">
-      <h3>${track.challenge.title}</h3>
-      <p><strong>Objetivo:</strong> ${track.challenge.brief}</p>
-      <p><strong>Para portfólio:</strong> ${track.challenge.portfolio}</p>
-    </article>
-  `
-
   moduleContent.querySelectorAll('.module-card').forEach((card) => runModuleIde(card))
-  bindModuleMenuInteractions()
+  bindModuleMenuInteractions(track)
+  renderModuleProgress(track)
 }
 
-function bindModuleMenuInteractions() {
+function bindModuleMenuInteractions(track) {
   if (!moduleMenuList || !moduleContent) return
   const links = [...moduleMenuList.querySelectorAll('.module-link')]
-  const sections = [...moduleContent.querySelectorAll('.module-card')]
 
   links.forEach((link) => {
     link.addEventListener('click', (event) => {
@@ -455,19 +404,74 @@ function bindModuleMenuInteractions() {
     })
   })
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return
-        const id = entry.target.id
-        links.forEach((link) => link.classList.toggle('active', link.dataset.target === id))
-      })
-    },
-    { rootMargin: '-30% 0px -60% 0px', threshold: 0.05 }
-  )
+  moduleContent.querySelectorAll('.mark-complete').forEach((button) => {
+    button.addEventListener('click', () => {
+      const key = `${button.dataset.track}:${button.dataset.module}`
+      const completed = getCompletedModules()
+      completed[key] = !completed[key]
+      setCompletedModules(completed)
+      renderModulesPage()
+      renderTracks()
+    })
+  })
 
-  sections.forEach((section) => observer.observe(section))
   if (links[0]) links[0].classList.add('active')
+  renderModuleProgress(track)
+}
+
+function renderExercises() {
+  if (!exerciseList) return
+  exerciseList.innerHTML = exercises.map((item) => `
+    <article class="content-card">
+      <h3>${item.title}</h3>
+      <p>${item.objective}</p>
+      <p class="track-meta">Tecnologia: ${item.technology} · Dificuldade: ${item.difficulty} · Tempo: ${item.estimated}</p>
+      <p><strong>Critérios de aceite:</strong> ${item.acceptance}</p>
+      <a class="pill inline-flex mt-2" href="/mini-ide.html?trilha=${item.trail}">Abrir na Mini IDE</a>
+    </article>
+  `).join('')
+}
+
+function renderChallenges() {
+  if (!challengeList) return
+  challengeList.innerHTML = challenges.map((item) => `
+    <article class="content-card">
+      <h3>${item.title}</h3>
+      <p><strong>Contexto:</strong> ${item.context}</p>
+      <p><strong>Problema:</strong> ${item.problem}</p>
+      <p><strong>Requisitos obrigatórios:</strong> ${item.requirements}</p>
+      <p><strong>Critérios de aceite:</strong> ${item.acceptance}</p>
+      <p class="track-meta">Tema: ${item.theme} · Dificuldade: ${item.difficulty} · Tempo: ${item.estimated} · Tecnologias: ${item.technologies}</p>
+    </article>
+  `).join('')
+}
+
+function renderProjects() {
+  if (!projectList) return
+  projectList.innerHTML = portfolioProjects.map((item) => `
+    <article class="content-card">
+      <h3>${item.title}</h3>
+      <p><strong>Objetivo:</strong> ${item.objective}</p>
+      <p><strong>Briefing:</strong> ${item.brief}</p>
+      <p><strong>Requisitos funcionais:</strong> ${item.functional}</p>
+      <p><strong>Requisitos visuais:</strong> ${item.visual}</p>
+      <p><strong>Checklist de entrega:</strong> ${item.checklist}</p>
+      <p class="track-meta">Nível: ${item.level} · Tecnologias: ${item.technology} · Tempo: ${item.estimated}</p>
+      <a class="pill inline-flex mt-2" href="/trilhas.html">Começar projeto</a>
+    </article>
+  `).join('')
+}
+
+function renderDocs() {
+  if (!docsList) return
+  docsList.innerHTML = docsItems.map((item) => `
+    <article class="content-card docs-card">
+      <h3>${item.title}</h3>
+      <p>${item.summary}</p>
+      <p class="track-meta">Categoria: ${item.category}</p>
+      <a class="text-cyan" href="${item.url}" target="_blank" rel="noopener noreferrer">Abrir documentação</a>
+    </article>
+  `).join('')
 }
 
 function switchTab(tab) {
@@ -476,12 +480,14 @@ function switchTab(tab) {
   activeTab = tab
   editor.value = editorState[activeTab]
   editorTabs.querySelectorAll('.tab-btn').forEach((btn) => btn.classList.toggle('active', btn.dataset.tab === tab))
+  saveIdeState()
 }
 
 function runPreview() {
   if (!editor || !preview) return
   editorState[activeTab] = editor.value
-  const source = `<!doctype html><html><head><style>${editorState.css}</style></head><body>${editorState.html}<script>${editorState.js}<' + '/script></body></html>`
+  saveIdeState()
+  const source = `<!doctype html><html><head><style>${editorState.css}</style></head><body>${editorState.html}<script>${editorState.js}<\/script></body></html>`
   preview.srcdoc = source
 }
 
@@ -495,15 +501,16 @@ if (filterContainer) {
     renderTracks()
   })
 }
-
 if (searchInput) searchInput.addEventListener('input', renderTracks)
 
 if (moduleContent) {
   moduleContent.addEventListener('click', (event) => {
     const target = event.target
-    if (!(target instanceof HTMLElement) || !target.classList.contains('run-module-ide')) return
-    const moduleCard = target.closest('.module-card')
-    if (moduleCard) runModuleIde(moduleCard)
+    if (!(target instanceof HTMLElement)) return
+    if (target.classList.contains('run-module-ide')) {
+      const moduleCard = target.closest('.module-card')
+      if (moduleCard) runModuleIde(moduleCard)
+    }
   })
 }
 
@@ -522,14 +529,21 @@ if (editorTabs) {
 }
 
 if (runCode) runCode.addEventListener('click', runPreview)
-
-if (newProject) {
-  newProject.addEventListener('click', () => {
-    editorState.html = '<main>\n  <h1>Novo projeto</h1>\n  <p>Comece por HTML semântico, CSS responsivo e JS limpo.</p>\n</main>'
-    editorState.css = 'body {\n  font-family: Inter, sans-serif;\n  margin: 0;\n}'
-    editorState.js = "console.log('Novo projeto iniciado')"
+if (resetCode) {
+  resetCode.addEventListener('click', () => {
+    Object.assign(editorState, ideDefaults)
     switchTab('html')
     runPreview()
+  })
+}
+if (copyCode) {
+  copyCode.addEventListener('click', async () => {
+    const text = `<!-- index.html -->\n${editorState.html}\n\n/* style.css */\n${editorState.css}\n\n// script.js\n${editorState.js}`
+    await navigator.clipboard.writeText(text)
+    copyCode.textContent = 'Copiado'
+    setTimeout(() => {
+      copyCode.textContent = 'Copiar código'
+    }, 1200)
   })
 }
 
@@ -544,6 +558,8 @@ markActiveNavLink()
 renderTracks()
 renderRoadmap()
 renderModulesPage()
+renderExercises()
+renderChallenges()
+renderProjects()
+renderDocs()
 runPreview()
-
-
