@@ -1,4 +1,4 @@
-﻿function slugify(text) {
+function slugify(text) {
   return text
     .toLowerCase()
     .normalize('NFD')
@@ -9,9 +9,72 @@
 
 function mkStarter(title, color, log) {
   return {
-    html: `<main><h1>${title}</h1><p>Prática da Front-Edge Academy.</p></main>`,
-    css: `body{font-family:Inter,sans-serif;padding:20px} h1{color:${color}}`,
-    js: `console.log('${log}')`
+    html: `<main class="study-page">
+  <header class="hero">
+    <p class="eyebrow">Front-Edge Academy</p>
+    <h1>${title}</h1>
+    <p>Use este esqueleto para praticar o conceito do módulo com uma interface real.</p>
+  </header>
+
+  <section class="practice-card">
+    <h2>Objetivo da prática</h2>
+    <p>Complete a estrutura, ajuste o visual e adicione comportamento quando fizer sentido.</p>
+    <button type="button" id="actionButton">Marcar como iniciado</button>
+  </section>
+</main>`,
+    css: `:root {
+  --accent: ${color};
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.study-page {
+  width: min(100% - 2rem, 900px);
+  margin: 2rem auto;
+  display: grid;
+  gap: 1rem;
+}
+
+.hero,
+.practice-card {
+  border: 1px solid #dbe3ef;
+  border-radius: 16px;
+  padding: 1rem;
+  background: #ffffff;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: var(--accent);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+h1,
+h2 {
+  margin: 0 0 0.5rem;
+}
+
+button {
+  min-height: 42px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #ffffff;
+  padding: 0 1rem;
+  font-weight: 700;
+}`,
+    js: `const actionButton = document.querySelector('#actionButton')
+
+actionButton?.addEventListener('click', () => {
+  actionButton.textContent = 'Prática iniciada'
+  console.log('${log}')
+})`
   }
 }
 
@@ -126,6 +189,23 @@ const tracks = [
       { title: 'Transições e animações', learn: ['transition', 'transform', 'keyframes'], practice: 'Criar microinterações úteis.', exercise: 'Animar hover e entrada de cards.', starter: mkStarter('Animações CSS', '#38bdf8', 'Animações') }
     ],
     challenge: { title: 'Desafio final: Landing premium responsiva', brief: 'Construa uma landing page premium com sistema visual, layout responsivo completo e microinterações.', portfolio: 'Entregáveis: deploy, guia de tokens CSS e biblioteca de componentes visuais.' }
+  },
+  {
+    name: 'Bootstrap', level: 'basico', levelLabel: 'Básico ao intermediário',
+    tags: ['Bootstrap', 'Grid', 'Componentes', 'Responsividade', 'Sass'],
+    accent: '#7952B3', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg',
+    description: 'Aprenda Bootstrap para criar interfaces responsivas rapidamente usando grid, utilitários, componentes, formulários, temas e customização.',
+    modules: [
+      { title: 'Introdução ao Bootstrap', learn: ['Quando usar Bootstrap', 'Instalação via CDN/npm', 'Estrutura base do CSS e JS'], practice: 'Monte uma página simples carregando Bootstrap corretamente.', exercise: 'Crie um template inicial com navbar, main e footer usando Bootstrap.', starter: mkStarter('Bootstrap inicial', '#7952b3', 'Bootstrap pronto') },
+      { title: 'Containers, grid e breakpoints', learn: ['container e container-fluid', 'row e col', 'breakpoints responsivos'], practice: 'Construa uma seção que muda de 1 para 3 colunas.', exercise: 'Refatore um layout manual para o grid do Bootstrap.', starter: mkStarter('Grid Bootstrap', '#6f42c1', 'Grid Bootstrap') },
+      { title: 'Utilitários de espaçamento e tipografia', learn: ['classes de margin/padding', 'display e flex utilities', 'tipografia e cores'], practice: 'Ajuste um card sem escrever CSS customizado.', exercise: 'Monte uma página de perfil usando principalmente utilitários.', starter: mkStarter('Utilitários Bootstrap', '#7952b3', 'Utilities') },
+      { title: 'Componentes essenciais', learn: ['navbar', 'cards', 'buttons', 'alerts', 'badges'], practice: 'Combine componentes em uma tela de produto.', exercise: 'Crie uma página de dashboard com cards, badges e alertas.', starter: mkStarter('Componentes Bootstrap', '#6f42c1', 'Components') },
+      { title: 'Formulários e validação visual', learn: ['form-control', 'input groups', 'feedback de validação'], practice: 'Monte um formulário com estados de erro e sucesso.', exercise: 'Crie um formulário de cadastro responsivo com validação visual.', starter: mkStarter('Forms Bootstrap', '#7952b3', 'Forms') },
+      { title: 'Componentes com JavaScript', learn: ['modal', 'dropdown', 'collapse', 'tabs'], practice: 'Adicione interações sem criar tudo do zero.', exercise: 'Implemente uma FAQ com collapse e um modal de confirmação.', starter: mkStarter('Bootstrap JS', '#6f42c1', 'Bootstrap JS') },
+      { title: 'Customização e tema', learn: ['variáveis CSS', 'Sass', 'sobrescrita segura', 'design system simples'], practice: 'Crie um tema visual sem quebrar componentes.', exercise: 'Personalize cores, botões e cards para uma marca fictícia.', starter: mkStarter('Tema Bootstrap', '#7952b3', 'Theme') },
+      { title: 'Projeto final com Bootstrap', learn: ['composição de layout', 'responsividade completa', 'documentação do projeto'], practice: 'Planeje uma interface completa com componentes Bootstrap.', exercise: 'Entregue uma landing ou painel administrativo responsivo e publicável.', starter: mkStarter('Projeto Bootstrap', '#6f42c1', 'Projeto Bootstrap') }
+    ],
+    challenge: { title: 'Desafio final: Painel responsivo com Bootstrap', brief: 'Construa um painel administrativo usando grid, formulários, cards, modal, dropdown e tema customizado com Bootstrap.', portfolio: 'Entregáveis: deploy, README explicando componentes usados, screenshots mobile/desktop e lista de customizações.' }
   },
   {
     name: 'JavaScript e lógica', level: 'intermediario', levelLabel: 'Básico ao intermediário',
@@ -2041,7 +2121,7 @@ renderEvents()`
 
 const editorState = {
   html: `<main style="font-family: Inter, sans-serif; padding: 24px;"><h1 style="margin:0 0 8px;">Front-Edge Academy</h1><p>Pratique front-end com trilhas e exercícios reais.</p></main>`,
-  css: `body { margin: 0; background: #f8fafc; color: #0f172a; }`,
+  css: `body { margin: 0; }`,
   js: `console.log('Prática front-end ativa.');`
 }
 
@@ -2060,6 +2140,7 @@ const newProject = document.getElementById('newProject')
 const mobileMenuBtn = document.getElementById('mobileMenuBtn')
 const mobileNav = document.getElementById('mobileNav')
 const brandWrap = document.querySelector('.brand-wrap')
+const headerActions = document.querySelector('.site-header > div')
 
 const moduleTrailTitle = document.getElementById('moduleTrailTitle')
 const moduleTrailDescription = document.getElementById('moduleTrailDescription')
@@ -2072,6 +2153,76 @@ const exerciseList = document.getElementById('exerciseList')
 const challengeList = document.getElementById('challengeList')
 const projectList = document.getElementById('projectList')
 const practiceDetail = document.getElementById('practiceDetail')
+
+function getSavedTheme() {
+  return localStorage.getItem('front-edge-theme') || 'light'
+}
+
+function getPreviewThemeCss() {
+  const isDark = document.documentElement.dataset.theme === 'dark'
+  return isDark
+    ? 'body{background:#060816;color:#f8fafc;} a{color:#22d3ee;}'
+    : 'body{background:#ffffff;color:#101827;} a{color:#2563eb;}'
+}
+
+function updateThemeToggle(button) {
+  if (!button) return
+  const isDark = document.documentElement.dataset.theme === 'dark'
+  button.textContent = isDark ? 'Claro' : 'Escuro'
+  button.setAttribute('aria-label', isDark ? 'Ativar tema claro' : 'Ativar tema escuro')
+}
+
+function applyTheme(theme) {
+  const nextTheme = theme === 'dark' ? 'dark' : 'light'
+  document.documentElement.dataset.theme = nextTheme
+  localStorage.setItem('front-edge-theme', nextTheme)
+  updateThemeToggle(document.getElementById('themeToggle'))
+  runPreview()
+  document.querySelectorAll('.module-card').forEach((card) => runModuleIde(card))
+  document.querySelectorAll('.practice-ide').forEach((ide) => runEmbeddedIde(ide))
+}
+
+function createThemeToggle() {
+  if (!headerActions || document.getElementById('themeToggle')) return
+  const button = document.createElement('button')
+  button.id = 'themeToggle'
+  button.className = 'theme-toggle'
+  button.type = 'button'
+  button.addEventListener('click', () => {
+    applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark')
+  })
+  headerActions.appendChild(button)
+  updateThemeToggle(button)
+}
+
+function highlightCodeText(code) {
+  const tokens = []
+  const addToken = (className, value) => {
+    const marker = String.fromCharCode(0xe000 + tokens.length)
+    tokens.push({ marker, className, value })
+    return marker
+  }
+
+  let highlighted = escapeHtml(code)
+    .replace(/(&lt;!--[\s\S]*?--&gt;|\/\/.*$|\/\*[\s\S]*?\*\/)/gm, (match) => addToken('code-comment', match))
+    .replace(/\b(class|id|href|src|type|name|for|aria-[\w-]+|data-[\w-]+|placeholder|required|hidden|role|autocomplete|value|method|action|rows|cols|alt|title|rel|target|disabled|checked|selected)(=)/g, (_match, attr, equal) => `${addToken('code-attr', attr)}${equal}`)
+    .replace(/(&lt;\/?)([a-zA-Z][\w-]*)/g, (_match, prefix, tag) => `${prefix}${addToken('code-tag', tag)}`)
+    .replace(/(&quot;.*?&quot;|&#039;.*?&#039;|`[^`]*`)/g, (match) => addToken('code-string', match))
+    .replace(/\b(const|let|var|function|return|if|else|try|catch|finally|new|async|await|for|while|forEach|map|filter|reduce|class|import|export|from|extends|switch|case|break|continue|typeof|instanceof)\b/g, (match) => addToken('code-keyword', match))
+    .replace(/\b(\d+)\b/g, (match) => addToken('code-number', match))
+
+  tokens.forEach(({ marker, className, value }) => {
+    highlighted = highlighted.replaceAll(marker, `<span class="${className}">${value}</span>`)
+  })
+
+  return highlighted
+}
+
+function highlightCodeBlocks(root = document) {
+  root.querySelectorAll('.practice-code-card code').forEach((codeBlock) => {
+    codeBlock.innerHTML = highlightCodeText(codeBlock.textContent)
+  })
+}
 
 function initPageTransitions() {
   document.body.classList.add('page-ready')
@@ -2275,6 +2426,7 @@ function renderPracticeDetail() {
     </section>
   `
 
+  highlightCodeBlocks(practiceDetail)
   const practiceIde = practiceDetail.querySelector('.practice-ide')
   if (practiceIde) runEmbeddedIde(practiceIde)
 }
@@ -2309,7 +2461,7 @@ function renderTracks() {
           </div>
           <p class="track-meta">Nível: ${track.levelLabel}</p>
           <p class="track-open">Abrir módulos</p>
-          <div><div class="mb-2 text-xs text-text-secondary">Foco: prática aplicada</div><div class="progress-shell"><div class="progress-fill" style="width:100%"></div></div></div>
+          <div><div class="mb-2 track-focus">Foco: prática aplicada</div><div class="progress-shell"><div class="progress-fill" style="width:100%"></div></div></div>
         </a>
       </article>
     `
@@ -2318,13 +2470,107 @@ function renderTracks() {
 
 function renderRoadmap() {
   if (!roadmapSteps) return
-  roadmapSteps.innerHTML = roadmap.map((step, index) => `
-    <a class="road-step ${index === 0 ? 'active' : ''}" href="./modulos.html?trilha=${step.trail}#mod-${step.mod}">
-      <span class="road-num">${index + 1}</span>
-      <h3>${step.title}</h3>
-      <p class="text-textMuted text-sm">Abrir módulo recomendado</p>
-    </a>
-  `).join('')
+
+  const bootstrapRoadmap = [
+    { title: 'Bootstrap: setup e mentalidade', trail: 'bootstrap', mod: 0 },
+    { title: 'Bootstrap: containers, grid e breakpoints', trail: 'bootstrap', mod: 1 },
+    { title: 'Bootstrap: utilitários de layout', trail: 'bootstrap', mod: 2 },
+    { title: 'Bootstrap: componentes essenciais', trail: 'bootstrap', mod: 3 },
+    { title: 'Bootstrap: formulários responsivos', trail: 'bootstrap', mod: 4 },
+    { title: 'Bootstrap: modal, dropdown e collapse', trail: 'bootstrap', mod: 5 },
+    { title: 'Bootstrap: customização e tema', trail: 'bootstrap', mod: 6 },
+    { title: 'Bootstrap: projeto final responsivo', trail: 'bootstrap', mod: 7 }
+  ]
+
+  const sections = [
+    {
+      title: 'Preparação',
+      description: 'Ambiente, internet, terminal, GitHub e deploy para começar com base profissional.',
+      steps: roadmap.slice(0, 8)
+    },
+    {
+      title: 'HTML e Semântica',
+      description: 'Estrutura, conteúdo, formulários, SEO e acessibilidade antes de pensar em aparência.',
+      steps: roadmap.slice(8, 18)
+    },
+    {
+      title: 'CSS e Layout',
+      description: 'Cascata, box model, tipografia, Flexbox, Grid, responsividade e motion.',
+      steps: roadmap.slice(18, 31)
+    },
+    {
+      title: 'Bootstrap e UI rápida',
+      description: 'Grid, componentes prontos, utilitários e customização para entregar interfaces responsivas com velocidade.',
+      steps: bootstrapRoadmap
+    },
+    {
+      title: 'JavaScript e DOM',
+      description: 'Lógica, arrays, objetos, eventos, DOM, APIs e persistência local.',
+      steps: roadmap.slice(31, 45)
+    },
+    {
+      title: 'TypeScript',
+      description: 'Tipos, interfaces, union types, generics, eventos e contratos de API.',
+      steps: roadmap.slice(45, 57)
+    },
+    {
+      title: 'Frameworks Front-End',
+      description: 'Componentes, rotas, estado, formulários, APIs, renderização e arquitetura escalável.',
+      steps: roadmap.slice(57, 70)
+    },
+    {
+      title: 'Ferramentas de Entrega',
+      description: 'Git, PR, npm, Vite, lint, formatação, pipeline local e release.',
+      steps: roadmap.slice(70, 80)
+    },
+    {
+      title: 'Qualidade e Boas Práticas',
+      description: 'Acessibilidade, performance, testes, PWA e manutenção.',
+      steps: roadmap.slice(80, 89)
+    },
+    {
+      title: 'Projeto Final e Portfólio',
+      description: 'Planejamento, arquitetura, implementação, validação, otimização, documentação e deploy.',
+      steps: roadmap.slice(89)
+    }
+  ]
+
+  let stepNumber = 1
+  roadmapSteps.innerHTML = sections.map((section) => {
+    const sectionTrack = tracks.find((item) => item.slug === section.steps[0]?.trail)
+    const sectionAccent = sectionTrack?.accent || 'var(--blue)'
+    const cards = section.steps.map((step) => {
+      const track = tracks.find((item) => item.slug === step.trail)
+      const title = step.title.replace(/^\d+\.\s*/, '')
+      const number = String(stepNumber++).padStart(2, '0')
+      const accent = track?.accent || 'var(--purple)'
+      const trackName = track?.name || 'Trilha'
+
+      return `
+        <a class="road-step" style="--track-accent:${accent}" href="./modulos.html?trilha=${step.trail}#mod-${step.mod}">
+          <span class="road-num">${number}</span>
+          <div>
+            <p class="road-track">${trackName}</p>
+            <h3>${title}</h3>
+            <p>Abrir módulo recomendado</p>
+          </div>
+        </a>
+      `
+    }).join('')
+
+    return `
+      <section class="roadmap-section" style="--section-accent:${sectionAccent}">
+        <div class="roadmap-section-head">
+          <div>
+            <h3>${section.title}</h3>
+            <p>${section.description}</p>
+          </div>
+          <span>${section.steps.length} etapas</span>
+        </div>
+        <div class="roadmap-grid">${cards}</div>
+      </section>
+    `
+  }).join('')
 }
 
 function runModuleIde(moduleCard) {
@@ -2334,7 +2580,7 @@ function runModuleIde(moduleCard) {
   const previewFrame = moduleCard.querySelector('.module-preview')
   if (!htmlInput || !cssInput || !jsInput || !previewFrame) return
 
-  const source = `<!doctype html><html><head><style>${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<' + '/script></body></html>`
+  const source = `<!doctype html><html><head><style>${getPreviewThemeCss()}${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<' + '/script></body></html>`
   previewFrame.srcdoc = source
 }
 
@@ -2345,7 +2591,7 @@ function runEmbeddedIde(ideRoot) {
   const previewFrame = ideRoot.querySelector('.practice-preview')
   if (!htmlInput || !cssInput || !jsInput || !previewFrame) return
 
-  const source = `<!doctype html><html><head><style>${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<' + '/script></body></html>`
+  const source = `<!doctype html><html><head><style>${getPreviewThemeCss()}${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<' + '/script></body></html>`
   previewFrame.srcdoc = source
 }
 
@@ -2467,6 +2713,7 @@ function switchTab(tab) {
   if (!editor || !editorTabs) return
   editorState[activeTab] = editor.value
   activeTab = tab
+  editor.dataset.activeTab = tab
   editor.value = editorState[activeTab]
   editorTabs.querySelectorAll('.tab-btn').forEach((btn) => btn.classList.toggle('active', btn.dataset.tab === tab))
 }
@@ -2474,7 +2721,7 @@ function switchTab(tab) {
 function runPreview() {
   if (!editor || !preview) return
   editorState[activeTab] = editor.value
-  const source = `<!doctype html><html><head><style>${editorState.css}</style></head><body>${editorState.html}<script>${editorState.js}<' + '/script></body></html>`
+  const source = `<!doctype html><html><head><style>${getPreviewThemeCss()}${editorState.css}</style></head><body>${editorState.html}<script>${editorState.js}<' + '/script></body></html>`
   preview.srcdoc = source
 }
 
@@ -2622,7 +2869,13 @@ if (brandWrap) {
   })
 }
 
-if (editor) editor.value = editorState[activeTab]
+document.documentElement.dataset.theme = getSavedTheme()
+createThemeToggle()
+
+if (editor) {
+  editor.dataset.activeTab = activeTab
+  editor.value = editorState[activeTab]
+}
 initPageTransitions()
 markActiveNavLink()
 renderTracks()
@@ -2630,4 +2883,5 @@ renderRoadmap()
 renderModulesPage()
 renderPracticeLists()
 renderPracticeDetail()
+highlightCodeBlocks()
 runPreview()
