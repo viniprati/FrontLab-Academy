@@ -1243,7 +1243,7 @@ pre {
 
 .module-menu-list {
   display: grid;
-  gap: 0.45rem;
+  gap: 0.7rem;
   max-height: 70vh;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1255,6 +1255,25 @@ pre {
   max-height: 0;
   opacity: 0;
   overflow: hidden;
+}
+
+.module-menu-section {
+  display: grid;
+  gap: 0.42rem;
+}
+
+.module-menu-section p {
+  margin: 0;
+  color: color-mix(in srgb, var(--track-accent, var(--blue)) 72%, var(--text-main));
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.module-menu-section div {
+  display: grid;
+  gap: 0.38rem;
 }
 
 .module-link {
@@ -1270,6 +1289,20 @@ pre {
   word-break: break-word;
   overflow-wrap: anywhere;
   line-height: 1.45;
+}
+
+.module-link span {
+  display: inline-grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  margin-right: 0.35rem;
+  border-radius: 0.45rem;
+  background: color-mix(in srgb, var(--track-accent, var(--blue)) 12%, var(--surface-soft));
+  color: color-mix(in srgb, var(--track-accent, var(--blue)) 70%, var(--text-main));
+  font-size: 0.72rem;
+  font-weight: 900;
+  vertical-align: middle;
 }
 
 .module-link:hover,

@@ -8,7 +8,7 @@
       type="image/png"
       href="./assets/logo.png"
     />
-    <title>Sobre - Front-Edge Academy</title>
+    <title>Projetos - Front Lab Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -53,12 +53,12 @@
             id="brand-logo-header"
             class="brand-logo-header"
             src="./assets/logo_barra.png"
-            alt="Front-Edge Academy Logo Horizontal"
+            alt="Front Lab Academy Logo Horizontal"
           /><img
             id="brand-logo-compact"
             class="brand-logo-compact"
             src="./assets/logo.png"
-            alt="Front-Edge Academy Logo Compacto"
+            alt="Front Lab Academy Logo Compacto"
           />
         </div>
         <button
@@ -97,62 +97,35 @@
     <main class="mx-auto w-[94%] max-w-[1280px] py-8">
       <section class="section-block">
         <div class="section-head">
-          <h2>Uma academia gratuita para sair do básico e chegar ao portfólio</h2>
+          <h2>Projetos práticos de portfólio</h2>
           <p>
-            A Front-Edge nasceu de uma dificuldade comum: encontrar uma
-            plataforma que ensine front-end do começo ao avançado sem cobrar por
-            cada próxima etapa, sem esconder a prática atrás de conteúdos soltos
-            e sem deixar o aluno preso em projetos que não provam nada no mundo
-            real.
+            Projetos pensados para provar capacidade em interface, dados,
+            arquitetura e qualidade.
           </p>
         </div>
-        <article class="content-card mb-3">
-          <h3>Por que isso existe</h3>
-          <p>
-            Estudar front-end costuma virar uma caça por vídeos, artigos,
-            exercícios desconectados e desafios rasos. Aqui a proposta é outra:
-            reunir trilhas completas, exercícios progressivos e desafios de
-            conclusão que realmente podem virar peças de portfólio. A ideia é
-            que cada pessoa consiga praticar, errar, refatorar e terminar com
-            entregas que mostrem domínio técnico, tomada de decisão e cuidado
-            com experiência de usuário.
-          </p>
-        </article>
-        <div class="grid gap-3 md:grid-cols-2">
+        <div id="projectList" class="grid gap-3 md:grid-cols-2"></div>
+      </section>
+      <section class="section-block">
+        <div class="section-head">
+          <h2>Critérios de entrega profissional</h2>
+        </div>
+        <div class="grid gap-3 md:grid-cols-3">
           <article class="content-card">
-            <h3>Do fundamento ao avançado</h3>
+            <h3>UX e acessibilidade</h3>
+            <p>Navegação clara, estados de erro/sucesso e suporte a teclado.</p>
+          </article>
+          <article class="content-card">
+            <h3>Dados e arquitetura</h3>
             <p>
-              O caminho começa em HTML, CSS e lógica, passa por JavaScript,
-              TypeScript, frameworks, ferramentas e boas práticas. Cada etapa
-              conecta teoria com implementação para evitar aquele salto confuso
-              entre “entendi a aula” e “não sei construir sozinho”.
+              Modelagem consistente, componentes reutilizáveis e separação de
+              responsabilidades.
             </p>
           </article>
           <article class="content-card">
-            <h3>Grátis de verdade</h3>
+            <h3>Documentação</h3>
             <p>
-              O objetivo é manter uma base aberta para quem não pode investir
-              em cursos caros ou assinaturas. Aprender front-end já exige tempo,
-              constância e energia; o acesso ao caminho principal não deveria
-              ser mais uma barreira.
-            </p>
-          </article>
-          <article class="content-card">
-            <h3>Desafios com cara de trabalho real</h3>
-            <p>
-              Os desafios não são só cópias de layout ou exercícios sem
-              contexto. Eles simulam demandas de produto: corrigir bugs,
-              melhorar responsividade, consumir APIs, cuidar de acessibilidade,
-              refatorar código e documentar decisões.
-            </p>
-          </article>
-          <article class="content-card">
-            <h3>Portfólio com evidência</h3>
-            <p>
-              Ao concluir uma trilha, a pessoa não leva só anotações: leva
-              projetos, checklists, esqueleto de solução, evolução registrada e
-              material que pode ser apresentado em entrevistas, freelas e
-              oportunidades reais.
+              README com contexto, setup, decisões técnicas e roadmap de
+              evolução.
             </p>
           </article>
         </div>
@@ -162,7 +135,7 @@
       class="mx-auto mb-8 mt-8 w-[94%] max-w-[1280px] rounded-2xl border border-borderEdge/90 bg-bgSecondary/60 p-5"
     >
       <p class="text-textSecondary">
-        Front-Edge Academy é uma plataforma gratuita para estudar, praticar e
+        Front Lab Academy é uma plataforma gratuita para estudar, praticar e
         evoluir em front-end com trilhas, exercícios, desafios e projetos reais.
       </p>
       <div class="mt-3 flex flex-wrap gap-3 text-sm text-textSecondary">

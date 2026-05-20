@@ -11,7 +11,7 @@ function mkStarter(title, color, log) {
   return {
     html: `<main class="study-page">
   <header class="hero">
-    <p class="eyebrow">Front-Edge Academy</p>
+    <p class="eyebrow">Front Lab Academy</p>
     <h1>${title}</h1>
     <p>Use este esqueleto para praticar o conceito do módulo com uma interface real.</p>
   </header>
@@ -81,8 +81,23 @@ actionButton?.addEventListener('click', () => {
 function createHtmlModule(index, title, description, level, objective, learn, practice, exercise) {
   const projectTitles = ['Página de Perfil', 'Landing Page HTML', 'Formulário Completo', 'Página Institucional', 'Projeto Final HTML']
   const starterTitle = projectTitles[index - 44] || title
+  const categoryRanges = [
+    { end: 2, category: 'Fundamentos do HTML' },
+    { end: 4, category: 'Estrutura da Página' },
+    { end: 8, category: 'Textos e Conteúdo' },
+    { end: 11, category: 'Links e Navegação' },
+    { end: 14, category: 'Imagens e Mídia' },
+    { end: 19, category: 'Listas e Tabelas' },
+    { end: 29, category: 'Formulários' },
+    { end: 41, category: 'Semântica e Acessibilidade' },
+    { end: 43, category: 'Organização de Projeto' },
+    { end: 50, category: 'Projeto Final' }
+  ]
+  const category = categoryRanges.find((range) => index <= range.end)?.category || 'Projeto Final'
+
   return {
     title,
+    category,
     description,
     level,
     status: index === 1 ? 'disponível' : 'bloqueado',
@@ -91,6 +106,291 @@ function createHtmlModule(index, title, description, level, objective, learn, pr
     practice,
     exercise,
     starter: mkStarter(starterTitle, '#f97316', `HTML módulo ${index}`)
+  }
+}
+
+function getCssModuleLevel(index) {
+  if (index <= 30) return 'iniciante'
+  if (index <= 50) return 'intermediário'
+  return 'avançado'
+}
+
+function getCssModuleTime(index) {
+  if (index <= 20) return '25 min'
+  if (index <= 40) return '35 min'
+  if (index <= 50) return '40 min'
+  return '50 min'
+}
+
+const cssModuleActivities = {
+  'Introdução ao CSS': {
+    practice: 'Abra um HTML simples e marque quais partes serão estrutura e quais serão aparência.',
+    exercise: 'Conclua quando conseguir explicar, em três frases, o papel de HTML, CSS e JavaScript na mesma página.'
+  },
+  'Como conectar CSS no HTML': {
+    practice: 'Crie um arquivo style.css, conecte com link no head e altere cor de fundo, cor do texto e fonte do body.',
+    exercise: 'Conclua quando o CSS externo carregar sem usar style inline e sem erro no caminho do arquivo.'
+  },
+  'Seletores básicos': {
+    practice: 'Estilize h1, p e button usando apenas seletores de tag em uma página de apresentação.',
+    exercise: 'Conclua quando cada tipo de elemento tiver um estilo visível e nenhuma regra afetar elementos fora do esperado.'
+  },
+  'Seletores por classe, ID e tag': {
+    practice: 'Crie dois cards com a mesma classe e destaque apenas um deles usando um ID.',
+    exercise: 'Conclua quando souber justificar por que a classe foi usada para reaproveitar estilo e o ID para um caso único.'
+  },
+  'Cores no CSS': {
+    practice: 'Monte uma seção com título, parágrafo e botão usando color, background-color e uma cor de destaque.',
+    exercise: 'Conclua quando texto e fundo tiverem contraste confortável e a paleta usar no máximo três cores principais.'
+  },
+  'Unidades de medida': {
+    practice: 'Compare px, rem, % e vw ajustando largura de card, tamanho de fonte e espaçamento.',
+    exercise: 'Conclua quando a página continuar legível ao mudar o tamanho da janela.'
+  },
+  'Fontes e tipografia': {
+    practice: 'Defina uma fonte para o body e outra hierarquia visual para h1, h2 e parágrafos.',
+    exercise: 'Conclua quando a página tiver leitura consistente sem depender de muitas famílias diferentes.'
+  },
+  'Tamanho, peso e estilo de texto': {
+    practice: 'Crie uma escala simples com título, subtítulo, texto comum e texto auxiliar.',
+    exercise: 'Conclua quando a hierarquia for percebida por tamanho, peso e line-height, não só por cor.'
+  },
+  'Alinhamento de texto': {
+    practice: 'Monte três blocos curtos comparando texto à esquerda, centralizado e alinhado à direita.',
+    exercise: 'Conclua quando escolher o alinhamento mais legível para um card de conteúdo.'
+  },
+  'Espaçamento com margin e padding': {
+    practice: 'Crie dois cards e ajuste o espaço interno com padding e a distância entre eles com margin.',
+    exercise: 'Conclua quando conseguir apontar qual espaçamento está dentro do card e qual está fora.'
+  },
+  'O que é o Box Model': {
+    practice: 'Use DevTools para observar content, padding, border e margin em um card.',
+    exercise: 'Conclua quando o card tiver cada camada do box model identificável por estilo ou anotação.'
+  },
+  'Width e height': {
+    practice: 'Defina largura máxima para um card e altura mínima para uma seção sem travar o conteúdo.',
+    exercise: 'Conclua quando textos maiores não vazarem nem ficarem cortados.'
+  },
+  Border: {
+    practice: 'Adicione bordas diferentes em card, input e botão para separar estados visuais.',
+    exercise: 'Conclua quando as bordas ajudarem na leitura sem deixar a interface pesada.'
+  },
+  'Border-radius': {
+    practice: 'Aplique radius em card, botão e imagem, mantendo uma escala coerente entre eles.',
+    exercise: 'Conclua quando nenhum canto parecer aleatório ou diferente sem motivo.'
+  },
+  'Margin na prática': {
+    practice: 'Organize uma seção vertical com título, texto e dois cards usando margin para separar blocos.',
+    exercise: 'Conclua quando o ritmo vertical estiver regular e sem espaçamentos duplicados.'
+  },
+  'Padding na prática': {
+    practice: 'Aumente a área interna de botões e cards até ficarem confortáveis para leitura e clique.',
+    exercise: 'Conclua quando o conteúdo não encostar nas bordas em nenhum componente.'
+  },
+  'Box-sizing': {
+    practice: 'Compare um card com content-box e outro com border-box usando a mesma largura, padding e border.',
+    exercise: 'Conclua quando aplicar box-sizing: border-box no reset e explicar a diferença visual.'
+  },
+  Overflow: {
+    practice: 'Crie um card com texto longo e teste overflow hidden, auto e visible.',
+    exercise: 'Conclua quando escolher uma solução que preserve o conteúdo sem quebrar o layout.'
+  },
+  'Display block, inline e inline-block': {
+    practice: 'Compare span, a, p e button mudando o display e observando fluxo e tamanho.',
+    exercise: 'Conclua quando conseguir alinhar links como botões sem transformar a página em um layout rígido.'
+  },
+  'Reset CSS básico': {
+    practice: 'Crie um reset com box-sizing, margin do body, imagens responsivas e fonte base.',
+    exercise: 'Conclua quando uma página nova começar com espaçamentos previsíveis entre navegadores.'
+  },
+  'Introdução a layouts': {
+    practice: 'Desenhe a estrutura de uma página com header, conteúdo principal, lista de cards e footer.',
+    exercise: 'Conclua quando cada bloco tiver uma função clara antes de aplicar Flexbox ou Grid.'
+  },
+  'Display flex': {
+    practice: 'Transforme uma lista horizontal de três itens em um container flex.',
+    exercise: 'Conclua quando os itens ficarem alinhados em linha sem usar float ou position.'
+  },
+  'Flex-direction': {
+    practice: 'Altere uma seção de cards entre row e column para entender o eixo principal.',
+    exercise: 'Conclua quando souber montar a versão empilhada e a versão lado a lado do mesmo conteúdo.'
+  },
+  'Justify-content': {
+    practice: 'Distribua logo, links e botão dentro de uma barra usando justify-content.',
+    exercise: 'Conclua quando o espaço horizontal ficar equilibrado sem margins manuais em cada item.'
+  },
+  'Align-items': {
+    practice: 'Alinhe ícone, texto e botão dentro de um card horizontal.',
+    exercise: 'Conclua quando todos os elementos ficarem centralizados no eixo cruzado.'
+  },
+  Gap: {
+    practice: 'Substitua margens entre itens por gap em uma lista flexível.',
+    exercise: 'Conclua quando o espaçamento continuar correto mesmo ao adicionar ou remover itens.'
+  },
+  'Flex-wrap': {
+    practice: 'Crie uma fileira de tags que quebra linha quando falta espaço.',
+    exercise: 'Conclua quando nenhuma tag gerar rolagem horizontal em tela pequena.'
+  },
+  'Cards com Flexbox': {
+    practice: 'Monte três cards com título, texto e botão mantendo o botão no fim do card.',
+    exercise: 'Conclua quando cards com textos diferentes continuarem alinhados visualmente.'
+  },
+  'Navbar com Flexbox': {
+    practice: 'Crie uma navbar com logo, links e botão de ação usando apenas Flexbox.',
+    exercise: 'Conclua quando a navegação ficar alinhada e com espaçamento consistente.'
+  },
+  'Centralização com Flexbox': {
+    practice: 'Centralize um estado vazio com título, texto e botão no centro de uma seção.',
+    exercise: 'Conclua quando a centralização funcionar nos dois eixos sem position absolute.'
+  },
+  'Introdução ao CSS Grid': {
+    practice: 'Monte uma grade simples de quatro cards usando display grid.',
+    exercise: 'Conclua quando entender quais linhas e colunas o navegador criou.'
+  },
+  'Grid-template-columns': {
+    practice: 'Crie uma grade com três colunas usando fr, repeat e minmax em versões separadas.',
+    exercise: 'Conclua quando escolher a solução que melhor se adapta ao conteúdo.'
+  },
+  'Grid-template-rows': {
+    practice: 'Monte um layout com cabeçalho, conteúdo e rodapé controlando as linhas do grid.',
+    exercise: 'Conclua quando a área principal ocupar o espaço restante sem altura fixa desnecessária.'
+  },
+  'Gap no Grid': {
+    practice: 'Ajuste espaços horizontais e verticais em uma galeria usando gap, row-gap e column-gap.',
+    exercise: 'Conclua quando a grade tiver ritmo regular sem margin nos cards.'
+  },
+  'Grid com cards': {
+    practice: 'Crie uma vitrine de cards com repeat e colunas proporcionais.',
+    exercise: 'Conclua quando os cards ficarem alinhados e fáceis de comparar.'
+  },
+  'Grid responsivo básico': {
+    practice: 'Use repeat(auto-fit, minmax()) para criar cards que se reorganizam sozinhos.',
+    exercise: 'Conclua quando a grade funcionar em celular e desktop sem media query.'
+  },
+  'Grid-area': {
+    practice: 'Nomeie áreas de header, sidebar, main e footer em um layout de documentação.',
+    exercise: 'Conclua quando o CSS revelar claramente onde cada área fica na página.'
+  },
+  'Layout de página com Grid': {
+    practice: 'Monte uma página com sidebar e conteúdo principal usando grid-template-areas.',
+    exercise: 'Conclua quando o layout tiver hierarquia clara e não depender de posicionamento manual.'
+  },
+  'Comparação entre Flexbox e Grid': {
+    practice: 'Resolva o mesmo bloco de cards com Flexbox e com Grid, anotando a diferença.',
+    exercise: 'Conclua quando souber dizer qual solução ficou mais simples para aquele caso.'
+  },
+  'Quando usar Flexbox ou Grid': {
+    practice: 'Escolha Flexbox para um componente e Grid para uma seção completa da mesma página.',
+    exercise: 'Conclua quando cada escolha tiver uma justificativa ligada ao eixo do layout.'
+  },
+  Backgrounds: {
+    practice: 'Crie uma seção com fundo sólido e outra com imagem de fundo posicionada.',
+    exercise: 'Conclua quando o texto continuar legível sobre qualquer fundo usado.'
+  },
+  'Imagens no CSS': {
+    practice: 'Use background-image em um banner decorativo sem colocar conteúdo importante na imagem.',
+    exercise: 'Conclua quando o HTML continuar compreensível mesmo sem carregar a imagem.'
+  },
+  'Object-fit': {
+    practice: 'Monte três cards com imagens de tamanhos diferentes usando object-fit: cover.',
+    exercise: 'Conclua quando todas as imagens preencherem o mesmo espaço sem distorção.'
+  },
+  'Sombras com box-shadow': {
+    practice: 'Aplique sombras leves em cards e compare estados normal e hover.',
+    exercise: 'Conclua quando a sombra indicar profundidade sem reduzir contraste.'
+  },
+  'Text-shadow': {
+    practice: 'Aplique text-shadow em um título sobre imagem e teste a leitura.',
+    exercise: 'Conclua quando a sombra melhorar contraste sem parecer decoração exagerada.'
+  },
+  'Botões estilizados': {
+    practice: 'Crie botão primário, secundário e desabilitado com tamanhos e estados coerentes.',
+    exercise: 'Conclua quando cada botão comunicar sua prioridade sem depender só de texto.'
+  },
+  'Cards modernos': {
+    practice: 'Monte um card de curso com tag, título, descrição, tempo e botão.',
+    exercise: 'Conclua quando o card tiver hierarquia clara e espaçamento consistente.'
+  },
+  'Inputs estilizados': {
+    practice: 'Estilize input, label, placeholder e estado de foco em um campo de email.',
+    exercise: 'Conclua quando o campo for legível, clicável e tiver foco visível.'
+  },
+  'Formulários bonitos': {
+    practice: 'Monte um formulário curto com duas colunas no desktop e uma coluna no mobile.',
+    exercise: 'Conclua quando labels, campos e botão formarem um fluxo claro de preenchimento.'
+  },
+  'Hover e estados visuais': {
+    practice: 'Adicione hover, focus e disabled em botões e links sem remover acessibilidade.',
+    exercise: 'Conclua quando mouse e teclado receberem feedback visual equivalente.'
+  },
+  'Introdução à responsividade': {
+    practice: 'Teste uma página em três larguras e liste os pontos onde o layout quebra.',
+    exercise: 'Conclua quando identificar ajustes reais antes de escrever media queries.'
+  },
+  'Media queries': {
+    practice: 'Adicione uma media query para mudar uma grade de duas colunas para uma coluna.',
+    exercise: 'Conclua quando a mudança acontecer no ponto em que o conteúdo começa a apertar.'
+  },
+  'Layout mobile-first': {
+    practice: 'Construa primeiro a versão mobile de uma seção e depois expanda para desktop.',
+    exercise: 'Conclua quando o CSS base funcionar no celular sem precisar desfazer estilos grandes.'
+  },
+  'Responsividade em textos': {
+    practice: 'Ajuste títulos, parágrafos e largura de leitura para celular e desktop.',
+    exercise: 'Conclua quando o texto não ficar largo demais no desktop nem grande demais no mobile.'
+  },
+  'Responsividade em imagens': {
+    practice: 'Faça imagens de cards se adaptarem à largura disponível sem distorcer.',
+    exercise: 'Conclua quando nenhuma imagem ultrapassar o container em telas pequenas.'
+  },
+  'Responsividade em cards': {
+    practice: 'Transforme uma grade de cards em uma coluna no mobile e múltiplas colunas no desktop.',
+    exercise: 'Conclua quando os cards continuarem com boa leitura em todas as larguras testadas.'
+  },
+  'Navbar responsiva': {
+    practice: 'Adapte uma navbar para empilhar links ou mostrar menu compacto em telas menores.',
+    exercise: 'Conclua quando todos os links continuarem acessíveis e com área de toque confortável.'
+  },
+  'Breakpoints comuns': {
+    practice: 'Teste 480px, 768px, 1024px e 1280px e defina ajustes baseados no conteúdo.',
+    exercise: 'Conclua quando cada breakpoint tiver motivo visual claro.'
+  },
+  'Ajustes para tablet': {
+    practice: 'Revise uma página em largura de tablet e ajuste colunas, espaçamentos e navegação.',
+    exercise: 'Conclua quando a tela média não parecer nem mobile esticado nem desktop espremido.'
+  },
+  'Projeto final com CSS responsivo': {
+    practice: 'Construa uma página completa com hero, cards, formulário e navbar responsiva.',
+    exercise: 'Conclua quando publicar a página e validar visualmente mobile, tablet e desktop.'
+  }
+}
+
+function createCssModule(index, title, category, description, learn) {
+  const categoryPractice = {
+    Fundamentos: 'Aplique o conceito em uma página simples de apresentação com HTML já estruturado.',
+    'Box Model': 'Ajuste espaçamentos, dimensões e limites de um bloco de conteúdo real.',
+    Layout: 'Monte uma seção de interface usando alinhamento, fluxo e distribuição de elementos.',
+    Grid: 'Organize uma área de conteúdo com linhas, colunas e comportamento responsivo.',
+    'Visual e Componentes': 'Estilize um componente visual reutilizável com acabamento consistente.',
+    Responsividade: 'Adapte uma interface para funcionar bem em celular, tablet e desktop.'
+  }
+  const activity = cssModuleActivities[title] || {
+    practice: categoryPractice[category],
+    exercise: `Crie uma pequena entrega prática usando ${title.toLowerCase()} e registre no README o que mudou no layout.`
+  }
+
+  return {
+    title,
+    category,
+    description,
+    level: getCssModuleLevel(index),
+    time: getCssModuleTime(index),
+    status: 'disponível',
+    objective: `Dominar ${title.toLowerCase()} para construir interfaces mais consistentes e fáceis de manter.`,
+    learn,
+    practice: activity.practice,
+    exercise: activity.exercise,
+    starter: mkStarter(title, '#3b82f6', `CSS módulo ${index}`)
   }
 }
 
@@ -104,10 +404,10 @@ const tracks = [
     iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg',
     description: 'Entenda o que é front-end, como a internet funciona, como usar VS Code, terminal, GitHub e como publicar seus primeiros projetos.',
     modules: [
-      { title: 'Fundamentos da web e do front-end', learn: ['Como navegador, servidor e HTTP se conectam', 'Diferença entre front-end e back-end', 'Ciclo básico de desenvolvimento web'], practice: 'Monte um mapa simples da arquitetura cliente-servidor.', exercise: 'Explique em um README o fluxo completo de uma requisição.', starter: mkStarter('Arquitetura Web', '#16a34a', 'Arquitetura web') },
-      { title: 'VS Code para produtividade', learn: ['Configurações essenciais', 'Extensões úteis para front-end', 'Snippets e organização'], practice: 'Configure um workspace com lint e format on save.', exercise: 'Crie um checklist de setup do VS Code.', starter: mkStarter('Setup VS Code', '#15803d', 'VS Code pronto') },
-      { title: 'Terminal e linha de comando', learn: ['Navegação por diretórios', 'Comandos de criação e organização', 'Scripts npm'], practice: 'Simule estrutura de projeto usando terminal.', exercise: 'Monte guia com 15 comandos de uso diário.', starter: mkStarter('Terminal Essencial', '#22c55e', 'Terminal') },
-      { title: 'Git, GitHub e deploy inicial', learn: ['Commits semânticos', 'Fluxo de branch', 'Deploy de site estático'], practice: 'Versione e publique um projeto simples.', exercise: 'Crie repositório com histórico de commits claro.', starter: mkStarter('Deploy inicial', '#16a34a', 'Deploy') }
+      { title: 'Fundamentos da web e do front-end', learn: ['Como navegador, servidor e HTTP se conectam', 'Diferença entre front-end e back-end', 'Ciclo básico de desenvolvimento web'], practice: 'Desenhe o caminho de uma URL até a página renderizada, incluindo navegador, servidor e arquivos estáticos.', exercise: 'Conclua quando o README explicar a requisição em ordem, sem misturar front-end e back-end.', starter: mkStarter('Arquitetura Web', '#16a34a', 'Arquitetura web') },
+      { title: 'VS Code para produtividade', learn: ['Configurações essenciais', 'Extensões úteis para front-end', 'Snippets e organização'], practice: 'Configure um workspace com formatação ao salvar, tema, extensões e pastas visíveis.', exercise: 'Conclua quando o checklist permitir repetir o setup em outra máquina.', starter: mkStarter('Setup VS Code', '#15803d', 'VS Code pronto') },
+      { title: 'Terminal e linha de comando', learn: ['Navegação por diretórios', 'Comandos de criação e organização', 'Scripts npm'], practice: 'Crie pelo terminal uma pasta de projeto com index.html, styles.css, script.js e README.md.', exercise: 'Conclua quando listar os comandos usados e explicar a função de cada um.', starter: mkStarter('Terminal Essencial', '#22c55e', 'Terminal') },
+      { title: 'Git, GitHub e deploy inicial', learn: ['Commits semânticos', 'Fluxo de branch', 'Deploy de site estático'], practice: 'Versione um site estático, faça ao menos três commits pequenos e publique o deploy.', exercise: 'Conclua quando o repositório tiver README, histórico claro e link público funcionando.', starter: mkStarter('Deploy inicial', '#16a34a', 'Deploy') }
     ],
     challenge: {
       title: 'Desafio final: Setup profissional de projeto',
@@ -176,19 +476,72 @@ const tracks = [
   },
   {
     name: 'CSS', level: 'basico', levelLabel: 'Básico',
-    tags: ['CSS', 'Flexbox', 'Grid', 'Responsividade', 'Animações'],
+    tags: ['CSS', 'Box Model', 'Flexbox', 'Grid', 'Responsividade', 'Componentes'],
     accent: '#3B82F6', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg',
-    description: 'Domine seletores, box model, cores, fontes, unidades, Flexbox, Grid, responsividade, animações e CSS moderno.',
+    description: 'Aprenda CSS em 60 módulos progressivos, saindo dos fundamentos e chegando a layouts responsivos, componentes modernos e um projeto final pronto para portfólio.',
     modules: [
-      { title: 'Seletores e cascata', learn: ['especificidade', 'herança', 'boas práticas de naming'], practice: 'Organizar estilos de uma página real.', exercise: 'Refatorar CSS duplicado.', starter: mkStarter('Seletores CSS', '#3b82f6', 'Seletores') },
-      { title: 'Box model e espaçamento', learn: ['margin/padding/border', 'box-sizing', 'unidades'], practice: 'Ajustar layout com consistência de spacing.', exercise: 'Corrigir bug visual de overflow.', starter: mkStarter('Box model', '#2563eb', 'Box model') },
-      { title: 'Tipografia e cores', learn: ['escala tipográfica', 'contraste', 'sistema de cores'], practice: 'Definir tokens visuais.', exercise: 'Criar tema com contraste acessível.', starter: mkStarter('Tipografia e cores', '#60a5fa', 'Tipografia') },
-      { title: 'Flexbox', learn: ['eixos', 'alinhamentos', 'componentes flexíveis'], practice: 'Criar navbar e cards com flex.', exercise: 'Converter layout float para flexbox.', starter: mkStarter('Flexbox', '#1d4ed8', 'Flexbox') },
-      { title: 'CSS Grid', learn: ['grid areas', 'fr units', 'layout avançado'], practice: 'Montar dashboard com grid.', exercise: 'Criar grade responsiva de projetos.', starter: mkStarter('CSS Grid', '#3b82f6', 'Grid') },
-      { title: 'Responsividade', learn: ['media queries', 'clamp', 'mobile first'], practice: 'Ajustar tela para 3 breakpoints.', exercise: 'Eliminar quebra em mobile.', starter: mkStarter('Responsividade', '#0ea5e9', 'Responsividade') },
-      { title: 'Transições e animações', learn: ['transition', 'transform', 'keyframes'], practice: 'Criar microinterações úteis.', exercise: 'Animar hover e entrada de cards.', starter: mkStarter('Animações CSS', '#38bdf8', 'Animações') }
+      createCssModule(1, 'Introdução ao CSS', 'Fundamentos', 'Entenda o papel do CSS na camada visual e como ele transforma HTML em interface.', ['Função do CSS no front-end', 'Separação entre estrutura e estilo', 'Leitura básica de uma regra CSS']),
+      createCssModule(2, 'Como conectar CSS no HTML', 'Fundamentos', 'Veja as formas corretas de aplicar CSS e quando usar arquivo externo.', ['Tag link no head', 'CSS interno e inline', 'Organização inicial de arquivos']),
+      createCssModule(3, 'Seletores básicos', 'Fundamentos', 'Aprenda a selecionar elementos com clareza para aplicar estilos sem confusão.', ['Seletores por elemento', 'Agrupamento de seletores', 'Escopo inicial das regras']),
+      createCssModule(4, 'Seletores por classe, ID e tag', 'Fundamentos', 'Compare classe, ID e tag para escolher o seletor certo em cada situação.', ['Diferença entre class e id', 'Reutilização de classes', 'Especificidade básica']),
+      createCssModule(5, 'Cores no CSS', 'Fundamentos', 'Use cores com consistência, contraste e formatos adequados para a web.', ['Hex, rgb e nomes de cores', 'Contraste visual', 'Paleta simples de projeto']),
+      createCssModule(6, 'Unidades de medida', 'Fundamentos', 'Conheça px, rem, em, porcentagem e viewport para medir elementos com segurança.', ['Unidades absolutas e relativas', 'Quando usar rem', 'Medidas fluidas em layouts']),
+      createCssModule(7, 'Fontes e tipografia', 'Fundamentos', 'Defina famílias de fonte e bases tipográficas para melhorar a leitura.', ['font-family', 'Fontes seguras e externas', 'Consistência tipográfica']),
+      createCssModule(8, 'Tamanho, peso e estilo de texto', 'Fundamentos', 'Controle hierarquia visual usando tamanho, peso e variações de texto.', ['font-size', 'font-weight', 'font-style e line-height']),
+      createCssModule(9, 'Alinhamento de texto', 'Fundamentos', 'Organize textos em cards, seções e blocos sem prejudicar legibilidade.', ['text-align', 'Comprimento de linha', 'Alinhamento em interfaces']),
+      createCssModule(10, 'Espaçamento com margin e padding', 'Fundamentos', 'Entenda a diferença entre espaço externo e interno antes de avançar para layout.', ['Margin versus padding', 'Ritmo de espaçamento', 'Espaço entre blocos']),
+      createCssModule(11, 'O que é o Box Model', 'Box Model', 'Visualize como conteúdo, padding, border e margin formam a caixa de cada elemento.', ['Content box', 'Padding e border', 'Impacto no tamanho final']),
+      createCssModule(12, 'Width e height', 'Box Model', 'Controle largura e altura sem criar layouts rígidos demais.', ['width, height e max-width', 'Altura mínima', 'Limites responsivos']),
+      createCssModule(13, 'Border', 'Box Model', 'Use bordas para separar áreas, destacar componentes e criar estrutura visual.', ['border-width', 'border-style', 'border-color']),
+      createCssModule(14, 'Border-radius', 'Box Model', 'Aplique cantos arredondados com equilíbrio em botões, cards e imagens.', ['radius em cards', 'radius circular', 'Consistência de bordas']),
+      createCssModule(15, 'Margin na prática', 'Box Model', 'Use margin para afastar elementos e controlar ritmo vertical da página.', ['Margin vertical', 'Auto margin', 'Colapso de margens']),
+      createCssModule(16, 'Padding na prática', 'Box Model', 'Use padding para criar respiro interno e melhorar áreas clicáveis.', ['Padding em cards', 'Padding em botões', 'Espaçamento interno responsivo']),
+      createCssModule(17, 'Box-sizing', 'Box Model', 'Evite contas confusas usando box-sizing de forma previsível no projeto.', ['content-box', 'border-box', 'Reset com box-sizing']),
+      createCssModule(18, 'Overflow', 'Box Model', 'Controle conteúdo que ultrapassa o espaço disponível sem quebrar a interface.', ['overflow hidden', 'overflow auto', 'Prevenção de estouros']),
+      createCssModule(19, 'Display block, inline e inline-block', 'Box Model', 'Entenda como cada valor de display altera fluxo, tamanho e alinhamento.', ['Elementos block', 'Elementos inline', 'inline-block na prática']),
+      createCssModule(20, 'Reset CSS básico', 'Box Model', 'Crie uma base visual consistente removendo diferenças iniciais do navegador.', ['Reset de margin', 'box-sizing global', 'Base de imagens e formulários']),
+      createCssModule(21, 'Introdução a layouts', 'Layout', 'Comece a pensar em composição de página, fluxo visual e blocos de interface.', ['Fluxo normal', 'Agrupamento de seções', 'Composição de tela']),
+      createCssModule(22, 'Display flex', 'Layout', 'Use Flexbox para alinhar itens em uma direção com menos esforço.', ['Container flex', 'Itens flexíveis', 'Eixo principal']),
+      createCssModule(23, 'Flex-direction', 'Layout', 'Controle a direção dos elementos para montar linhas, colunas e variações mobile.', ['row e column', 'Direção em breakpoints', 'Ordem visual']),
+      createCssModule(24, 'Justify-content', 'Layout', 'Distribua espaço no eixo principal para menus, cards e grupos de botões.', ['flex-start e center', 'space-between', 'Distribuição de ações']),
+      createCssModule(25, 'Align-items', 'Layout', 'Alinhe elementos no eixo cruzado para evitar interfaces desalinhadas.', ['stretch, center e start', 'Altura dos itens', 'Alinhamento em cards']),
+      createCssModule(26, 'Gap', 'Layout', 'Crie espaçamento entre elementos sem depender de margens improvisadas.', ['gap em flex', 'Ritmo consistente', 'Manutenção de espaçamentos']),
+      createCssModule(27, 'Flex-wrap', 'Layout', 'Permita que itens quebrem linha de forma controlada em telas menores.', ['wrap e nowrap', 'Listas fluidas', 'Quebra sem overflow']),
+      createCssModule(28, 'Cards com Flexbox', 'Layout', 'Monte cards alinhados e flexíveis para listas de conteúdo.', ['Card como coluna', 'Rodapé alinhado', 'Alturas consistentes']),
+      createCssModule(29, 'Navbar com Flexbox', 'Layout', 'Crie uma barra de navegação organizada, alinhada e fácil de adaptar.', ['Logo e links', 'Ações no topo', 'Espaços entre grupos']),
+      createCssModule(30, 'Centralização com Flexbox', 'Layout', 'Centralize conteúdo sem hacks e com controle de altura e alinhamento.', ['Centralização horizontal', 'Centralização vertical', 'Estados vazios']),
+      createCssModule(31, 'Introdução ao CSS Grid', 'Grid', 'Entenda quando o Grid é melhor para estruturas em duas dimensões.', ['Grid container', 'Linhas e colunas', 'Diferença para Flexbox']),
+      createCssModule(32, 'Grid-template-columns', 'Grid', 'Defina colunas claras para galerias, painéis e seções de conteúdo.', ['repeat', 'fr', 'minmax']),
+      createCssModule(33, 'Grid-template-rows', 'Grid', 'Controle linhas quando o layout exige áreas verticais bem definidas.', ['Linhas explícitas', 'auto e fr', 'Altura de áreas']),
+      createCssModule(34, 'Gap no Grid', 'Grid', 'Use espaçamento entre linhas e colunas sem adicionar regras extras.', ['row-gap', 'column-gap', 'Ritmo de grade']),
+      createCssModule(35, 'Grid com cards', 'Grid', 'Crie uma grade de cards estável, alinhada e fácil de escanear.', ['Cards em repeat', 'Colunas proporcionais', 'Quebra visual organizada']),
+      createCssModule(36, 'Grid responsivo básico', 'Grid', 'Monte grades que se adaptam sem precisar de muitos breakpoints.', ['auto-fit', 'minmax', 'Colunas fluidas']),
+      createCssModule(37, 'Grid-area', 'Grid', 'Nomeie áreas para montar layouts mais expressivos e fáceis de ler.', ['grid-template-areas', 'Nome de áreas', 'Organização semântica']),
+      createCssModule(38, 'Layout de página com Grid', 'Grid', 'Estruture header, sidebar, conteúdo e footer em uma composição completa.', ['Layout de página', 'Sidebar', 'Áreas fixas e fluidas']),
+      createCssModule(39, 'Comparação entre Flexbox e Grid', 'Grid', 'Compare as duas ferramentas para tomar decisões melhores de layout.', ['Uma dimensão versus duas', 'Casos de uso', 'Composição híbrida']),
+      createCssModule(40, 'Quando usar Flexbox ou Grid', 'Grid', 'Treine a escolha entre Flexbox e Grid em componentes e páginas reais.', ['Critério de escolha', 'Combinação das técnicas', 'Refatoração de layout']),
+      createCssModule(41, 'Backgrounds', 'Visual e Componentes', 'Use fundos sólidos, imagens e camadas simples sem poluir a interface.', ['background-color', 'background-image', 'Posição e repetição']),
+      createCssModule(42, 'Imagens no CSS', 'Visual e Componentes', 'Controle imagens decorativas e visuais de apoio dentro do CSS.', ['Imagem de fundo', 'Tamanho de background', 'Cuidados de performance']),
+      createCssModule(43, 'Object-fit', 'Visual e Componentes', 'Faça imagens preencherem cards e banners sem distorção.', ['cover e contain', 'object-position', 'Crops previsíveis']),
+      createCssModule(44, 'Sombras com box-shadow', 'Visual e Componentes', 'Aplique profundidade com sombras leves e coerentes.', ['Eixos da sombra', 'Blur e spread', 'Sombras em cards']),
+      createCssModule(45, 'Text-shadow', 'Visual e Componentes', 'Use sombra em texto com moderação para contraste e destaque.', ['Sombra de texto', 'Contraste sobre imagem', 'Limites de legibilidade']),
+      createCssModule(46, 'Botões estilizados', 'Visual e Componentes', 'Crie botões claros, clicáveis e consistentes com o visual do projeto.', ['Estados de botão', 'Padding e radius', 'Hierarquia de ações']),
+      createCssModule(47, 'Cards modernos', 'Visual e Componentes', 'Monte cards com boa hierarquia, respiro e acabamento profissional.', ['Cabeçalho do card', 'Bordas e sombra', 'Conteúdo escaneável']),
+      createCssModule(48, 'Inputs estilizados', 'Visual e Componentes', 'Melhore campos de formulário com foco, contraste e espaçamento adequados.', ['Estados de input', 'Borda e foco', 'Área clicável confortável']),
+      createCssModule(49, 'Formulários bonitos', 'Visual e Componentes', 'Combine labels, inputs, mensagens e botões em formulários agradáveis.', ['Layout de formulário', 'Agrupamento de campos', 'Feedback visual']),
+      createCssModule(50, 'Hover e estados visuais', 'Visual e Componentes', 'Crie respostas visuais suaves para hover, foco, ativo e desabilitado.', ['hover e focus', 'Transições curtas', 'Estados acessíveis']),
+      createCssModule(51, 'Introdução à responsividade', 'Responsividade', 'Entenda como layouts se ajustam a diferentes tamanhos de tela.', ['Viewport', 'Conteúdo fluido', 'Testes em tamanhos reais']),
+      createCssModule(52, 'Media queries', 'Responsividade', 'Use media queries para adaptar layout, espaçamento e componentes.', ['Sintaxe de media query', 'max-width e min-width', 'Ajustes por contexto']),
+      createCssModule(53, 'Layout mobile-first', 'Responsividade', 'Comece pelo celular e expanda a interface com breakpoints progressivos.', ['Base mobile', 'Progressive enhancement', 'Menos sobrescritas']),
+      createCssModule(54, 'Responsividade em textos', 'Responsividade', 'Ajuste escala e largura de texto para leitura confortável em qualquer tela.', ['Line-height', 'Largura de parágrafo', 'Títulos em mobile']),
+      createCssModule(55, 'Responsividade em imagens', 'Responsividade', 'Evite imagens cortadas ou estouradas em telas pequenas.', ['max-width', 'height auto', 'Crops em mobile']),
+      createCssModule(56, 'Responsividade em cards', 'Responsividade', 'Transforme listas de cards em grades adaptáveis e legíveis.', ['Colunas fluidas', 'Empilhamento', 'Espaçamento em mobile']),
+      createCssModule(57, 'Navbar responsiva', 'Responsividade', 'Adapte navegação para telas menores mantendo acesso claro aos links.', ['Menu compacto', 'Quebra de links', 'Área de toque']),
+      createCssModule(58, 'Breakpoints comuns', 'Responsividade', 'Escolha pontos de ajuste baseados no conteúdo, não em números aleatórios.', ['Breakpoints práticos', 'Conteúdo como guia', 'Testes intermediários']),
+      createCssModule(59, 'Ajustes para tablet', 'Responsividade', 'Cuide das telas médias, onde layouts desktop podem ficar apertados.', ['Colunas em tablet', 'Espaçamento intermediário', 'Navegação adaptada']),
+      createCssModule(60, 'Projeto final com CSS responsivo', 'Responsividade', 'Consolide a trilha criando uma página completa, bonita e responsiva.', ['Sistema visual', 'Layout completo', 'Revisão mobile e desktop'])
     ],
-    challenge: { title: 'Desafio final: Landing premium responsiva', brief: 'Construa uma landing page premium com sistema visual, layout responsivo completo e microinterações.', portfolio: 'Entregáveis: deploy, guia de tokens CSS e biblioteca de componentes visuais.' }
+    challenge: { title: 'Desafio final: Interface responsiva com CSS', brief: 'Construa uma página completa para um produto, serviço ou portfólio usando box model, Flexbox, Grid, componentes visuais e responsividade mobile-first.', portfolio: 'Entregáveis: deploy, README com decisões de layout, checklist responsivo e capturas de tela em mobile, tablet e desktop.' }
   },
   {
     name: 'Bootstrap', level: 'basico', levelLabel: 'Básico ao intermediário',
@@ -196,14 +549,14 @@ const tracks = [
     accent: '#7952B3', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg',
     description: 'Aprenda Bootstrap para criar interfaces responsivas rapidamente usando grid, utilitários, componentes, formulários, temas e customização.',
     modules: [
-      { title: 'Introdução ao Bootstrap', learn: ['Quando usar Bootstrap', 'Instalação via CDN/npm', 'Estrutura base do CSS e JS'], practice: 'Monte uma página simples carregando Bootstrap corretamente.', exercise: 'Crie um template inicial com navbar, main e footer usando Bootstrap.', starter: mkStarter('Bootstrap inicial', '#7952b3', 'Bootstrap pronto') },
-      { title: 'Containers, grid e breakpoints', learn: ['container e container-fluid', 'row e col', 'breakpoints responsivos'], practice: 'Construa uma seção que muda de 1 para 3 colunas.', exercise: 'Refatore um layout manual para o grid do Bootstrap.', starter: mkStarter('Grid Bootstrap', '#6f42c1', 'Grid Bootstrap') },
-      { title: 'Utilitários de espaçamento e tipografia', learn: ['classes de margin/padding', 'display e flex utilities', 'tipografia e cores'], practice: 'Ajuste um card sem escrever CSS customizado.', exercise: 'Monte uma página de perfil usando principalmente utilitários.', starter: mkStarter('Utilitários Bootstrap', '#7952b3', 'Utilities') },
-      { title: 'Componentes essenciais', learn: ['navbar', 'cards', 'buttons', 'alerts', 'badges'], practice: 'Combine componentes em uma tela de produto.', exercise: 'Crie uma página de dashboard com cards, badges e alertas.', starter: mkStarter('Componentes Bootstrap', '#6f42c1', 'Components') },
-      { title: 'Formulários e validação visual', learn: ['form-control', 'input groups', 'feedback de validação'], practice: 'Monte um formulário com estados de erro e sucesso.', exercise: 'Crie um formulário de cadastro responsivo com validação visual.', starter: mkStarter('Forms Bootstrap', '#7952b3', 'Forms') },
-      { title: 'Componentes com JavaScript', learn: ['modal', 'dropdown', 'collapse', 'tabs'], practice: 'Adicione interações sem criar tudo do zero.', exercise: 'Implemente uma FAQ com collapse e um modal de confirmação.', starter: mkStarter('Bootstrap JS', '#6f42c1', 'Bootstrap JS') },
-      { title: 'Customização e tema', learn: ['variáveis CSS', 'Sass', 'sobrescrita segura', 'design system simples'], practice: 'Crie um tema visual sem quebrar componentes.', exercise: 'Personalize cores, botões e cards para uma marca fictícia.', starter: mkStarter('Tema Bootstrap', '#7952b3', 'Theme') },
-      { title: 'Projeto final com Bootstrap', learn: ['composição de layout', 'responsividade completa', 'documentação do projeto'], practice: 'Planeje uma interface completa com componentes Bootstrap.', exercise: 'Entregue uma landing ou painel administrativo responsivo e publicável.', starter: mkStarter('Projeto Bootstrap', '#6f42c1', 'Projeto Bootstrap') }
+      { title: 'Introdução ao Bootstrap', learn: ['Quando usar Bootstrap', 'Instalação via CDN/npm', 'Estrutura base do CSS e JS'], practice: 'Crie uma página com Bootstrap via CDN e valide se CSS e JS carregam corretamente.', exercise: 'Conclua quando navbar, main e footer usarem classes Bootstrap sem CSS customizado obrigatório.', starter: mkStarter('Bootstrap inicial', '#7952b3', 'Bootstrap pronto') },
+      { title: 'Containers, grid e breakpoints', learn: ['container e container-fluid', 'row e col', 'breakpoints responsivos'], practice: 'Construa uma seção que tenha uma coluna no mobile, duas no tablet e três no desktop.', exercise: 'Conclua quando o grid usar row, col e breakpoints sem largura fixa.', starter: mkStarter('Grid Bootstrap', '#6f42c1', 'Grid Bootstrap') },
+      { title: 'Utilitários de espaçamento e tipografia', learn: ['classes de margin/padding', 'display e flex utilities', 'tipografia e cores'], practice: 'Monte um card de perfil usando utilitários de padding, margin, cor e texto.', exercise: 'Conclua quando o componente ficar legível sem criar classes CSS novas.', starter: mkStarter('Utilitários Bootstrap', '#7952b3', 'Utilities') },
+      { title: 'Componentes essenciais', learn: ['navbar', 'cards', 'buttons', 'alerts', 'badges'], practice: 'Combine navbar, cards, badges e botões em uma tela de catálogo de cursos.', exercise: 'Conclua quando cada componente tiver função clara e texto coerente.', starter: mkStarter('Componentes Bootstrap', '#6f42c1', 'Components') },
+      { title: 'Formulários e validação visual', learn: ['form-control', 'input groups', 'feedback de validação'], practice: 'Crie um cadastro com input group, required e mensagens de feedback visual.', exercise: 'Conclua quando campos válidos e inválidos tiverem estados reconhecíveis.', starter: mkStarter('Forms Bootstrap', '#7952b3', 'Forms') },
+      { title: 'Componentes com JavaScript', learn: ['modal', 'dropdown', 'collapse', 'tabs'], practice: 'Implemente uma FAQ com collapse e um modal de confirmação para ação importante.', exercise: 'Conclua quando as interações funcionarem pelo Bootstrap sem script manual extra.', starter: mkStarter('Bootstrap JS', '#6f42c1', 'Bootstrap JS') },
+      { title: 'Customização e tema', learn: ['variáveis CSS', 'Sass', 'sobrescrita segura', 'design system simples'], practice: 'Altere cores, radius e botões mantendo o comportamento original dos componentes.', exercise: 'Conclua quando o tema parecer de uma marca própria sem quebrar contraste.', starter: mkStarter('Tema Bootstrap', '#7952b3', 'Theme') },
+      { title: 'Projeto final com Bootstrap', learn: ['composição de layout', 'responsividade completa', 'documentação do projeto'], practice: 'Planeje e construa uma landing ou painel usando grid, cards, formulário e modal.', exercise: 'Conclua quando houver deploy, README e screenshots mobile e desktop.', starter: mkStarter('Projeto Bootstrap', '#6f42c1', 'Projeto Bootstrap') }
     ],
     challenge: { title: 'Desafio final: Painel responsivo com Bootstrap', brief: 'Construa um painel administrativo usando grid, formulários, cards, modal, dropdown e tema customizado com Bootstrap.', portfolio: 'Entregáveis: deploy, README explicando componentes usados, screenshots mobile/desktop e lista de customizações.' }
   },
@@ -213,13 +566,13 @@ const tracks = [
     accent: '#FACC15', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
     description: 'Treine variáveis, operadores, condicionais, loops, arrays, objetos, funções, strings, datas, DOM, eventos, Fetch API e LocalStorage.',
     modules: [
-      { title: 'Sintaxe e controle de fluxo', learn: ['variáveis', 'operadores', 'if/switch'], practice: 'Resolver problemas condicionais.', exercise: 'Criar verificador de regras de negócio.', starter: mkStarter('Fluxo JS', '#eab308', 'Fluxo') },
-      { title: 'Loops e funções', learn: ['for/while', 'funções puras', 'escopo'], practice: 'Criar utilitários de repetição.', exercise: 'Gerar relatório com loops e funções.', starter: mkStarter('Loops e funções', '#facc15', 'Loops') },
-      { title: 'Arrays e métodos', learn: ['map/filter/reduce', 'find/some/every', 'imutabilidade'], practice: 'Tratar lista de produtos.', exercise: 'Aplicar filtros combinados.', starter: mkStarter('Arrays', '#f59e0b', 'Arrays') },
-      { title: 'Objetos e estruturas', learn: ['objetos aninhados', 'desestruturação', 'spread/rest'], practice: 'Modelar dados de usuário/pedido.', exercise: 'Refatorar estrutura de dados confusa.', starter: mkStarter('Objetos', '#eab308', 'Objetos') },
-      { title: 'DOM e eventos', learn: ['seleção de elementos', 'delegação', 'renderização dinâmica'], practice: 'Construir componente interativo.', exercise: 'Criar todo list com edição.', starter: mkStarter('DOM e eventos', '#facc15', 'DOM') },
-      { title: 'Fetch API', learn: ['async/await', 'tratamento de erro', 'estado de carregamento'], practice: 'Consumir API e renderizar lista.', exercise: 'Adicionar fallback de erro.', starter: mkStarter('Fetch API', '#fde047', 'API') },
-      { title: 'LocalStorage', learn: ['persistência local', 'serialização JSON', 'sincronização UI'], practice: 'Salvar preferências do usuário.', exercise: 'Persistir tarefas e restaurar ao abrir.', starter: mkStarter('LocalStorage', '#facc15', 'LocalStorage') }
+      { title: 'Sintaxe e controle de fluxo', learn: ['variáveis', 'operadores', 'if/switch'], practice: 'Crie um verificador de idade e plano que retorne mensagens diferentes para visitante, aluno e assinante.', exercise: 'Conclua quando cada regra tiver uma condição clara e os resultados forem testados no console.', starter: mkStarter('Fluxo JS', '#eab308', 'Fluxo') },
+      { title: 'Loops e funções', learn: ['for/while', 'funções puras', 'escopo'], practice: 'Crie uma função que receba uma lista de notas e gere média, maior nota e situação final.', exercise: 'Conclua quando a função puder ser reutilizada com pelo menos três listas diferentes.', starter: mkStarter('Loops e funções', '#facc15', 'Loops') },
+      { title: 'Arrays e métodos', learn: ['map/filter/reduce', 'find/some/every', 'imutabilidade'], practice: 'Filtre uma lista de produtos por categoria, aplique desconto com map e calcule total com reduce.', exercise: 'Conclua quando a lista original continuar intacta e os resultados aparecerem separados.', starter: mkStarter('Arrays', '#f59e0b', 'Arrays') },
+      { title: 'Objetos e estruturas', learn: ['objetos aninhados', 'desestruturação', 'spread/rest'], practice: 'Modele um pedido com cliente, itens e endereço, depois gere um resumo usando desestruturação.', exercise: 'Conclua quando atualizar um campo com spread sem alterar o objeto original.', starter: mkStarter('Objetos', '#eab308', 'Objetos') },
+      { title: 'DOM e eventos', learn: ['seleção de elementos', 'delegação', 'renderização dinâmica'], practice: 'Crie uma lista de tarefas com adicionar, marcar como feita e remover usando eventos.', exercise: 'Conclua quando a interface atualizar sem recarregar a página.', starter: mkStarter('DOM e eventos', '#facc15', 'DOM') },
+      { title: 'Fetch API', learn: ['async/await', 'tratamento de erro', 'estado de carregamento'], practice: 'Busque uma lista de posts, mostre carregando, renderize os títulos e trate falha de rede.', exercise: 'Conclua quando a tela tiver estados de sucesso, carregamento e erro.', starter: mkStarter('Fetch API', '#fde047', 'API') },
+      { title: 'LocalStorage', learn: ['persistência local', 'serialização JSON', 'sincronização UI'], practice: 'Salve uma preferência de tema e uma lista simples de tarefas no navegador.', exercise: 'Conclua quando os dados reaparecerem corretamente após atualizar a página.', starter: mkStarter('LocalStorage', '#facc15', 'LocalStorage') }
     ],
     challenge: { title: 'Desafio final: Organizador de rotina inteligente', brief: 'Crie um app de rotina com tarefas, filtros, persistência local e integração com API para dados auxiliares.', portfolio: 'Entregáveis: app publicado, README técnico e vídeo de demonstração do fluxo completo.' }
   },
@@ -229,13 +582,13 @@ const tracks = [
     accent: '#3178C6', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
     description: 'Aprenda tipagem básica, interfaces, type aliases, union types, generics, narrowing e tipagem de funções, eventos e APIs.',
     modules: [
-      { title: 'Tipos básicos e inferência', learn: ['tipos primitivos', 'inference', 'strict mode'], practice: 'Tipar utilitários simples.', exercise: 'Remover any de um arquivo utilitário.', starter: mkStarter('Tipos básicos TS', '#3178c6', 'TS básicos') },
-      { title: 'Interfaces e aliases', learn: ['interface', 'type alias', 'composição'], practice: 'Modelar entidades de produto e usuário.', exercise: 'Criar modelos coesos para domínio.', starter: mkStarter('Interfaces TS', '#2563eb', 'Interfaces') },
-      { title: 'Union e narrowing', learn: ['union types', 'guards', 'discriminated unions'], practice: 'Tratar respostas de API heterogêneas.', exercise: 'Implementar guards seguros.', starter: mkStarter('Narrowing TS', '#1d4ed8', 'Narrowing') },
-      { title: 'Generics', learn: ['funções genéricas', 'constraints', 'reuso'], practice: 'Criar helpers genéricos de lista.', exercise: 'Implementar paginate<T>.', starter: mkStarter('Generics TS', '#3b82f6', 'Generics') },
-      { title: 'Tipagem de funções e eventos', learn: ['assinaturas', 'callbacks', 'event typing'], practice: 'Tipar handlers de formulário.', exercise: 'Refatorar eventos com tipos corretos.', starter: mkStarter('Eventos TS', '#60a5fa', 'Eventos') },
-      { title: 'Tipagem de API', learn: ['DTOs', 'erros tipados', 'mapeamento de resposta'], practice: 'Tipar camada de service.', exercise: 'Criar client tipado com fallback.', starter: mkStarter('API TS', '#0ea5e9', 'API TS') },
-      { title: 'Organização de tipos', learn: ['pastas de types', 'barrels', 'reuso entre módulos'], practice: 'Estruturar types de projeto real.', exercise: 'Separar tipos por domínio.', starter: mkStarter('Arquitetura de tipos', '#3178c6', 'Tipos organizados') }
+      { title: 'Tipos básicos e inferência', learn: ['tipos primitivos', 'inference', 'strict mode'], practice: 'Tipar uma função de cálculo de preço com string, number e boolean sem usar any.', exercise: 'Conclua quando o TypeScript impedir chamadas com tipos errados.', starter: mkStarter('Tipos básicos TS', '#3178c6', 'TS básicos') },
+      { title: 'Interfaces e aliases', learn: ['interface', 'type alias', 'composição'], practice: 'Modele Product, User e Order com campos obrigatórios e opcionais.', exercise: 'Conclua quando as entidades representarem dados reais sem duplicar tipos.', starter: mkStarter('Interfaces TS', '#2563eb', 'Interfaces') },
+      { title: 'Union e narrowing', learn: ['union types', 'guards', 'discriminated unions'], practice: 'Crie estados de requisição loading, success e error usando union discriminada.', exercise: 'Conclua quando cada estado renderizar apenas os dados disponíveis para ele.', starter: mkStarter('Narrowing TS', '#1d4ed8', 'Narrowing') },
+      { title: 'Generics', learn: ['funções genéricas', 'constraints', 'reuso'], practice: 'Implemente paginate<T> para paginar listas de produtos, usuários e posts.', exercise: 'Conclua quando a função preservar o tipo dos itens retornados.', starter: mkStarter('Generics TS', '#3b82f6', 'Generics') },
+      { title: 'Tipagem de funções e eventos', learn: ['assinaturas', 'callbacks', 'event typing'], practice: 'Tipar submit de formulário e clique de botão sem acessar propriedades inexistentes.', exercise: 'Conclua quando handlers tiverem tipos explícitos e sem casts desnecessários.', starter: mkStarter('Eventos TS', '#60a5fa', 'Eventos') },
+      { title: 'Tipagem de API', learn: ['DTOs', 'erros tipados', 'mapeamento de resposta'], practice: 'Crie tipos para resposta bruta da API e para o modelo usado pela interface.', exercise: 'Conclua quando a camada de service converter DTO em dados prontos para a UI.', starter: mkStarter('API TS', '#0ea5e9', 'API TS') },
+      { title: 'Organização de tipos', learn: ['pastas de types', 'barrels', 'reuso entre módulos'], practice: 'Separe tipos por domínio em arquivos de produto, usuário e pedido.', exercise: 'Conclua quando imports ficarem previsíveis e nenhum arquivo concentrar tipos sem relação.', starter: mkStarter('Arquitetura de tipos', '#3178c6', 'Tipos organizados') }
     ],
     challenge: { title: 'Desafio final: Painel tipado de gestão', brief: 'Construa uma interface com domínio tipado de ponta a ponta (estado, formulários, API e validações).', portfolio: 'Entregáveis: repositório com arquitetura de tipos documentada e aplicação em produção.' }
   },
@@ -245,13 +598,13 @@ const tracks = [
     accent: '#7B5CFF', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
     description: 'Conheça React, Vue, Angular, Svelte, SolidJS, Next.js e Astro para criar interfaces modernas e aplicações mais completas.',
     modules: [
-      { title: 'Arquitetura por componentes', learn: ['composição', 'props', 'estado local'], practice: 'Quebrar tela complexa em componentes.', exercise: 'Refatorar tela monolítica.', starter: mkStarter('Componentes', '#7b5cff', 'Componentes') },
-      { title: 'Roteamento em SPA', learn: ['rotas', 'parâmetros', 'layouts'], practice: 'Construir navegação multi-seções.', exercise: 'Implementar rota dinâmica de detalhe.', starter: mkStarter('Roteamento', '#8b5cf6', 'Rotas') },
-      { title: 'Estado compartilhado', learn: ['lifting state', 'stores', 'contexto'], practice: 'Sincronizar estado entre componentes.', exercise: 'Criar carrinho com estado global.', starter: mkStarter('Estado global', '#a78bfa', 'Estado') },
-      { title: 'Formulários e validação', learn: ['controlled/uncontrolled', 'regras de validação', 'feedback de erro'], practice: 'Construir formulário robusto.', exercise: 'Validar formulário multi-etapas.', starter: mkStarter('Formulários', '#7c3aed', 'Form') },
-      { title: 'Consumo de APIs', learn: ['fetch em componentes', 'cache', 'retries'], practice: 'Listagem com filtros e paginação.', exercise: 'Adicionar loading/skeleton e erro.', starter: mkStarter('API em framework', '#6d28d9', 'API framework') },
-      { title: 'Renderização e performance', learn: ['SSR/SSG/CSR', 'lazy loading', 'memoização'], practice: 'Comparar estratégias de renderização.', exercise: 'Otimizar uma tela lenta.', starter: mkStarter('Performance', '#7b5cff', 'Perf framework') },
-      { title: 'Estrutura de app escalável', learn: ['pastas por domínio', 'camadas', 'boas práticas de manutenção'], practice: 'Organizar um app médio.', exercise: 'Documentar arquitetura da aplicação.', starter: mkStarter('Arquitetura app', '#8b5cf6', 'Arquitetura') }
+      { title: 'Arquitetura por componentes', learn: ['composição', 'props', 'estado local'], practice: 'Separe uma tela de dashboard em Header, SummaryCard, FilterBar e DataList.', exercise: 'Conclua quando cada componente receber dados por props e tiver uma responsabilidade clara.', starter: mkStarter('Componentes', '#7b5cff', 'Componentes') },
+      { title: 'Roteamento em SPA', learn: ['rotas', 'parâmetros', 'layouts'], practice: 'Crie rotas para listagem, detalhe e página de erro em uma aplicação simples.', exercise: 'Conclua quando a rota de detalhe ler um parâmetro e renderizar o item correto.', starter: mkStarter('Roteamento', '#8b5cf6', 'Rotas') },
+      { title: 'Estado compartilhado', learn: ['lifting state', 'stores', 'contexto'], practice: 'Compartilhe o estado de carrinho entre lista de produtos, resumo e botão de limpar.', exercise: 'Conclua quando duas áreas da tela reagirem à mesma alteração de estado.', starter: mkStarter('Estado global', '#a78bfa', 'Estado') },
+      { title: 'Formulários e validação', learn: ['controlled/uncontrolled', 'regras de validação', 'feedback de erro'], practice: 'Construa um formulário de cadastro com validação de nome, email e senha.', exercise: 'Conclua quando erros aparecerem perto dos campos e o envio só ocorrer com dados válidos.', starter: mkStarter('Formulários', '#7c3aed', 'Form') },
+      { title: 'Consumo de APIs', learn: ['fetch em componentes', 'cache', 'retries'], practice: 'Crie uma listagem com busca, paginação simples, loading e estado vazio.', exercise: 'Conclua quando falhas de API não quebrarem a tela e mostrarem mensagem útil.', starter: mkStarter('API em framework', '#6d28d9', 'API framework') },
+      { title: 'Renderização e performance', learn: ['SSR/SSG/CSR', 'lazy loading', 'memoização'], practice: 'Identifique uma lista lenta e aplique lazy loading ou memoização onde fizer sentido.', exercise: 'Conclua quando houver comparação antes/depois com a mudança aplicada.', starter: mkStarter('Performance', '#7b5cff', 'Perf framework') },
+      { title: 'Estrutura de app escalável', learn: ['pastas por domínio', 'camadas', 'boas práticas de manutenção'], practice: 'Organize uma aplicação por domínio, separando components, services, types e pages.', exercise: 'Conclua quando um novo recurso puder ser adicionado sem misturar arquivos de domínios diferentes.', starter: mkStarter('Arquitetura app', '#8b5cf6', 'Arquitetura') }
     ],
     challenge: { title: 'Desafio final: Plataforma de conteúdo técnico', brief: 'Crie uma aplicação front-end completa com roteamento, busca, filtros, páginas de detalhe e integração com APIs.', portfolio: 'Entregáveis: app publicado, documentação de arquitetura e decisões técnicas.' }
   },
@@ -261,13 +614,13 @@ const tracks = [
     accent: '#6366F1', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg',
     description: 'Estude Git, GitHub, npm, Node.js, Vite, Webpack, ESLint, Prettier e ferramentas essenciais do ecossistema front-end.',
     modules: [
-      { title: 'Git no fluxo diário', learn: ['branching', 'commit limpo', 'merge/rebase'], practice: 'Simular ciclo de feature.', exercise: 'Montar histórico de commits semânticos.', starter: mkStarter('Git fluxo', '#6366f1', 'Git') },
-      { title: 'GitHub e colaboração', learn: ['PR', 'review', 'issues'], practice: 'Criar fluxo de revisão em dupla.', exercise: 'Abrir PR com checklist técnico.', starter: mkStarter('GitHub colaboração', '#4f46e5', 'GitHub') },
-      { title: 'npm scripts', learn: ['scripts utilitários', 'build/test/lint', 'versionamento'], practice: 'Padronizar scripts do projeto.', exercise: 'Criar script de quality gate.', starter: mkStarter('npm scripts', '#4338ca', 'npm') },
-      { title: 'Vite e ambiente', learn: ['config básica', 'env vars', 'aliases'], practice: 'Configurar ambientes local/stage/prod.', exercise: 'Separar configurações por ambiente.', starter: mkStarter('Vite setup', '#6366f1', 'Vite') },
-      { title: 'ESLint e qualidade', learn: ['regras', 'plugins', 'autocorreção'], practice: 'Aplicar padrão em base legada.', exercise: 'Resolver violações críticas sem quebrar.', starter: mkStarter('ESLint', '#818cf8', 'ESLint') },
-      { title: 'Prettier e consistência', learn: ['formatação unificada', 'integração IDE', 'hooks'], practice: 'Padronizar estilo de código do time.', exercise: 'Integrar Prettier + lint-staged.', starter: mkStarter('Prettier', '#6366f1', 'Prettier') },
-      { title: 'Pipeline local', learn: ['pre-commit', 'testes automáticos', 'build check'], practice: 'Automatizar verificações antes de push.', exercise: 'Configurar pipeline local reproduzível.', starter: mkStarter('Pipeline local', '#6366f1', 'Pipeline') }
+      { title: 'Git no fluxo diário', learn: ['branching', 'commit limpo', 'merge/rebase'], practice: 'Crie uma branch de feature, faça três commits pequenos e una as mudanças sem perder histórico.', exercise: 'Conclua quando cada commit tiver mensagem clara e representar uma mudança única.', starter: mkStarter('Git fluxo', '#6366f1', 'Git') },
+      { title: 'GitHub e colaboração', learn: ['PR', 'review', 'issues'], practice: 'Abra um Pull Request com descrição, checklist e referência a uma issue fictícia.', exercise: 'Conclua quando o PR permitir entender o problema, a solução e como testar.', starter: mkStarter('GitHub colaboração', '#4f46e5', 'GitHub') },
+      { title: 'npm scripts', learn: ['scripts utilitários', 'build/test/lint', 'versionamento'], practice: 'Crie scripts para dev, build, preview e check em um package.json.', exercise: 'Conclua quando um comando check executar as validações principais em sequência.', starter: mkStarter('npm scripts', '#4338ca', 'npm') },
+      { title: 'Vite e ambiente', learn: ['config básica', 'env vars', 'aliases'], practice: 'Configure uma variável VITE_API_URL e um alias para a pasta src.', exercise: 'Conclua quando dev e build usarem a configuração sem caminhos quebrados.', starter: mkStarter('Vite setup', '#6366f1', 'Vite') },
+      { title: 'ESLint e qualidade', learn: ['regras', 'plugins', 'autocorreção'], practice: 'Ative regras para detectar variáveis não usadas e padrões inconsistentes.', exercise: 'Conclua quando o lint apontar problemas reais e o código corrigido continuar funcionando.', starter: mkStarter('ESLint', '#818cf8', 'ESLint') },
+      { title: 'Prettier e consistência', learn: ['formatação unificada', 'integração IDE', 'hooks'], practice: 'Configure Prettier e formate arquivos HTML, CSS e JS com a mesma regra.', exercise: 'Conclua quando a formatação não depender de ajustes manuais entre arquivos.', starter: mkStarter('Prettier', '#6366f1', 'Prettier') },
+      { title: 'Pipeline local', learn: ['pre-commit', 'testes automáticos', 'build check'], practice: 'Crie um fluxo local que rode lint, testes e build antes do push.', exercise: 'Conclua quando uma falha em qualquer etapa impedir a entrega sem revisão.', starter: mkStarter('Pipeline local', '#6366f1', 'Pipeline') }
     ],
     challenge: { title: 'Desafio final: Starter kit de equipe front-end', brief: 'Crie um template completo com scripts, lint, format, convenções e documentação de contribuição.', portfolio: 'Entregáveis: template público reutilizável e guia de onboarding técnico.' }
   },
@@ -277,13 +630,13 @@ const tracks = [
     accent: '#10B981', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg',
     description: 'Aprenda acessibilidade, performance, PWA, testes, organização de código, responsividade e boas práticas para projetos reais.',
     modules: [
-      { title: 'Acessibilidade prática', learn: ['teclado e foco', 'semântica avançada', 'ARIA'], practice: 'Auditar interface existente.', exercise: 'Aplicar correções A11y em fluxo crítico.', starter: mkStarter('Acessibilidade', '#10b981', 'A11y') },
-      { title: 'Performance web', learn: ['LCP/CLS/INP', 'otimização de imagens', 'code splitting'], practice: 'Melhorar métricas de uma página.', exercise: 'Documentar antes/depois das métricas.', starter: mkStarter('Performance', '#059669', 'Performance') },
-      { title: 'Responsividade robusta', learn: ['layout resiliente', 'conteúdo fluido', 'testes cross-device'], practice: 'Eliminar quebras em telas pequenas.', exercise: 'Ajustar interface para 4 larguras.', starter: mkStarter('Responsividade', '#10b981', 'Responsive') },
-      { title: 'Testes unitários', learn: ['assertions', 'mocks', 'cobertura'], practice: 'Cobrir funções de negócio.', exercise: 'Criar testes para regras críticas.', starter: mkStarter('Testes unitários', '#34d399', 'Unit tests') },
-      { title: 'Testes de interface', learn: ['Testing Library', 'fluxo do usuário', 'acessibilidade em testes'], practice: 'Testar formulário e navegação.', exercise: 'Cobrir cenários feliz/erro.', starter: mkStarter('Testes UI', '#10b981', 'UI tests') },
-      { title: 'PWA e offline', learn: ['manifest', 'service worker', 'cache'], practice: 'Adicionar modo offline básico.', exercise: 'Criar fallback para perda de conexão.', starter: mkStarter('PWA offline', '#059669', 'PWA') },
-      { title: 'Manutenção e governança', learn: ['boas práticas de código', 'documentação viva', 'checklists de revisão'], practice: 'Criar padrão de revisão técnica.', exercise: 'Montar checklist de release front-end.', starter: mkStarter('Governança front-end', '#10b981', 'Governança') }
+      { title: 'Acessibilidade prática', learn: ['teclado e foco', 'semântica avançada', 'ARIA'], practice: 'Audite uma tela com menu, formulário e cards usando teclado e leitor de estrutura.', exercise: 'Conclua quando foco, labels, landmarks e textos alternativos estiverem corrigidos.', starter: mkStarter('Acessibilidade', '#10b981', 'A11y') },
+      { title: 'Performance web', learn: ['LCP/CLS/INP', 'otimização de imagens', 'code splitting'], practice: 'Meça uma página, otimize imagens e remova trabalho desnecessário no carregamento.', exercise: 'Conclua quando registrar antes/depois de pelo menos duas métricas.', starter: mkStarter('Performance', '#059669', 'Performance') },
+      { title: 'Responsividade robusta', learn: ['layout resiliente', 'conteúdo fluido', 'testes cross-device'], practice: 'Teste uma interface em 360, 768, 1024 e 1440px corrigindo quebras reais.', exercise: 'Conclua quando não houver rolagem horizontal nem texto sobreposto.', starter: mkStarter('Responsividade', '#10b981', 'Responsive') },
+      { title: 'Testes unitários', learn: ['assertions', 'mocks', 'cobertura'], practice: 'Escreva testes para uma função de cálculo com casos válidos, limite e inválidos.', exercise: 'Conclua quando os testes falharem para uma regra errada e passarem após a correção.', starter: mkStarter('Testes unitários', '#34d399', 'Unit tests') },
+      { title: 'Testes de interface', learn: ['Testing Library', 'fluxo do usuário', 'acessibilidade em testes'], practice: 'Teste um formulário preenchendo campos, enviando e validando mensagem de erro.', exercise: 'Conclua quando o teste usar ações parecidas com as de uma pessoa usuária.', starter: mkStarter('Testes UI', '#10b981', 'UI tests') },
+      { title: 'PWA e offline', learn: ['manifest', 'service worker', 'cache'], practice: 'Adicione manifest e fallback offline para uma página estática simples.', exercise: 'Conclua quando a página abrir uma mensagem útil mesmo sem conexão.', starter: mkStarter('PWA offline', '#059669', 'PWA') },
+      { title: 'Manutenção e governança', learn: ['boas práticas de código', 'documentação viva', 'checklists de revisão'], practice: 'Crie checklist de revisão para acessibilidade, performance, testes e deploy.', exercise: 'Conclua quando o checklist puder ser usado em um PR real sem depender de explicação extra.', starter: mkStarter('Governança front-end', '#10b981', 'Governança') }
     ],
     challenge: { title: 'Desafio final: Upgrade de qualidade em projeto real', brief: 'Pegue um projeto existente e aplique melhorias de acessibilidade, performance, testes e experiência offline.', portfolio: 'Entregáveis: relatório técnico, métricas comparativas e branch pública com melhorias implementadas.' }
   }
@@ -299,30 +652,30 @@ const roadmap = [
   { title: '07. Git: init, add, commit', trail: 'preparacao-do-aluno', mod: 3 },
   { title: '08. GitHub: push, PR e revisão', trail: 'preparacao-do-aluno', mod: 3 },
 
-  { title: '09. HTML: estrutura base', trail: 'html', mod: 0 },
-  { title: '10. HTML: metadados e SEO base', trail: 'html', mod: 0 },
-  { title: '11. HTML semântico: landmarks', trail: 'html', mod: 1 },
-  { title: '12. HTML semântico: heading tree', trail: 'html', mod: 1 },
-  { title: '13. Navegação e links internos', trail: 'html', mod: 2 },
-  { title: '14. Listas e conteúdo estruturado', trail: 'html', mod: 2 },
-  { title: '15. Imagens e mídia acessível', trail: 'html', mod: 3 },
-  { title: '16. Tabelas com semântica correta', trail: 'html', mod: 4 },
-  { title: '17. Formulários: campos e validação', trail: 'html', mod: 5 },
-  { title: '18. Acessibilidade base em HTML', trail: 'html', mod: 6 },
+  { title: '09. HTML: estrutura base', trail: 'html', mod: 2 },
+  { title: '10. HTML: títulos e hierarquia', trail: 'html', mod: 5 },
+  { title: '11. Navegação: links externos e internos', trail: 'html', mod: 9 },
+  { title: '12. Navegação: âncoras na página', trail: 'html', mod: 10 },
+  { title: '13. Listas e conteúdo estruturado', trail: 'html', mod: 16 },
+  { title: '14. Imagens e texto alternativo', trail: 'html', mod: 12 },
+  { title: '15. Tabelas com semântica correta', trail: 'html', mod: 18 },
+  { title: '16. Formulários: campos e labels', trail: 'html', mod: 26 },
+  { title: '17. Formulários: agrupamento e validação', trail: 'html', mod: 28 },
+  { title: '18. Acessibilidade base em HTML', trail: 'html', mod: 40 },
 
-  { title: '19. CSS: cascata e especificidade', trail: 'css', mod: 0 },
-  { title: '20. CSS: box model na prática', trail: 'css', mod: 1 },
-  { title: '21. Espaçamento e escala visual', trail: 'css', mod: 1 },
-  { title: '22. Tipografia e hierarquia', trail: 'css', mod: 2 },
-  { title: '23. Sistema de cores e contraste', trail: 'css', mod: 2 },
-  { title: '24. Flexbox: alinhamento e distribuição', trail: 'css', mod: 3 },
-  { title: '25. Flexbox: layout de navegação', trail: 'css', mod: 3 },
-  { title: '26. Grid: colunas e áreas', trail: 'css', mod: 4 },
-  { title: '27. Grid: composição de dashboards', trail: 'css', mod: 4 },
-  { title: '28. Responsividade: mobile first', trail: 'css', mod: 5 },
-  { title: '29. Responsividade: breakpoints reais', trail: 'css', mod: 5 },
-  { title: '30. Motion: transições úteis', trail: 'css', mod: 6 },
-  { title: '31. Motion: animação de estado', trail: 'css', mod: 6 },
+  { title: '19. CSS: conexão com HTML', trail: 'css', mod: 1 },
+  { title: '20. CSS: seletores e especificidade inicial', trail: 'css', mod: 3 },
+  { title: '21. Cores, contraste e unidade visual', trail: 'css', mod: 4 },
+  { title: '22. Tipografia e hierarquia', trail: 'css', mod: 7 },
+  { title: '23. Box model e espaçamento', trail: 'css', mod: 10 },
+  { title: '24. Width, height e overflow', trail: 'css', mod: 17 },
+  { title: '25. Flexbox: alinhamento e distribuição', trail: 'css', mod: 21 },
+  { title: '26. Flexbox: navbar e cards', trail: 'css', mod: 28 },
+  { title: '27. Grid: colunas, linhas e gaps', trail: 'css', mod: 31 },
+  { title: '28. Grid: composição de página', trail: 'css', mod: 37 },
+  { title: '29. Componentes visuais com CSS', trail: 'css', mod: 46 },
+  { title: '30. Responsividade mobile-first', trail: 'css', mod: 52 },
+  { title: '31. Projeto final com CSS responsivo', trail: 'css', mod: 59 },
 
   { title: '32. JS: variáveis e tipos', trail: 'javascript-e-logica', mod: 0 },
   { title: '33. JS: condicionais', trail: 'javascript-e-logica', mod: 0 },
@@ -389,7 +742,7 @@ const roadmap = [
 
   { title: '90. Projeto final: planejamento', trail: 'qualidade-e-boas-praticas', mod: 6 },
   { title: '91. Projeto final: arquitetura', trail: 'frameworks-front-end', mod: 6 },
-  { title: '92. Projeto final: implementação UI', trail: 'css', mod: 6 },
+  { title: '92. Projeto final: implementação UI', trail: 'css', mod: 59 },
   { title: '93. Projeto final: integração de dados', trail: 'javascript-e-logica', mod: 5 },
   { title: '94. Projeto final: tipagem', trail: 'typescript', mod: 5 },
   { title: '95. Projeto final: validação e testes', trail: 'qualidade-e-boas-praticas', mod: 4 },
@@ -2120,7 +2473,7 @@ renderEvents()`
 ]
 
 const editorState = {
-  html: `<main style="font-family: Inter, sans-serif; padding: 24px;"><h1 style="margin:0 0 8px;">Front-Edge Academy</h1><p>Pratique front-end com trilhas e exercícios reais.</p></main>`,
+  html: `<main style="font-family: Inter, sans-serif; padding: 24px;"><h1 style="margin:0 0 8px;">Front Lab Academy</h1><p>Pratique front-end com trilhas e exercícios reais.</p></main>`,
   css: `body { margin: 0; }`,
   js: `console.log('Prática front-end ativa.');`
 }
@@ -2155,7 +2508,7 @@ const projectList = document.getElementById('projectList')
 const practiceDetail = document.getElementById('practiceDetail')
 
 function getSavedTheme() {
-  return localStorage.getItem('front-edge-theme') || 'light'
+  return localStorage.getItem('front-lab-academy-theme') || 'light'
 }
 
 function getPreviewThemeCss() {
@@ -2175,7 +2528,7 @@ function updateThemeToggle(button) {
 function applyTheme(theme) {
   const nextTheme = theme === 'dark' ? 'dark' : 'light'
   document.documentElement.dataset.theme = nextTheme
-  localStorage.setItem('front-edge-theme', nextTheme)
+  localStorage.setItem('front-lab-academy-theme', nextTheme)
   updateThemeToggle(document.getElementById('themeToggle'))
   runPreview()
   document.querySelectorAll('.module-card').forEach((card) => runModuleIde(card))
@@ -2328,7 +2681,7 @@ function renderPracticeDetail() {
       <p>${part}</p>
     </li>
   `).join('')
-  const checklistStorageKey = `front-edge-checklist:${type}:${item.id}`
+  const checklistStorageKey = `front-lab-academy-checklist:${type}:${item.id}`
   const savedChecklist = JSON.parse(localStorage.getItem(checklistStorageKey) || '[]')
   const checklist = item.checklist.map((part, index) => `
     <li>
@@ -2598,9 +2951,10 @@ function runEmbeddedIde(ideRoot) {
 function renderModuleCard(track, module, index) {
   const learnItems = module.learn.map((item) => `<li>${item}</li>`).join('')
   const moduleLevel = module.level || track.levelLabel
-  const moduleStatus = module.status || (index === 0 ? 'disponível' : 'bloqueado')
-  const moduleDescription = module.description || 'Módulo prático da trilha com foco em aprendizado aplicado.'
-  const moduleObjective = module.objective || 'Praticar o conteúdo do módulo em um contexto de projeto front-end.'
+  const moduleTime = module.time || '30 min'
+  const moduleCategory = module.category || track.name
+  const moduleDescription = module.description || `Prática guiada de ${module.title.toLowerCase()} com foco em uma entrega pequena e verificável.`
+  const moduleObjective = module.objective || `Aplicar ${module.title.toLowerCase()} usando ${module.learn.slice(0, 2).join(' e ')} em um contexto realista de front-end.`
   const hasPrevious = index > 0
   const hasNext = index < track.modules.length - 1
 
@@ -2612,8 +2966,9 @@ function renderModuleCard(track, module, index) {
           <h3>${module.title}</h3>
         </div>
         <div class="module-badges">
+          <span>${moduleCategory}</span>
           <span>${moduleLevel}</span>
-          <span>${moduleStatus}</span>
+          <span>${moduleTime}</span>
         </div>
       </div>
       <p class="module-description">${moduleDescription}</p>
@@ -2648,6 +3003,35 @@ function renderModuleCard(track, module, index) {
   `
 }
 
+function renderModuleMenu(track) {
+  const grouped = track.modules.reduce((groups, module, index) => {
+    const category = module.category || 'Módulos'
+    if (!groups.has(category)) groups.set(category, [])
+    groups.get(category).push({ module, index })
+    return groups
+  }, new Map())
+
+  if (grouped.size <= 1) {
+    return track.modules.map((module, index) => `
+      <a href="#mod-${index}" class="module-link" data-module-index="${index}">Módulo ${index + 1}: ${module.title}</a>
+    `).join('')
+  }
+
+  return [...grouped.entries()].map(([category, items]) => `
+    <section class="module-menu-section">
+      <p>${category}</p>
+      <div>
+        ${items.map(({ module, index }) => `
+          <a href="#mod-${index}" class="module-link" data-module-index="${index}">
+            <span>${String(index + 1).padStart(2, '0')}</span>
+            ${module.title}
+          </a>
+        `).join('')}
+      </div>
+    </section>
+  `).join('')
+}
+
 function renderModulesPage() {
   if (!moduleContent || !moduleTrailTitle || !moduleTrailDescription || !moduleTrailMeta || !moduleMenuList || !finalChallengeBox) return
   const track = getTrackFromQuery()
@@ -2664,11 +3048,10 @@ function renderModulesPage() {
 
   moduleTrailTitle.textContent = `${track.name} - módulos de estudo`
   moduleTrailDescription.textContent = track.description
-  moduleTrailMeta.textContent = `Nível: ${track.levelLabel} | ${track.modules.length} módulos | Tags: ${track.tags.join(', ')}`
+  const categories = [...new Set(track.modules.map((module) => module.category).filter(Boolean))]
+  moduleTrailMeta.textContent = `Nível: ${track.levelLabel} | ${track.modules.length} módulos | Tags: ${track.tags.join(', ')}${categories.length ? ` | Categorias: ${categories.join(', ')}` : ''}`
 
-  moduleMenuList.innerHTML = track.modules.map((module, index) => `
-    <a href="#mod-${index}" class="module-link" data-module-index="${index}">Módulo ${index + 1}: ${module.title}</a>
-  `).join('')
+  moduleMenuList.innerHTML = renderModuleMenu(track)
 
   const showModule = (index, shouldScroll = false) => {
     const selectedIndex = Math.min(Math.max(index, 0), track.modules.length - 1)

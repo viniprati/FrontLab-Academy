@@ -8,7 +8,7 @@
       type="image/png"
       href="./assets/logo.png"
     />
-    <title>Roadmap - Front-Edge Academy</title>
+    <title>Módulos - Front Lab Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -44,6 +44,7 @@
   </head>
   <body class="font-inter bg-bgMain text-textMain">
     <div class="bg-grid"></div>
+
     <header
       class="site-header mx-auto mt-5 w-[94%] max-w-[1280px] rounded-2xl border border-borderEdge/90 bg-bgSecondary/65 px-5 py-4 backdrop-blur"
     >
@@ -53,12 +54,12 @@
             id="brand-logo-header"
             class="brand-logo-header"
             src="./assets/logo_barra.png"
-            alt="Front-Edge Academy Logo Horizontal"
+            alt="Front Lab Academy Logo Horizontal"
           /><img
             id="brand-logo-compact"
             class="brand-logo-compact"
             src="./assets/logo.png"
-            alt="Front-Edge Academy Logo Compacto"
+            alt="Front Lab Academy Logo Compacto"
           />
         </div>
         <button
@@ -71,11 +72,14 @@
           id="mainNav"
           class="hidden gap-8 text-sm text-textSecondary md:flex"
         >
-          <a href="./trilhas.html">Trilhas</a><a href="./roadmap.html">Roadmap</a
-          ><a href="./exercicios.html">Exercícios</a
-          ><a href="./desafios.html">Desafios</a
-          ><a href="./projetos.html">Projetos</a><a href="./docs.html">Docs</a
-          ><a href="./mini-ide.html">Mini IDE</a><a href="./sobre.html">Sobre</a>
+          <a href="./trilhas.html" class="hover:text-white">Trilhas</a
+          ><a href="./roadmap.html" class="hover:text-white">Roadmap</a
+          ><a href="./exercicios.html" class="hover:text-white">Exercícios</a
+          ><a href="./desafios.html" class="hover:text-white">Desafios</a
+          ><a href="./projetos.html" class="hover:text-white">Projetos</a
+          ><a href="./docs.html" class="hover:text-white">Docs</a
+          ><a href="./mini-ide.html" class="hover:text-white">Mini IDE</a
+          ><a href="./sobre.html" class="hover:text-white">Sobre</a>
         </nav>
         <a
           href="./index.html"
@@ -98,22 +102,42 @@
     <main class="mx-auto w-[94%] max-w-[1280px] py-8">
       <section class="section-block">
         <div class="section-head">
-          <h2>Roadmap front-end por fases</h2>
-          <p>
-            Um caminho organizado do zero ao portfólio. Cada fase agrupa
-            conteúdos relacionados e cada card abre direto no módulo
-            recomendado.
-          </p>
+          <h2 id="moduleTrailTitle">Módulos da trilha</h2>
+          <p id="moduleTrailDescription"></p>
+          <p id="moduleTrailMeta" class="text-sm text-textMuted"></p>
         </div>
-        <div id="roadmapSteps" class="roadmap-sections"></div>
+        <div class="module-layout">
+          <aside class="module-menu">
+            <div class="module-menu-head">
+              <div class="module-menu-brand">
+                <img
+                  id="brand-symbol-secondary"
+                  class="brand-symbol-secondary"
+                  src="./assets/logo.png"
+                  alt="Símbolo Front Lab Academy"
+                />
+                <h3>Menu da trilha</h3>
+              </div>
+              <button id="moduleMenuToggle" class="pill" type="button">
+                Mostrar/Ocultar
+              </button>
+            </div>
+            <nav id="moduleMenuList" class="module-menu-list"></nav>
+          </aside>
+          <div id="moduleContent" class="grid gap-3"></div>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-head"><h2>Desafio final da trilha</h2></div>
+        <div id="finalChallengeBox"></div>
       </section>
     </main>
-
     <footer
       class="mx-auto mb-8 mt-8 w-[94%] max-w-[1280px] rounded-2xl border border-borderEdge/90 bg-bgSecondary/60 p-5"
     >
       <p class="text-textSecondary">
-        Front-Edge Academy é uma plataforma gratuita para estudar, praticar e
+        Front Lab Academy é uma plataforma gratuita para estudar, praticar e
         evoluir em front-end com trilhas, exercícios, desafios e projetos reais.
       </p>
       <div class="mt-3 flex flex-wrap gap-3 text-sm text-textSecondary">
@@ -139,3 +163,4 @@
     <script type="module" src="./script.js"></script>
   </body>
 </html>
+

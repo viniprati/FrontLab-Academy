@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "installCommand": "cd \"Front Edge\" && npm ci",
-  "buildCommand": "cd \"Front Edge\" && npm run build",
-  "outputDirectory": "Front Edge/dist",
+  "installCommand": "cd \"Front Lab Academy\" && npm ci",
+  "buildCommand": "cd \"Front Lab Academy\" && npm run build",
+  "outputDirectory": "Front Lab Academy/dist",
   "routes": [
     { "handle": "filesystem" },
     { "src": "/([^/.]+)$", "dest": "/$1.html" }

@@ -1,4 +1,4 @@
-﻿# Front-Edge Academy
+﻿# Front Lab Academy
 
 Site estático/interativo com HTML, Tailwind CSS (CDN), CSS custom e JavaScript puro.
 
