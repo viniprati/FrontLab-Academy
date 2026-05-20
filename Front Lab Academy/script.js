@@ -2610,6 +2610,109 @@ function markActiveNavLink() {
   })
 }
 
+const discordWidgetEndpoint = 'https://discord.com/api/guilds/1506252581998034964/widget.json'
+const discordFallbackInvite = 'https://discord.com/invite/s6yNfDYH'
+
+function getDiscordInviteUrl(inviteUrl) {
+  return typeof inviteUrl === 'string' && inviteUrl.startsWith('https://discord.com/')
+    ? inviteUrl
+    : discordFallbackInvite
+}
+
+function updateDiscordInviteLinks(inviteUrl) {
+  const safeInvite = getDiscordInviteUrl(inviteUrl)
+  document.querySelectorAll('[data-discord-invite]').forEach((link) => {
+    if (link instanceof HTMLAnchorElement) link.href = safeInvite
+  })
+}
+
+function renderDiscordChannels(channels = []) {
+  const visibleChannels = channels.slice(0, 3)
+  if (!visibleChannels.length) return '<span># lounge</span><span># estudos</span><span># projetos</span>'
+
+  return visibleChannels
+    .map((channel) => `<span># ${escapeHtml(slugify(channel.name || 'canal'))}</span>`)
+    .join('')
+}
+
+function getMemberInitials(username = '') {
+  const cleanName = username.trim()
+  if (!cleanName) return 'FL'
+  return cleanName
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join('')
+    .toUpperCase()
+}
+
+function renderDiscordMembers(members = []) {
+  const visibleMembers = members.slice(0, 4)
+  if (!visibleMembers.length) return '<span class="discord-muted">Nenhum membro online agora.</span>'
+
+  return visibleMembers.map((member) => {
+    const username = escapeHtml(member.username || 'Membro FrontLab')
+    const status = escapeHtml(member.status || 'online')
+    const avatar = member.avatar_url
+      ? `<img src="${escapeHtml(member.avatar_url)}" alt="" loading="lazy" />`
+      : `<span class="discord-member-initials">${escapeHtml(getMemberInitials(member.username))}</span>`
+
+    return `
+      <div class="discord-member">
+        ${avatar}
+        <strong>${username}</strong>
+        <span class="discord-member-status ${status}" aria-label="Status ${status}"></span>
+      </div>
+    `
+  }).join('')
+}
+
+async function initDiscordCommunityCards() {
+  const cards = document.querySelectorAll('[data-discord-community-card]')
+  if (!cards.length) {
+    updateDiscordInviteLinks(discordFallbackInvite)
+    return
+  }
+
+  try {
+    const response = await fetch(discordWidgetEndpoint)
+    if (!response.ok) throw new Error('Discord widget unavailable')
+
+    const data = await response.json()
+    const inviteUrl = getDiscordInviteUrl(data.instant_invite)
+    updateDiscordInviteLinks(inviteUrl)
+
+    cards.forEach((card) => {
+      const name = card.querySelector('[data-discord-name]')
+      const online = card.querySelector('[data-discord-online]')
+      const channels = card.querySelector('[data-discord-channels]')
+      const members = card.querySelector('[data-discord-members]')
+      const message = card.querySelector('[data-discord-message]')
+
+      if (name) name.textContent = data.name || 'FrontLab Community'
+      if (online) online.textContent = String(data.presence_count ?? data.members?.length ?? 0)
+      if (channels) channels.innerHTML = renderDiscordChannels(data.channels || [])
+      if (members) members.innerHTML = renderDiscordMembers(data.members || [])
+      if (message) message.hidden = true
+    })
+  } catch (_error) {
+    updateDiscordInviteLinks(discordFallbackInvite)
+    cards.forEach((card) => {
+      const name = card.querySelector('[data-discord-name]')
+      const online = card.querySelector('[data-discord-online]')
+      const channels = card.querySelector('[data-discord-channels]')
+      const members = card.querySelector('[data-discord-members]')
+      const message = card.querySelector('[data-discord-message]')
+
+      if (name) name.textContent = 'FrontLab Community'
+      if (online) online.textContent = '--'
+      if (channels) channels.innerHTML = '<span># lounge</span><span># estudos</span><span># projetos</span>'
+      if (members) members.innerHTML = '<span class="discord-muted">Entre para acompanhar a comunidade por dentro.</span>'
+      if (message) message.hidden = false
+    })
+  }
+}
+
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -3261,6 +3364,7 @@ if (editor) {
 }
 initPageTransitions()
 markActiveNavLink()
+initDiscordCommunityCards()
 renderTracks()
 renderRoadmap()
 renderModulesPage()
