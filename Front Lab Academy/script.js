@@ -1,3 +1,5 @@
+import { htmlLessons } from './html-modules.js'
+
 function slugify(text) {
   return text
     .toLowerCase()
@@ -108,6 +110,121 @@ function createHtmlModule(index, title, description, level, objective, learn, pr
     starter: mkStarter(starterTitle, '#f97316', `HTML módulo ${index}`)
   }
 }
+
+function getHtmlModuleCategory(index) {
+  const categoryRanges = [
+    { end: 2, category: 'Fundamentos do HTML' },
+    { end: 4, category: 'Estrutura da Página' },
+    { end: 8, category: 'Textos e Conteúdo' },
+    { end: 11, category: 'Links e Navegação' },
+    { end: 14, category: 'Imagens e Mídia' },
+    { end: 19, category: 'Listas e Tabelas' },
+    { end: 29, category: 'Formulários' },
+    { end: 41, category: 'Semântica e Acessibilidade' },
+    { end: 43, category: 'Organização de Projeto' },
+    { end: 50, category: 'Projeto Final' }
+  ]
+
+  return categoryRanges.find((range) => index <= range.end)?.category || 'Projeto Final'
+}
+
+function getHtmlModuleLevel(index) {
+  if (index <= 29) return 'iniciante'
+  if (index <= 43) return 'intermediário'
+  return 'projeto'
+}
+
+function getLessonParagraphs(lesson) {
+  return lesson
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.replace(/\s+/g, ' ').trim())
+    .filter((paragraph) => {
+      if (!paragraph) return false
+      if (paragraph.startsWith('<')) return false
+      if (paragraph.startsWith('[')) return false
+      if (/^[A-Z0-9 ,.:;/-]+$/.test(paragraph) && paragraph.length < 80) return false
+      return paragraph.length > 35
+    })
+}
+
+function getLessonHighlights(lesson) {
+  const paragraphs = getLessonParagraphs(lesson)
+  return paragraphs
+    .flatMap((paragraph) => paragraph.split(/(?<=[.!?])\s+/))
+    .map((sentence) => sentence.trim())
+    .filter((sentence) => sentence.length >= 35 && sentence.length <= 145)
+    .slice(0, 3)
+}
+
+function getHtmlPractice(index, title, category) {
+  if (category === 'Projeto Final') {
+    return `Construa ou revise a entrega proposta em "${title}" usando somente HTML semântico e os critérios da apostila.`
+  }
+
+  if (category === 'Formulários') {
+    return `Crie um trecho de formulário em index.html aplicando ${title.toLowerCase()} com labels, names e estrutura acessível.`
+  }
+
+  if (category === 'Semântica e Acessibilidade') {
+    return `Refatore uma pequena página em index.html aplicando ${title.toLowerCase()} e confira se a estrutura continua compreensível sem CSS.`
+  }
+
+  return `Reproduza os exemplos principais de ${title.toLowerCase()} em index.html e adapte para um conteúdo próprio.`
+}
+
+function getHtmlExercise(index, title, category) {
+  if (index === 50) return 'Conclua quando a checklist da trilha estiver revisada item por item no seu projeto final.'
+  if (category === 'Projeto Final') return `Entregue uma página ou seção completa que demonstre domínio de ${title.toLowerCase()}.`
+  return `Conclua quando conseguir explicar ${title.toLowerCase()} e usar o conceito sem depender de CSS ou JavaScript.`
+}
+
+function createHtmlStarter(title, index, lesson) {
+  const firstExample = lesson
+    .split(/\n{2,}/)
+    .map((block) => block.trim())
+    .find((block) => /^<[\s\S]*>$/.test(block) && block.length < 1200 && !block.includes('<elemento'))
+
+  if (firstExample) return firstExample
+
+  return `<main>
+  <h1>${title}</h1>
+  <p>Use este arquivo para aplicar o que voce acabou de estudar no modulo ${String(index).padStart(2, '0')}.</p>
+
+  <section>
+    <h2>Minha pratica</h2>
+    <p>Substitua este conteudo por uma estrutura HTML que demonstre o conceito do modulo.</p>
+  </section>
+</main>`
+}
+
+function createHtmlModuleFromLesson(lesson) {
+  const index = lesson.number
+  const category = getHtmlModuleCategory(index)
+  const highlights = getLessonHighlights(lesson.lesson)
+
+  return {
+    title: lesson.title,
+    category,
+    description: lesson.description,
+    level: getHtmlModuleLevel(index),
+    time: index >= 44 ? '60 min' : '40 min',
+    status: index === 1 ? 'disponível' : 'bloqueado',
+    objective: highlights[0] || `Estudar ${lesson.title.toLowerCase()} com foco na função semântica do HTML.`,
+    learn: highlights.length >= 3
+      ? highlights
+      : ['Conceito central apresentado na apostila', 'Exemplos de marcação HTML aplicados ao tema', 'Critérios de uso correto em páginas reais'],
+    practice: getHtmlPractice(index, lesson.title, category),
+    exercise: getHtmlExercise(index, lesson.title, category),
+    lesson: lesson.lesson,
+    starter: {
+      html: createHtmlStarter(lesson.title, index, lesson.lesson),
+      css: '',
+      js: ''
+    }
+  }
+}
+
+const htmlModules = htmlLessons.map(createHtmlModuleFromLesson)
 
 function getCssModuleLevel(index) {
   if (index <= 30) return 'iniciante'
@@ -420,58 +537,7 @@ const tracks = [
     tags: ['HTML', 'Semântica', 'Formulários', 'SEO', 'Acessibilidade'],
     accent: '#F97316', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
     description: 'Aprenda HTML do zero com 50 módulos, avançando dos fundamentos até páginas completas, formulários, semântica, SEO, acessibilidade e projetos práticos.',
-    modules: [
-      createHtmlModule(1, 'Introdução ao HTML', 'Primeiro contato com HTML e com o papel da linguagem na construção de páginas.', 'iniciante', 'Entender o que o HTML faz e por que ele é a base de qualquer interface web.', ['Papel do HTML no front-end', 'Diferença entre estrutura, estilo e comportamento', 'Leitura de uma página como documento'], 'Identifique em uma página real quais partes pertencem ao HTML.', 'Crie um arquivo index.html com um título e uma apresentação curta.'),
-      createHtmlModule(2, 'Como a Web Funciona', 'Visão simples do caminho entre navegador, servidor, arquivos e resposta visual.', 'iniciante', 'Compreender o fluxo básico que transforma um arquivo HTML em uma página no navegador.', ['Navegador, servidor e URL', 'Requisição e resposta', 'Arquivos estáticos no front-end'], 'Desenhe o caminho de uma requisição até a renderização da página.', 'Explique em um parágrafo o que acontece ao abrir um site.'),
-      createHtmlModule(3, 'Estrutura Básica de um Documento HTML', 'Montagem do esqueleto essencial com doctype, html, head e body.', 'iniciante', 'Criar documentos HTML válidos e organizados desde a primeira linha.', ['DOCTYPE e elemento html', 'Head, body e metadados mínimos', 'Indentação inicial do documento'], 'Monte uma página com estrutura completa e conteúdo simples.', 'Crie um template base reutilizável para os próximos módulos.'),
-      createHtmlModule(4, 'Tags Principais do HTML', 'Conhecimento das tags mais comuns para montar conteúdo inicial com segurança.', 'iniciante', 'Reconhecer e aplicar tags essenciais em uma página simples.', ['Tags de texto e agrupamento', 'Elementos de conteúdo e navegação', 'Quando usar cada tag comum'], 'Transforme um texto solto em uma página com tags apropriadas.', 'Crie uma página de apresentação usando pelo menos oito tags diferentes.'),
-      createHtmlModule(5, 'Textos e Parágrafos', 'Organização de blocos textuais com parágrafos, quebras e destaque básico.', 'iniciante', 'Estruturar textos legíveis sem usar HTML apenas como aparência.', ['Parágrafos e fluxo de texto', 'Quebras de linha com critério', 'Destaques sem perder significado'], 'Reestruture um texto longo em parágrafos claros.', 'Crie uma página de artigo curto com introdução, corpo e fechamento.'),
-      createHtmlModule(6, 'Títulos e Hierarquia de Conteúdo', 'Uso correto de h1 a h6 para criar hierarquia compreensível.', 'iniciante', 'Montar uma árvore de títulos coerente para pessoas e mecanismos de busca.', ['H1 como título principal', 'Subtítulos em ordem lógica', 'Erros comuns de hierarquia'], 'Revise uma página e reorganize seus títulos.', 'Crie um sumário visual usando h1, h2 e h3 em ordem correta.'),
-      createHtmlModule(7, 'Comentários no HTML', 'Uso de comentários para orientar o código sem poluir a página.', 'iniciante', 'Adicionar comentários úteis em pontos estratégicos do documento.', ['Sintaxe de comentários', 'Comentários de seção', 'Quando evitar comentários óbvios'], 'Separe uma página em áreas marcadas por comentários.', 'Comente a estrutura de uma landing page sem exagerar.'),
-      createHtmlModule(8, 'Atributos HTML', 'Como atributos alteram comportamento, identificação e significado dos elementos.', 'iniciante', 'Usar atributos comuns para configurar elementos de forma correta.', ['Atributos globais', 'id, class, title e lang', 'Valores e boas práticas'], 'Adicione atributos a elementos de uma página existente.', 'Crie uma lista de componentes com ids e classes consistentes.'),
-      createHtmlModule(9, 'Links Externos', 'Criação de links para outros sites com segurança e clareza.', 'básico', 'Usar links externos sem prejudicar navegação, segurança ou entendimento.', ['Elemento a e atributo href', 'target blank com rel adequado', 'Texto de link descritivo'], 'Adicione referências externas a uma página de estudos.', 'Monte uma página com cinco links externos úteis e bem descritos.'),
-      createHtmlModule(10, 'Links Internos', 'Ligação entre páginas do mesmo projeto usando caminhos corretos.', 'básico', 'Construir navegação básica entre arquivos internos do site.', ['Links para páginas locais', 'Organização de pastas', 'Nomes de arquivos previsíveis'], 'Crie uma navegação entre três páginas HTML.', 'Monte um mini site com Home, Sobre e Contato conectados.'),
-      createHtmlModule(11, 'Âncoras na Página', 'Navegação para seções dentro da mesma página com ids e links internos.', 'básico', 'Criar índices e saltos de conteúdo em páginas longas.', ['href com identificador', 'id em seções', 'Experiência em páginas extensas'], 'Adicione um índice navegável a um artigo grande.', 'Crie uma documentação curta com âncoras para cada seção.'),
-      createHtmlModule(12, 'Imagens no HTML', 'Inserção de imagens com src, dimensões e contexto adequado.', 'básico', 'Exibir imagens de forma previsível e organizada no HTML.', ['Tag img', 'src, width e height', 'Organização de assets'], 'Inclua imagens em uma página de perfil.', 'Crie uma galeria simples com três imagens e legendas textuais.'),
-      createHtmlModule(13, 'Texto Alternativo e Acessibilidade em Imagens', 'Escrita de textos alternativos úteis para imagens informativas.', 'básico', 'Tornar imagens compreensíveis para tecnologias assistivas.', ['Atributo alt', 'Imagem decorativa versus informativa', 'Descrição curta e contextual'], 'Revise textos alternativos de uma galeria.', 'Corrija cinco imagens com alt inadequado ou ausente.'),
-      createHtmlModule(14, 'Caminhos Relativos e Absolutos', 'Diferença entre caminhos locais, raiz do site e URLs completas.', 'básico', 'Evitar links e imagens quebrados ao organizar arquivos em pastas.', ['Caminhos relativos', 'Caminhos absolutos', 'Referências entre diretórios'], 'Organize páginas e imagens em subpastas.', 'Corrija uma página com caminhos quebrados para imagens e links.'),
-      createHtmlModule(15, 'Listas Ordenadas', 'Uso de listas numeradas para etapas, rankings e sequências.', 'básico', 'Escolher listas ordenadas quando a ordem altera o sentido do conteúdo.', ['ol e li', 'Sequências de instrução', 'Atributos úteis em listas ordenadas'], 'Transforme instruções soltas em uma lista numerada.', 'Crie um passo a passo de publicação de projeto.'),
-      createHtmlModule(16, 'Listas Não Ordenadas', 'Uso de listas sem ordem para grupos de itens relacionados.', 'básico', 'Organizar coleções de itens sem criar parágrafos repetitivos.', ['ul e li', 'Menus simples', 'Agrupamento de tópicos'], 'Monte uma lista de recursos de estudo.', 'Crie uma seção de benefícios usando lista não ordenada.'),
-      createHtmlModule(17, 'Listas Aninhadas', 'Listas dentro de listas para representar níveis e categorias.', 'básico', 'Construir estruturas de conteúdo com subitens sem perder legibilidade.', ['Aninhamento de ul e ol', 'Indentação clara', 'Categorias e subtópicos'], 'Crie um mapa de conteúdo com categorias e subcategorias.', 'Monte a estrutura de um curso usando listas aninhadas.'),
-      createHtmlModule(18, 'Tabelas Básicas', 'Construção de tabelas simples com linhas, colunas e células.', 'básico', 'Representar dados tabulares quando linha e coluna têm relação real.', ['table, tr, th e td', 'Cabeçalhos de coluna', 'Quando usar tabela'], 'Crie uma tabela de horários de estudo.', 'Monte uma tabela com três colunas e cinco linhas de dados.'),
-      createHtmlModule(19, 'Tabelas Semânticas', 'Melhoria de tabelas com caption, thead, tbody, tfoot e escopos.', 'básico', 'Criar tabelas mais acessíveis e fáceis de interpretar.', ['caption e agrupamentos', 'thead, tbody e tfoot', 'scope em cabeçalhos'], 'Refatore uma tabela básica para uma versão semântica.', 'Crie uma tabela de planos com legenda e cabeçalhos adequados.'),
-      createHtmlModule(20, 'Formulários Básicos', 'Primeira estrutura de formulário com campos, ação e método.', 'básico', 'Entender como formulários coletam dados em páginas web.', ['Elemento form', 'method e action', 'Agrupamento inicial de campos'], 'Monte um formulário simples de contato.', 'Crie um formulário com nome, mensagem e botão de envio.'),
-      createHtmlModule(21, 'Inputs de Texto', 'Uso de campos de texto para nomes, assuntos e respostas curtas.', 'básico', 'Criar campos textuais claros e bem identificados.', ['input type text', 'placeholder com moderação', 'name e value'], 'Adicione campos de texto a um formulário de cadastro.', 'Crie um formulário de perfil com campos de nome, cidade e profissão.'),
-      createHtmlModule(22, 'Inputs de Email, Senha e Número', 'Campos especializados para tipos comuns de dados.', 'básico', 'Escolher tipos de input que ajudam validação e experiência mobile.', ['type email', 'type password', 'type number'], 'Atualize um formulário genérico com tipos corretos.', 'Crie um cadastro com email, senha e idade usando inputs apropriados.'),
-      createHtmlModule(23, 'Checkbox e Radio', 'Campos de seleção múltipla e escolha única em formulários.', 'básico', 'Decidir entre checkbox e radio conforme a regra de escolha.', ['Checkbox para múltiplas opções', 'Radio para opção exclusiva', 'Agrupamento por name'], 'Crie preferências de usuário com seleção correta.', 'Monte uma pesquisa com escolhas únicas e múltiplas.'),
-      createHtmlModule(24, 'Select e Options', 'Menus de seleção para listas fechadas de alternativas.', 'básico', 'Usar select quando a escolha deve vir de um conjunto conhecido.', ['select e option', 'value significativo', 'Opção inicial orientativa'], 'Adicione seleção de estado ou categoria a um formulário.', 'Crie um formulário de inscrição com área de interesse em select.'),
-      createHtmlModule(25, 'Textarea', 'Campo de texto longo para mensagens, observações e descrições.', 'básico', 'Coletar textos maiores com estrutura e rótulo adequados.', ['textarea', 'rows e limite visual', 'Diferença para input text'], 'Inclua um campo de mensagem em um formulário existente.', 'Crie um formulário de feedback com textarea e campos de identificação.'),
-      createHtmlModule(26, 'Botões no HTML', 'Tipos de botões e seus efeitos dentro e fora de formulários.', 'básico', 'Usar botões com tipo correto para evitar comportamentos inesperados.', ['button', 'submit, reset e button', 'Texto de ação claro'], 'Revise botões de um formulário e ajuste seus tipos.', 'Crie três botões com funções distintas e nomes claros.'),
-      createHtmlModule(27, 'Labels em Formulários', 'Relação entre rótulos e campos para clareza e acessibilidade.', 'básico', 'Conectar labels a inputs para melhorar clique, leitura e navegação.', ['label for', 'id correspondente', 'Rótulos objetivos'], 'Corrija um formulário sem labels adequados.', 'Crie um formulário de login com labels corretamente vinculados.'),
-      createHtmlModule(28, 'Fieldset e Legend', 'Agrupamento semântico de campos relacionados em formulários maiores.', 'básico', 'Organizar formulários complexos em grupos compreensíveis.', ['fieldset', 'legend', 'Grupos de dados pessoais e preferências'], 'Agrupe campos de cadastro em seções claras.', 'Refatore um formulário longo usando fieldset e legend.'),
-      createHtmlModule(29, 'Validação Nativa de Formulários', 'Uso de required, minlength, pattern e tipos para validação no navegador.', 'básico', 'Adicionar validações simples sem JavaScript.', ['required e minlength', 'pattern e constraints', 'Mensagens nativas do navegador'], 'Aplique validação a um formulário de cadastro.', 'Crie um formulário com pelo menos quatro regras nativas de validação.'),
-      createHtmlModule(30, 'Tags Semânticas', 'Introdução ao uso de elementos que descrevem o papel do conteúdo.', 'intermediário', 'Trocar marcação genérica por elementos com significado real.', ['Semântica no HTML', 'Landmarks e leitura estrutural', 'Benefícios para manutenção'], 'Identifique áreas semânticas em uma página pronta.', 'Reestruture uma página usando tags semânticas principais.'),
-      createHtmlModule(31, 'Header, Main e Footer', 'Estrutura principal de uma página com topo, conteúdo e rodapé.', 'intermediário', 'Criar landmarks fundamentais para orientar navegação e leitura.', ['header', 'main único por página', 'footer contextual'], 'Organize uma página simples em três áreas principais.', 'Crie uma página institucional com header, main e footer.'),
-      createHtmlModule(32, 'Section e Article', 'Uso de seções e artigos para conteúdo temático e independente.', 'intermediário', 'Separar blocos de conteúdo com sentido próprio.', ['section com tema claro', 'article para conteúdo independente', 'Títulos dentro das seções'], 'Divida uma página longa em seções temáticas.', 'Crie uma página de blog com artigos bem estruturados.'),
-      createHtmlModule(33, 'Nav e Aside', 'Elementos para navegação principal, índices e conteúdos complementares.', 'intermediário', 'Distinguir navegação relevante de conteúdo lateral ou auxiliar.', ['nav para grupos de links', 'aside para apoio contextual', 'Menu e conteúdo relacionado'], 'Adicione menu e área complementar a uma página.', 'Crie uma documentação com nav de seções e aside de links úteis.'),
-      createHtmlModule(34, 'Div e Span', 'Uso consciente de elementos genéricos quando não há semântica específica.', 'intermediário', 'Usar div e span sem substituir tags semânticas importantes.', ['div como agrupamento', 'span em trechos inline', 'Limites da marcação genérica'], 'Revise uma página com divs excessivas.', 'Substitua divs por tags semânticas onde fizer sentido.'),
-      createHtmlModule(35, 'HTML Semântico na Prática', 'Aplicação combinada de semântica em uma página realista.', 'intermediário', 'Construir uma página completa com estrutura clara, navegável e significativa.', ['Planejamento estrutural', 'Combinação de landmarks', 'Revisão de hierarquia'], 'Monte o wireframe semântico de uma página.', 'Crie uma página de serviço usando HTML semântico de ponta a ponta.'),
-      createHtmlModule(36, 'Áudio no HTML', 'Inserção de áudio com controles e alternativas básicas.', 'intermediário', 'Publicar conteúdo sonoro com controles nativos e fallback.', ['audio e source', 'controls', 'Texto de fallback'], 'Inclua um player de áudio em uma página.', 'Crie uma seção de podcast com título, descrição e áudio.'),
-      createHtmlModule(37, 'Vídeo no HTML', 'Uso de vídeo nativo com controles, poster e múltiplas fontes.', 'intermediário', 'Adicionar vídeos de forma organizada e amigável.', ['video e source', 'poster e controls', 'Boas práticas de mídia'], 'Insira um vídeo demonstrativo em uma página.', 'Crie uma seção de apresentação com vídeo e descrição textual.'),
-      createHtmlModule(38, 'Iframe', 'Incorporação de conteúdo externo com cuidados de tamanho, título e segurança.', 'intermediário', 'Usar iframes quando fizer sentido sem comprometer acessibilidade.', ['iframe', 'title obrigatório', 'Embed de mapas e vídeos'], 'Adicione um conteúdo incorporado com título descritivo.', 'Crie uma página de contato com mapa incorporado de forma acessível.'),
-      createHtmlModule(39, 'SEO Básico com HTML', 'Como a estrutura HTML ajuda buscadores a entenderem a página.', 'intermediário', 'Preparar páginas com títulos, descrição e estrutura rastreável.', ['title e description', 'Headings claros', 'Links e conteúdo indexável'], 'Audite uma página e melhore seus sinais básicos de SEO.', 'Crie uma página com title, description e hierarquia coerente.'),
-      createHtmlModule(40, 'Meta Tags Importantes', 'Configuração de metadados essenciais para responsividade, idioma e compartilhamento.', 'intermediário', 'Usar meta tags que influenciam renderização, busca e compartilhamento.', ['charset e viewport', 'description', 'Open Graph básico'], 'Revise o head de uma página e complete metadados ausentes.', 'Monte um head completo para uma landing page simples.'),
-      createHtmlModule(41, 'Acessibilidade Básica no HTML', 'Princípios iniciais para páginas navegáveis e compreensíveis por mais pessoas.', 'intermediário', 'Aplicar HTML acessível antes de depender de correções visuais ou JavaScript.', ['Semântica e landmarks', 'Textos alternativos', 'Rótulos e foco'], 'Faça uma auditoria manual de uma página simples.', 'Corrija uma página com problemas de imagem, formulário e navegação.'),
-      createHtmlModule(42, 'Boas Práticas de Código HTML', 'Organização, legibilidade e consistência para manter páginas fáceis de evoluir.', 'intermediário', 'Escrever HTML limpo, previsível e pronto para crescer.', ['Indentação consistente', 'Nomes claros de classes e ids', 'Evitar marcação desnecessária'], 'Refatore um arquivo HTML bagunçado.', 'Entregue uma versão organizada de uma página com comentários úteis.'),
-      createHtmlModule(43, 'Erros Comuns em HTML', 'Reconhecimento de problemas frequentes que quebram layout, semântica ou acessibilidade.', 'intermediário', 'Diagnosticar e corrigir erros comuns antes de avançar para projetos.', ['Tags mal fechadas', 'Headings fora de ordem', 'Links, alt e labels ausentes'], 'Encontre erros em um HTML propositalmente problemático.', 'Corrija dez problemas em uma página de exemplo e documente as mudanças.'),
-      createHtmlModule(44, 'Projeto: Página de Perfil', 'Projeto guiado para reunir estrutura, textos, imagens, listas e links.', 'projeto', 'Construir uma página pessoal simples com HTML organizado.', ['Planejamento de conteúdo', 'Imagem com alt', 'Links e listas'], 'Crie uma página de perfil com bio, habilidades e contatos.', 'Entregue uma página de perfil completa com navegação para seções internas.'),
-      createHtmlModule(45, 'Projeto: Landing Page Simples', 'Construção de uma página de apresentação com seções claras e chamada principal.', 'projeto', 'Aplicar hierarquia, semântica e conteúdo objetivo em uma landing page.', ['Hero estrutural', 'Seções de benefícios', 'Links de chamada para ação'], 'Monte a estrutura HTML de uma landing page.', 'Crie uma landing page de produto fictício usando apenas HTML.'),
-      createHtmlModule(46, 'Projeto: Formulário Completo', 'Projeto focado em formulário com campos variados, agrupamento e validação nativa.', 'projeto', 'Criar um formulário robusto, legível e acessível.', ['Campos de texto e seleção', 'Labels, fieldset e legend', 'Validação nativa'], 'Planeje os campos de um cadastro completo.', 'Construa um formulário de inscrição com validações e grupos semânticos.'),
-      createHtmlModule(47, 'Projeto: Página Institucional', 'Página com múltiplas seções para apresentar uma marca, serviço ou comunidade.', 'projeto', 'Combinar semântica, navegação, mídia e conteúdo institucional.', ['Header e navegação', 'Seções institucionais', 'Contato e rodapé'], 'Organize o mapa de conteúdo de uma instituição fictícia.', 'Crie uma página institucional com sobre, serviços, mídia e contato.'),
-      createHtmlModule(48, 'Projeto Final de HTML', 'Entrega completa para consolidar todos os fundamentos da trilha.', 'projeto', 'Construir uma página final bem estruturada, acessível e pronta para receber CSS.', ['Arquitetura do documento', 'Semântica completa', 'SEO e acessibilidade básicos'], 'Defina tema, público, seções e conteúdo do projeto final.', 'Entregue um site HTML completo com pelo menos cinco seções e formulário.'),
-      createHtmlModule(49, 'Revisão Geral da Trilha', 'Revisão orientada dos conceitos essenciais antes da conclusão.', 'projeto', 'Conferir domínio dos principais blocos de HTML estudados.', ['Fundamentos e estrutura', 'Links, mídia, listas e tabelas', 'Formulários, semântica e acessibilidade'], 'Revise seus projetos anteriores com uma checklist.', 'Ajuste pelo menos três módulos/projetos com melhorias identificadas na revisão.'),
-      createHtmlModule(50, 'Checklist de Conclusão da Trilha', 'Fechamento da trilha com critérios de qualidade para portfólio.', 'projeto', 'Validar se o HTML produzido está completo, organizado e apresentável.', ['Checklist técnico', 'Checklist de acessibilidade', 'Preparação para próximos estudos'], 'Faça uma revisão final do projeto com a checklist da trilha.', 'Publique ou organize o projeto final e registre aprendizados em um README.')
-    ],
+    modules: htmlModules,
     challenge: { title: 'Desafio final: Site institucional semântico', brief: 'Construa um site institucional multi-seções com HTML semântico, formulário funcional, mídia incorporada, SEO básico e foco em acessibilidade.', portfolio: 'Entregáveis: deploy, auditoria A11y, checklist de conclusão e documentação da estrutura semântica.' }
   },
   {
@@ -3034,9 +3100,12 @@ function runModuleIde(moduleCard) {
   const cssInput = moduleCard.querySelector('textarea[data-type="css"]')
   const jsInput = moduleCard.querySelector('textarea[data-type="js"]')
   const previewFrame = moduleCard.querySelector('.module-preview')
-  if (!htmlInput || !cssInput || !jsInput || !previewFrame) return
+  if (!htmlInput || !previewFrame) return
 
-  const source = `<!doctype html><html><head><style>${getPreviewThemeCss()}${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<' + '/script></body></html>`
+  const isHtmlOnly = !cssInput && !jsInput
+  const source = isHtmlOnly
+    ? htmlInput.value
+    : `<!doctype html><html><head><style>${getPreviewThemeCss()}${cssInput?.value || ''}</style></head><body>${htmlInput.value}<script>${jsInput?.value || ''}<' + '/script></body></html>`
   previewFrame.srcdoc = source
 }
 
@@ -3051,6 +3120,42 @@ function runEmbeddedIde(ideRoot) {
   previewFrame.srcdoc = source
 }
 
+function isCodeLikeBlock(block) {
+  const lines = block.split('\n')
+  return lines.some((line) => /^\s*</.test(line))
+    || lines.some((line) => /^\s*(<\/|{|\}|[.#]?\w[\w-]*\s*{)/.test(line))
+    || lines.some((line) => /^\s*(projeto\/|index\.html|images\/|paginas\/|https?:\/\/|\/[\w-])/.test(line))
+    || lines.some((line) => /^\s*(\[ \]|\d+\.)\s+/.test(line))
+}
+
+function renderModuleStudy(module) {
+  if (!module.lesson) return ''
+
+  const blocks = module.lesson
+    .split(/\n{2,}/)
+    .map((block) => block.trim())
+    .filter(Boolean)
+    .map((block) => {
+      if (/^[A-Z0-9 ,.:;/-]+$/.test(block) && block.length <= 52) {
+        return `<h5>${escapeHtml(block)}</h5>`
+      }
+
+      if (isCodeLikeBlock(block)) {
+        return `<pre><code>${escapeHtml(block)}</code></pre>`
+      }
+
+      return `<p>${escapeHtml(block).replace(/\n/g, '<br>')}</p>`
+    })
+    .join('')
+
+  return `
+    <section class="module-study">
+      <h4>Apostila do módulo</h4>
+      <div class="module-study-content">${blocks}</div>
+    </section>
+  `
+}
+
 function renderModuleCard(track, module, index) {
   const learnItems = module.learn.map((item) => `<li>${item}</li>`).join('')
   const moduleLevel = module.level || track.levelLabel
@@ -3058,6 +3163,15 @@ function renderModuleCard(track, module, index) {
   const moduleCategory = module.category || track.name
   const moduleDescription = module.description || `Prática guiada de ${module.title.toLowerCase()} com foco em uma entrega pequena e verificável.`
   const moduleObjective = module.objective || `Aplicar ${module.title.toLowerCase()} usando ${module.learn.slice(0, 2).join(' e ')} em um contexto realista de front-end.`
+  const isHtmlTrack = track.slug === 'html'
+  const ideGridClass = isHtmlTrack ? 'module-ide-grid html-only' : 'module-ide-grid'
+  const ideFields = isHtmlTrack
+    ? `<label>index.html<textarea data-type="html">${escapeHtml(module.starter.html)}</textarea></label>`
+    : `
+          <label>index.html<textarea data-type="html">${escapeHtml(module.starter.html)}</textarea></label>
+          <label>style.css<textarea data-type="css">${escapeHtml(module.starter.css)}</textarea></label>
+          <label>script.js<textarea data-type="js">${escapeHtml(module.starter.js)}</textarea></label>
+        `
   const hasPrevious = index > 0
   const hasNext = index < track.modules.length - 1
 
@@ -3085,14 +3199,13 @@ function renderModuleCard(track, module, index) {
           <ul class="module-list">${learnItems}</ul>
         </div>
       </div>
+      ${isHtmlTrack ? renderModuleStudy(module) : ''}
       <p><strong>Experiência prática:</strong> ${module.practice}</p>
       <p><strong>Exercício de fixação:</strong> ${module.exercise}</p>
       <div class="module-ide">
         <h4>Mini IDE do módulo</h4>
-        <div class="module-ide-grid">
-          <label>index.html<textarea data-type="html">${module.starter.html.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea></label>
-          <label>style.css<textarea data-type="css">${module.starter.css}</textarea></label>
-          <label>script.js<textarea data-type="js">${module.starter.js}</textarea></label>
+        <div class="${ideGridClass}">
+          ${ideFields}
         </div>
         <button class="pill run-module-ide">Executar módulo</button>
         <iframe class="preview-frame module-preview" title="Preview módulo ${index + 1}"></iframe>

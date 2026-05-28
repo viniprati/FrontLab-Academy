@@ -1427,6 +1427,62 @@ pre {
   margin: 0.25rem 0;
 }
 
+.module-study {
+  margin: 1rem 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.8rem;
+  background: color-mix(in srgb, var(--surface-soft) 88%, #ffffff);
+}
+
+.module-study h4 {
+  margin: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 0.9rem;
+  color: var(--text-main);
+  font-size: 0.92rem;
+}
+
+.module-study-content {
+  display: grid;
+  gap: 0.8rem;
+  max-height: 640px;
+  overflow: auto;
+  padding: 0.9rem;
+}
+
+.module-study-content h5 {
+  margin: 0.3rem 0 0;
+  color: color-mix(in srgb, var(--track-accent, var(--blue)) 58%, var(--text-main));
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.module-study-content p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+.module-study-content pre {
+  margin: 0;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  background: var(--code-bg);
+  padding: 0.85rem;
+}
+
+.module-study-content code {
+  color: var(--code-text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  white-space: pre;
+}
+
 .module-ide {
   margin-top: 1rem;
   border-top: 1px solid var(--border);
@@ -1442,6 +1498,10 @@ pre {
   display: grid;
   gap: 0.65rem;
   grid-template-columns: repeat(3, 1fr);
+}
+
+.module-ide-grid.html-only {
+  grid-template-columns: 1fr;
 }
 
 .module-ide-grid label {
@@ -1467,6 +1527,10 @@ pre {
   box-shadow: inset 0 1px 0 rgba(15, 23, 42, 0.04);
   outline: none;
   transition: border-color .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+}
+
+.module-ide-grid.html-only textarea {
+  min-height: 260px;
 }
 
 .module-ide-grid textarea:hover,
