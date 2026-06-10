@@ -2564,14 +2564,23 @@ const headerActions = document.querySelector('.site-header > div')
 const moduleTrailTitle = document.getElementById('moduleTrailTitle')
 const moduleTrailDescription = document.getElementById('moduleTrailDescription')
 const moduleTrailMeta = document.getElementById('moduleTrailMeta')
+const moduleTrailProgress = document.getElementById('moduleTrailProgress')
 const moduleMenuList = document.getElementById('moduleMenuList')
 const moduleMenuToggle = document.getElementById('moduleMenuToggle')
 const moduleContent = document.getElementById('moduleContent')
 const finalChallengeBox = document.getElementById('finalChallengeBox')
+const progressDashboard = document.getElementById('progressDashboard')
 const exerciseList = document.getElementById('exerciseList')
 const challengeList = document.getElementById('challengeList')
 const projectList = document.getElementById('projectList')
 const practiceDetail = document.getElementById('practiceDetail')
+
+const moduleChecklistItems = [
+  'Li a apostila do módulo',
+  'Executei ou revisei o exemplo na Mini IDE',
+  'Fiz a prática proposta',
+  'Consigo explicar o conceito sem consultar'
+]
 
 function getSavedTheme() {
   return localStorage.getItem('front-lab-academy-theme') || 'light'
@@ -2786,6 +2795,163 @@ function escapeHtml(value) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;')
+}
+
+function getTrackProgressKey(trackSlug) {
+  return `front-lab-progress:${trackSlug}`
+}
+
+function getEmptyTrackProgress() {
+  return {
+    modules: {}
+  }
+}
+
+function readTrackProgress(trackSlug) {
+  try {
+    const saved = JSON.parse(localStorage.getItem(getTrackProgressKey(trackSlug)) || '{}')
+    return {
+      ...getEmptyTrackProgress(),
+      ...saved,
+      modules: saved.modules && typeof saved.modules === 'object' ? saved.modules : {}
+    }
+  } catch {
+    return getEmptyTrackProgress()
+  }
+}
+
+function saveTrackProgress(trackSlug, progress) {
+  localStorage.setItem(getTrackProgressKey(trackSlug), JSON.stringify(progress))
+}
+
+function getModuleProgress(trackSlug, index) {
+  const progress = readTrackProgress(trackSlug)
+  const moduleProgress = progress.modules[String(index)] || {}
+  const checks = moduleChecklistItems.map((_, itemIndex) => Boolean(moduleProgress.checks?.[itemIndex]))
+
+  return {
+    checks,
+    completedAt: moduleProgress.completedAt || null
+  }
+}
+
+function isModuleComplete(trackSlug, index) {
+  return getModuleProgress(trackSlug, index).checks.every(Boolean)
+}
+
+function getModuleProgressState(trackSlug, index) {
+  const { checks } = getModuleProgress(trackSlug, index)
+  const checkedCount = checks.filter(Boolean).length
+  if (checkedCount === moduleChecklistItems.length) return 'completed'
+  if (checkedCount > 0) return 'started'
+  return 'idle'
+}
+
+function updateModuleChecklist(trackSlug, index, checkIndex, isChecked) {
+  const progress = readTrackProgress(trackSlug)
+  const key = String(index)
+  const current = progress.modules[key] || {}
+  const checks = moduleChecklistItems.map((_, itemIndex) => Boolean(current.checks?.[itemIndex]))
+  checks[checkIndex] = isChecked
+  const isComplete = checks.every(Boolean)
+
+  progress.modules[key] = {
+    checks,
+    completedAt: isComplete ? current.completedAt || new Date().toISOString() : null
+  }
+
+  saveTrackProgress(trackSlug, progress)
+}
+
+function getTrackProgressSummary(track) {
+  const total = track.modules.length
+  const completed = track.modules.filter((_, index) => isModuleComplete(track.slug, index)).length
+  const started = track.modules.filter((_, index) => getModuleProgressState(track.slug, index) === 'started').length
+  const percent = total ? Math.round((completed / total) * 100) : 0
+
+  return {
+    total,
+    completed,
+    started,
+    percent
+  }
+}
+
+function renderProgressBar(percent) {
+  return `
+    <div class="progress-shell course-progress-shell" aria-hidden="true">
+      <div class="progress-fill" style="width:${percent}%"></div>
+    </div>
+  `
+}
+
+function renderTrackProgressPanel(track) {
+  const summary = getTrackProgressSummary(track)
+
+  return `
+    <aside class="track-progress-panel" style="--track-accent:${track.accent}">
+      <div>
+        <p>Progresso da trilha</p>
+        <strong>${summary.completed}/${summary.total} concluídos</strong>
+      </div>
+      ${renderProgressBar(summary.percent)}
+      <div class="track-progress-actions">
+        <span>${summary.percent}% completo</span>
+        <a class="pill" href="./progresso.html">Ver progresso geral</a>
+      </div>
+    </aside>
+  `
+}
+
+function renderModuleChecklist(track, index) {
+  const moduleProgress = getModuleProgress(track.slug, index)
+  const completed = moduleProgress.checks.every(Boolean)
+  const checklist = moduleChecklistItems.map((item, itemIndex) => `
+    <li>
+      <label>
+        <input type="checkbox" data-module-check="${itemIndex}" ${moduleProgress.checks[itemIndex] ? 'checked' : ''} />
+        <span>${moduleProgress.checks[itemIndex] ? '✓' : ''}</span>
+        <p>${item}</p>
+      </label>
+    </li>
+  `).join('')
+
+  return `
+    <section class="module-progress-checklist" data-track-slug="${track.slug}" data-module-index="${index}">
+      <div class="module-progress-head">
+        <div>
+          <h4>Checklist do módulo</h4>
+          <p>${completed ? 'Módulo concluído. Bom trabalho.' : 'Complete os itens para marcar este módulo como concluído.'}</p>
+        </div>
+        <span class="${completed ? 'is-complete' : ''}">${completed ? 'Concluído' : 'Em estudo'}</span>
+      </div>
+      <ul class="practice-check-list">${checklist}</ul>
+    </section>
+  `
+}
+
+function updateCurrentTrackProgress(track) {
+  if (moduleTrailProgress) {
+    moduleTrailProgress.innerHTML = renderTrackProgressPanel(track)
+  }
+
+  if (moduleMenuList) {
+    moduleMenuList.querySelectorAll('.module-link').forEach((link) => {
+      const index = Number(link.dataset.moduleIndex || 0)
+      const state = getModuleProgressState(track.slug, index)
+      link.dataset.progressState = state
+      const marker = link.querySelector('[data-progress-marker]')
+      if (marker) {
+        marker.textContent = state === 'completed' ? '✓' : state === 'started' ? '•' : ''
+      }
+    })
+  }
+}
+
+function getModuleStateLabel(state) {
+  if (state === 'completed') return 'Concluído'
+  if (state === 'started') return 'Em andamento'
+  return 'Não iniciado'
 }
 
 function renderPracticeCard(item, type) {
@@ -3202,6 +3368,7 @@ function renderModuleCard(track, module, index) {
       ${isHtmlTrack ? renderModuleStudy(module) : ''}
       <p><strong>Experiência prática:</strong> ${module.practice}</p>
       <p><strong>Exercício de fixação:</strong> ${module.exercise}</p>
+      ${renderModuleChecklist(track, index)}
       <div class="module-ide">
         <h4>Mini IDE do módulo</h4>
         <div class="${ideGridClass}">
@@ -3229,7 +3396,10 @@ function renderModuleMenu(track) {
 
   if (grouped.size <= 1) {
     return track.modules.map((module, index) => `
-      <a href="#mod-${index}" class="module-link" data-module-index="${index}">Módulo ${index + 1}: ${module.title}</a>
+      <a href="#mod-${index}" class="module-link" data-module-index="${index}" data-progress-state="${getModuleProgressState(track.slug, index)}">
+        <span data-progress-marker>${isModuleComplete(track.slug, index) ? '✓' : getModuleProgressState(track.slug, index) === 'started' ? '•' : ''}</span>
+        Módulo ${index + 1}: ${module.title}
+      </a>
     `).join('')
   }
 
@@ -3238,8 +3408,9 @@ function renderModuleMenu(track) {
       <p>${category}</p>
       <div>
         ${items.map(({ module, index }) => `
-          <a href="#mod-${index}" class="module-link" data-module-index="${index}">
+          <a href="#mod-${index}" class="module-link" data-module-index="${index}" data-progress-state="${getModuleProgressState(track.slug, index)}">
             <span>${String(index + 1).padStart(2, '0')}</span>
+            <span data-progress-marker>${isModuleComplete(track.slug, index) ? '✓' : getModuleProgressState(track.slug, index) === 'started' ? '•' : ''}</span>
             ${module.title}
           </a>
         `).join('')}
@@ -3256,6 +3427,7 @@ function renderModulesPage() {
     moduleTrailTitle.textContent = 'Trilha não encontrada'
     moduleTrailDescription.textContent = 'Volte para trilhas e escolha uma trilha válida.'
     moduleTrailMeta.textContent = ''
+    if (moduleTrailProgress) moduleTrailProgress.innerHTML = ''
     moduleMenuList.innerHTML = ''
     moduleContent.innerHTML = '<article class="content-card"><p>Não foi possível carregar os módulos.</p></article>'
     finalChallengeBox.innerHTML = ''
@@ -3268,6 +3440,7 @@ function renderModulesPage() {
   moduleTrailMeta.textContent = `Nível: ${track.levelLabel} | ${track.modules.length} módulos | Tags: ${track.tags.join(', ')}${categories.length ? ` | Categorias: ${categories.join(', ')}` : ''}`
 
   moduleMenuList.innerHTML = renderModuleMenu(track)
+  updateCurrentTrackProgress(track)
 
   const showModule = (index, shouldScroll = false) => {
     const selectedIndex = Math.min(Math.max(index, 0), track.modules.length - 1)
@@ -3276,6 +3449,7 @@ function renderModulesPage() {
       link.classList.toggle('active', Number(link.dataset.moduleIndex) === selectedIndex)
     })
     moduleContent.querySelectorAll('.module-card').forEach((card) => runModuleIde(card))
+    updateCurrentTrackProgress(track)
 
     if (shouldScroll) {
       moduleContent.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -3293,7 +3467,74 @@ function renderModulesPage() {
   bindModuleMenuInteractions(showModule)
   moduleContent.dataset.hasModulePager = 'true'
   moduleContent.showModule = showModule
-  showModule(0)
+  const initialModule = Number((window.location.hash.match(/^#mod-(\d+)$/) || [])[1] || 0)
+  showModule(initialModule)
+}
+
+function renderProgressPage() {
+  if (!progressDashboard) return
+
+  const totals = tracks.reduce((acc, track) => {
+    const summary = getTrackProgressSummary(track)
+    return {
+      completed: acc.completed + summary.completed,
+      total: acc.total + summary.total
+    }
+  }, { completed: 0, total: 0 })
+  const totalPercent = totals.total ? Math.round((totals.completed / totals.total) * 100) : 0
+
+  const cards = tracks.map((track) => {
+    const summary = getTrackProgressSummary(track)
+    const moduleRows = track.modules.map((module, index) => {
+      const state = getModuleProgressState(track.slug, index)
+      return `
+        <a href="./modulos.html?trilha=${track.slug}#mod-${index}" class="progress-module-row" data-progress-state="${state}">
+          <span>${String(index + 1).padStart(2, '0')}</span>
+          <strong>${module.title}</strong>
+          <em>${getModuleStateLabel(state)}</em>
+        </a>
+      `
+    }).join('')
+    const nextIndex = track.modules.findIndex((_, index) => !isModuleComplete(track.slug, index))
+    const nextHref = `./modulos.html?trilha=${track.slug}#mod-${nextIndex >= 0 ? nextIndex : track.modules.length - 1}`
+    const nextLabel = summary.completed === summary.total ? 'Revisar trilha' : 'Continuar'
+
+    return `
+      <article class="content-card progress-track-card" style="--track-accent:${track.accent}">
+        <div class="progress-track-head">
+          <div>
+            <p class="module-kicker">${track.levelLabel}</p>
+            <h3>${track.name}</h3>
+            <p>${summary.completed} de ${summary.total} módulos concluídos</p>
+          </div>
+          <strong>${summary.percent}%</strong>
+        </div>
+        ${renderProgressBar(summary.percent)}
+        <div class="progress-track-meta">
+          <span>${summary.started} em andamento</span>
+          <a class="pill" href="${nextHref}">${nextLabel}</a>
+        </div>
+        <details class="progress-track-details">
+          <summary>Ver módulos</summary>
+          <div>${moduleRows}</div>
+        </details>
+      </article>
+    `
+  }).join('')
+
+  progressDashboard.innerHTML = `
+    <article class="content-card progress-total-card" style="--track-accent:var(--purple)">
+      <div class="progress-track-head">
+        <div>
+          <p class="module-kicker">Todas as trilhas</p>
+          <h3>${totals.completed} de ${totals.total} módulos concluídos</h3>
+        </div>
+        <strong>${totalPercent}%</strong>
+      </div>
+      ${renderProgressBar(totalPercent)}
+    </article>
+    <div class="progress-track-grid">${cards}</div>
+  `
 }
 
 function bindModuleMenuInteractions(showModule) {
@@ -3351,6 +3592,22 @@ if (moduleContent) {
     if (target.classList.contains('module-step') && typeof moduleContent.showModule === 'function') {
       moduleContent.showModule(Number(target.dataset.moduleIndex || 0), true)
     }
+  })
+
+  moduleContent.addEventListener('change', (event) => {
+    const target = event.target
+    if (!(target instanceof HTMLInputElement) || target.type !== 'checkbox') return
+    const checklist = target.closest('.module-progress-checklist')
+    if (!(checklist instanceof HTMLElement) || typeof moduleContent.showModule !== 'function') return
+    const trackSlug = checklist.dataset.trackSlug
+    const moduleIndex = Number(checklist.dataset.moduleIndex || 0)
+    const checkIndex = Number(target.dataset.moduleCheck || 0)
+    const track = tracks.find((item) => item.slug === trackSlug)
+    if (!track) return
+
+    updateModuleChecklist(track.slug, moduleIndex, checkIndex, target.checked)
+    updateCurrentTrackProgress(track)
+    moduleContent.showModule(moduleIndex)
   })
 }
 
@@ -3481,6 +3738,7 @@ initDiscordCommunityCards()
 renderTracks()
 renderRoadmap()
 renderModulesPage()
+renderProgressPage()
 renderPracticeLists()
 renderPracticeDetail()
 highlightCodeBlocks()

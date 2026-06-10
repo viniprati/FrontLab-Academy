@@ -15,6 +15,7 @@ export default defineConfig({
         docs: resolve(__dirname, 'docs.html'),
         'mini-ide': resolve(__dirname, 'mini-ide.html'),
         modulos: resolve(__dirname, 'modulos.html'),
+        progresso: resolve(__dirname, 'progresso.html'),
         sobre: resolve(__dirname, 'sobre.html')
       }
     }
