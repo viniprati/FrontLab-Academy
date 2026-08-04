@@ -80,58 +80,27 @@ actionButton?.addEventListener('click', () => {
   }
 }
 
-function createHtmlModule(index, title, description, level, objective, learn, practice, exercise) {
-  const projectTitles = ['Página de Perfil', 'Landing Page HTML', 'Formulário Completo', 'Página Institucional', 'Projeto Final HTML']
-  const starterTitle = projectTitles[index - 44] || title
-  const categoryRanges = [
-    { end: 2, category: 'Fundamentos do HTML' },
-    { end: 4, category: 'Estrutura da Página' },
-    { end: 8, category: 'Textos e Conteúdo' },
-    { end: 11, category: 'Links e Navegação' },
-    { end: 14, category: 'Imagens e Mídia' },
-    { end: 19, category: 'Listas e Tabelas' },
-    { end: 29, category: 'Formulários' },
-    { end: 41, category: 'Semântica e Acessibilidade' },
-    { end: 43, category: 'Organização de Projeto' },
-    { end: 50, category: 'Projeto Final' }
-  ]
-  const category = categoryRanges.find((range) => index <= range.end)?.category || 'Projeto Final'
-
-  return {
-    title,
-    category,
-    description,
-    level,
-    status: index === 1 ? 'disponível' : 'bloqueado',
-    objective,
-    learn,
-    practice,
-    exercise,
-    starter: mkStarter(starterTitle, '#f97316', `HTML módulo ${index}`)
-  }
-}
+const HTML_MODULE_CATEGORY_RANGES = [
+  { end: 2, category: 'Fundamentos do HTML' },
+  { end: 4, category: 'Estrutura da Página' },
+  { end: 8, category: 'Textos e Conteúdo' },
+  { end: 11, category: 'Links e Navegação' },
+  { end: 14, category: 'Imagens e Mídia' },
+  { end: 19, category: 'Listas e Tabelas' },
+  { end: 29, category: 'Formulários' },
+  { end: 41, category: 'Semântica e Acessibilidade' },
+  { end: 43, category: 'Organização de Projeto' },
+  { end: 50, category: 'Projeto Final' }
+]
 
 function getHtmlModuleCategory(index) {
-  const categoryRanges = [
-    { end: 2, category: 'Fundamentos do HTML' },
-    { end: 4, category: 'Estrutura da Página' },
-    { end: 8, category: 'Textos e Conteúdo' },
-    { end: 11, category: 'Links e Navegação' },
-    { end: 14, category: 'Imagens e Mídia' },
-    { end: 19, category: 'Listas e Tabelas' },
-    { end: 29, category: 'Formulários' },
-    { end: 41, category: 'Semântica e Acessibilidade' },
-    { end: 43, category: 'Organização de Projeto' },
-    { end: 50, category: 'Projeto Final' }
-  ]
-
-  return categoryRanges.find((range) => index <= range.end)?.category || 'Projeto Final'
+  return HTML_MODULE_CATEGORY_RANGES.find((range) => index <= range.end)?.category || 'Projeto Final'
 }
 
 function getHtmlModuleLevel(index) {
   if (index <= 29) return 'iniciante'
-  if (index <= 43) return 'intermediário'
-  return 'projeto'
+  else if (index <= 43) return 'intermediário'
+  else return 'projeto'
 }
 
 function getLessonParagraphs(lesson) {
@@ -159,23 +128,19 @@ function getLessonHighlights(lesson) {
 function getHtmlPractice(index, title, category) {
   if (category === 'Projeto Final') {
     return `Construa ou revise a entrega proposta em "${title}" usando somente HTML semântico e os critérios da apostila.`
-  }
-
-  if (category === 'Formulários') {
+  } else if (category === 'Formulários') {
     return `Crie um trecho de formulário em index.html aplicando ${title.toLowerCase()} com labels, names e estrutura acessível.`
-  }
-
-  if (category === 'Semântica e Acessibilidade') {
+  } else if (category === 'Semântica e Acessibilidade') {
     return `Refatore uma pequena página em index.html aplicando ${title.toLowerCase()} e confira se a estrutura continua compreensível sem CSS.`
+  } else {
+    return `Reproduza os exemplos principais de ${title.toLowerCase()} em index.html e adapte para um conteúdo próprio.`
   }
-
-  return `Reproduza os exemplos principais de ${title.toLowerCase()} em index.html e adapte para um conteúdo próprio.`
 }
 
 function getHtmlExercise(index, title, category) {
   if (index === 50) return 'Conclua quando a checklist da trilha estiver revisada item por item no seu projeto final.'
-  if (category === 'Projeto Final') return `Entregue uma página ou seção completa que demonstre domínio de ${title.toLowerCase()}.`
-  return `Conclua quando conseguir explicar ${title.toLowerCase()} e usar o conceito sem depender de CSS ou JavaScript.`
+  else if (category === 'Projeto Final') return `Entregue uma página ou seção completa que demonstre domínio de ${title.toLowerCase()}.`
+  else return `Conclua quando conseguir explicar ${title.toLowerCase()} e usar o conceito sem depender de CSS ou JavaScript.`
 }
 
 function createHtmlStarter(title, index, lesson) {
@@ -228,15 +193,15 @@ const htmlModules = htmlLessons.map(createHtmlModuleFromLesson)
 
 function getCssModuleLevel(index) {
   if (index <= 30) return 'iniciante'
-  if (index <= 50) return 'intermediário'
-  return 'avançado'
+  else if (index <= 50) return 'intermediário'
+  else return 'avançado'
 }
 
 function getCssModuleTime(index) {
   if (index <= 20) return '25 min'
-  if (index <= 40) return '35 min'
-  if (index <= 50) return '40 min'
-  return '50 min'
+  else if (index <= 40) return '35 min'
+  else if (index <= 50) return '40 min'
+  else return '50 min'
 }
 
 const cssModuleActivities = {
@@ -2543,6 +2508,7 @@ const editorState = {
   css: `body { margin: 0; }`,
   js: `console.log('Prática front-end ativa.');`
 }
+const editorTabsAllowed = new Set(Object.keys(editorState))
 
 let activeFilter = 'all'
 let activeTab = 'html'
@@ -2583,7 +2549,11 @@ const moduleChecklistItems = [
 ]
 
 function getSavedTheme() {
-  return localStorage.getItem('front-lab-academy-theme') || 'light'
+  try {
+    return localStorage.getItem('front-lab-academy-theme') || 'light'
+  } catch {
+    return 'light'
+  }
 }
 
 function getPreviewThemeCss() {
@@ -2591,6 +2561,27 @@ function getPreviewThemeCss() {
   return isDark
     ? 'body{background:#060816;color:#f8fafc;} a{color:#22d3ee;}'
     : 'body{background:#ffffff;color:#101827;} a{color:#2563eb;}'
+}
+
+function getPreviewStorageShim() {
+  return `try {
+  window.localStorage
+} catch (_error) {
+  const previewStorage = new Map()
+  Object.defineProperty(window, 'localStorage', {
+    configurable: true,
+    value: {
+      getItem: (key) => previewStorage.has(String(key)) ? previewStorage.get(String(key)) : null,
+      setItem: (key, value) => previewStorage.set(String(key), String(value)),
+      removeItem: (key) => previewStorage.delete(String(key)),
+      clear: () => previewStorage.clear()
+    }
+  })
+}`
+}
+
+function createPreviewSource(html, css = '', js = '') {
+  return `<!doctype html><html><head><style>${getPreviewThemeCss()}${css}</style></head><body>${html}<script>${getPreviewStorageShim()}\n${js}<' + '/script></body></html>`
 }
 
 function updateThemeToggle(button) {
@@ -2603,7 +2594,11 @@ function updateThemeToggle(button) {
 function applyTheme(theme) {
   const nextTheme = theme === 'dark' ? 'dark' : 'light'
   document.documentElement.dataset.theme = nextTheme
-  localStorage.setItem('front-lab-academy-theme', nextTheme)
+  try {
+    localStorage.setItem('front-lab-academy-theme', nextTheme)
+  } catch {
+    // Keep the UI responsive even when storage is blocked.
+  }
   updateThemeToggle(document.getElementById('themeToggle'))
   runPreview()
   document.querySelectorAll('.module-card').forEach((card) => runModuleIde(card))
@@ -2797,6 +2792,23 @@ function escapeHtml(value) {
     .replace(/'/g, '&#039;')
 }
 
+function readStorageJson(key, fallback) {
+  try {
+    const saved = localStorage.getItem(key)
+    return saved ? JSON.parse(saved) : fallback
+  } catch {
+    return fallback
+  }
+}
+
+function writeStorageJson(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value))
+  } catch {
+    // Storage can be unavailable in private browsing or sandboxed previews.
+  }
+}
+
 function getTrackProgressKey(trackSlug) {
   return `front-lab-progress:${trackSlug}`
 }
@@ -2808,20 +2820,16 @@ function getEmptyTrackProgress() {
 }
 
 function readTrackProgress(trackSlug) {
-  try {
-    const saved = JSON.parse(localStorage.getItem(getTrackProgressKey(trackSlug)) || '{}')
-    return {
-      ...getEmptyTrackProgress(),
-      ...saved,
-      modules: saved.modules && typeof saved.modules === 'object' ? saved.modules : {}
-    }
-  } catch {
-    return getEmptyTrackProgress()
+  const saved = readStorageJson(getTrackProgressKey(trackSlug), {})
+  return {
+    ...getEmptyTrackProgress(),
+    ...saved,
+    modules: saved.modules && typeof saved.modules === 'object' ? saved.modules : {}
   }
 }
 
 function saveTrackProgress(trackSlug, progress) {
-  localStorage.setItem(getTrackProgressKey(trackSlug), JSON.stringify(progress))
+  writeStorageJson(getTrackProgressKey(trackSlug), progress)
 }
 
 function getModuleProgress(trackSlug, index) {
@@ -2843,8 +2851,8 @@ function getModuleProgressState(trackSlug, index) {
   const { checks } = getModuleProgress(trackSlug, index)
   const checkedCount = checks.filter(Boolean).length
   if (checkedCount === moduleChecklistItems.length) return 'completed'
-  if (checkedCount > 0) return 'started'
-  return 'idle'
+  else if (checkedCount > 0) return 'started'
+  else return 'idle'
 }
 
 function updateModuleChecklist(trackSlug, index, checkIndex, isChecked) {
@@ -2950,8 +2958,8 @@ function updateCurrentTrackProgress(track) {
 
 function getModuleStateLabel(state) {
   if (state === 'completed') return 'Concluído'
-  if (state === 'started') return 'Em andamento'
-  return 'Não iniciado'
+  else if (state === 'started') return 'Em andamento'
+  else return 'Não iniciado'
 }
 
 function renderPracticeCard(item, type) {
@@ -3017,7 +3025,7 @@ function renderPracticeDetail() {
     </li>
   `).join('')
   const checklistStorageKey = `front-lab-academy-checklist:${type}:${item.id}`
-  const savedChecklist = JSON.parse(localStorage.getItem(checklistStorageKey) || '[]')
+  const savedChecklist = readStorageJson(checklistStorageKey, [])
   const checklist = item.checklist.map((part, index) => `
     <li>
       <label>
@@ -3108,7 +3116,7 @@ function renderPracticeDetail() {
         </article>
         <article class="practice-preview-panel">
           <h3>Preview</h3>
-          <iframe class="preview-frame practice-preview" title="Preview da prática"></iframe>
+          <iframe class="preview-frame practice-preview" title="Preview da prática" sandbox="allow-scripts"></iframe>
         </article>
       </div>
     </section>
@@ -3271,7 +3279,7 @@ function runModuleIde(moduleCard) {
   const isHtmlOnly = !cssInput && !jsInput
   const source = isHtmlOnly
     ? htmlInput.value
-    : `<!doctype html><html><head><style>${getPreviewThemeCss()}${cssInput?.value || ''}</style></head><body>${htmlInput.value}<script>${jsInput?.value || ''}<' + '/script></body></html>`
+    : createPreviewSource(htmlInput.value, cssInput?.value || '', jsInput?.value || '')
   previewFrame.srcdoc = source
 }
 
@@ -3282,8 +3290,7 @@ function runEmbeddedIde(ideRoot) {
   const previewFrame = ideRoot.querySelector('.practice-preview')
   if (!htmlInput || !cssInput || !jsInput || !previewFrame) return
 
-  const source = `<!doctype html><html><head><style>${getPreviewThemeCss()}${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<' + '/script></body></html>`
-  previewFrame.srcdoc = source
+  previewFrame.srcdoc = createPreviewSource(htmlInput.value, cssInput.value, jsInput.value)
 }
 
 function isCodeLikeBlock(block) {
@@ -3304,13 +3311,11 @@ function renderModuleStudy(module) {
     .map((block) => {
       if (/^[A-Z0-9 ,.:;/-]+$/.test(block) && block.length <= 52) {
         return `<h5>${escapeHtml(block)}</h5>`
-      }
-
-      if (isCodeLikeBlock(block)) {
+      } else if (isCodeLikeBlock(block)) {
         return `<pre><code>${escapeHtml(block)}</code></pre>`
+      } else {
+        return `<p>${escapeHtml(block).replace(/\n/g, '<br>')}</p>`
       }
-
-      return `<p>${escapeHtml(block).replace(/\n/g, '<br>')}</p>`
     })
     .join('')
 
@@ -3375,7 +3380,7 @@ function renderModuleCard(track, module, index) {
           ${ideFields}
         </div>
         <button class="pill run-module-ide">Executar módulo</button>
-        <iframe class="preview-frame module-preview" title="Preview módulo ${index + 1}"></iframe>
+        <iframe class="preview-frame module-preview" title="Preview módulo ${index + 1}" sandbox="allow-scripts"></iframe>
       </div>
       <div class="module-pager">
         <button class="pill module-step" type="button" data-module-index="${index - 1}" ${hasPrevious ? '' : 'disabled'}>Anterior</button>
@@ -3551,6 +3556,7 @@ function bindModuleMenuInteractions(showModule) {
 
 function switchTab(tab) {
   if (!editor || !editorTabs) return
+  if (!editorTabsAllowed.has(tab)) return
   editorState[activeTab] = editor.value
   activeTab = tab
   editor.dataset.activeTab = tab
@@ -3561,8 +3567,7 @@ function switchTab(tab) {
 function runPreview() {
   if (!editor || !preview) return
   editorState[activeTab] = editor.value
-  const source = `<!doctype html><html><head><style>${getPreviewThemeCss()}${editorState.css}</style></head><body>${editorState.html}<script>${editorState.js}<' + '/script></body></html>`
-  preview.srcdoc = source
+  preview.srcdoc = createPreviewSource(editorState.html, editorState.css, editorState.js)
 }
 
 if (filterContainer) {
@@ -3627,7 +3632,7 @@ if (practiceDetail) {
     const storageKey = list.dataset.storageKey
     if (!storageKey) return
     const checkedItems = [...list.querySelectorAll('input[type="checkbox"]')].map((input) => input.checked)
-    localStorage.setItem(storageKey, JSON.stringify(checkedItems))
+    writeStorageJson(storageKey, checkedItems)
   })
 }
 
