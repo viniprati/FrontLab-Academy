@@ -1,4 +1,5 @@
-import { htmlLessons } from './html-modules.js'
+import { htmlLessons } from './data/modulos-html.js'
+import './styles/style.css'
 
 function slugify(text) {
   return text
