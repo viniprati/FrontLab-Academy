@@ -3,8 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="./assets/logo.png" />
-    <title>Progresso - Front Lab Academy</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="/assets/logo.png"
+    />
+    <title>Prática - Front Lab Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -36,11 +40,9 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body class="font-inter bg-bgMain text-textMain">
     <div class="bg-grid"></div>
-
     <header
       class="site-header mx-auto mt-5 w-[94%] max-w-[1280px] rounded-2xl border border-borderEdge/90 bg-bgSecondary/65 px-5 py-4 backdrop-blur"
     >
@@ -49,12 +51,12 @@
           <img
             id="brand-logo-header"
             class="brand-logo-header"
-            src="./assets/logo_barra.png"
+            src="/assets/logo_barra.png"
             alt="Front Lab Academy Logo Horizontal"
           /><img
             id="brand-logo-compact"
             class="brand-logo-compact"
-            src="./assets/logo.png"
+            src="/assets/logo.png"
             alt="Front Lab Academy Logo Compacto"
           />
         </div>
@@ -68,15 +70,11 @@
           id="mainNav"
           class="hidden gap-8 text-sm text-textSecondary md:flex"
         >
-          <a href="./trilhas.html" class="hover:text-white">Trilhas</a
-          ><a href="./roadmap.html" class="hover:text-white">Roadmap</a
-          ><a href="./progresso.html" class="hover:text-white">Progresso</a
-          ><a href="./exercicios.html" class="hover:text-white">Exercícios</a
-          ><a href="./desafios.html" class="hover:text-white">Desafios</a
-          ><a href="./projetos.html" class="hover:text-white">Projetos</a
-          ><a href="./docs.html" class="hover:text-white">Docs</a
-          ><a href="./mini-ide.html" class="hover:text-white">Mini IDE</a
-          ><a href="./sobre.html" class="hover:text-white">Sobre</a>
+          <a href="./trilhas.html">Trilhas</a><a href="./roteiro.html">Roadmap</a
+          ><a href="./exercicios.html">Exercícios</a
+          ><a href="./desafios.html">Desafios</a
+          ><a href="./projetos.html">Projetos</a><a href="./documentacao.html">Docs</a
+          ><a href="./mini-ide.html">Mini IDE</a><a href="./sobre.html">Sobre</a>
         </nav>
         <a
           href="./index.html"
@@ -88,27 +86,15 @@
         id="mobileNav"
         class="mt-4 hidden flex-col gap-2 border-t border-borderEdge/80 pt-4 text-sm text-textSecondary md:hidden"
       >
-        <a href="./trilhas.html">Trilhas</a><a href="./roadmap.html">Roadmap</a
-        ><a href="./progresso.html">Progresso</a
+        <a href="./trilhas.html">Trilhas</a><a href="./roteiro.html">Roadmap</a
         ><a href="./exercicios.html">Exercícios</a
         ><a href="./desafios.html">Desafios</a
-        ><a href="./projetos.html">Projetos</a><a href="./docs.html">Docs</a
+        ><a href="./projetos.html">Projetos</a><a href="./documentacao.html">Docs</a
         ><a href="./mini-ide.html">Mini IDE</a><a href="./sobre.html">Sobre</a>
       </nav>
     </header>
 
-    <main class="mx-auto w-[94%] max-w-[1280px] py-8">
-      <section class="section-block">
-        <div class="section-head">
-          <h2>Progresso geral</h2>
-          <p>
-            Acompanhe módulos concluídos, aulas em andamento e avance direto
-            para a próxima etapa de cada trilha.
-          </p>
-        </div>
-        <div id="progressDashboard" class="progress-dashboard"></div>
-      </section>
-    </main>
+    <main id="practiceDetail" class="mx-auto w-[94%] max-w-[1280px] py-8"></main>
 
     <footer
       class="mx-auto mb-8 mt-8 w-[94%] max-w-[1280px] rounded-2xl border border-borderEdge/90 bg-bgSecondary/60 p-5"
@@ -119,11 +105,10 @@
       </p>
       <div class="mt-3 flex flex-wrap gap-3 text-sm text-textSecondary">
         <a href="./trilhas.html">Trilhas</a
-        ><a href="./progresso.html">Progresso</a
         ><a href="./exercicios.html">Exercícios</a
         ><a href="./desafios.html">Desafios</a
-        ><a href="./projetos.html">Projetos</a><a href="./docs.html">Docs</a
-        ><a href="./roadmap.html">Roadmap</a>
+        ><a href="./projetos.html">Projetos</a><a href="./documentacao.html">Docs</a
+        ><a href="./roteiro.html">Roadmap</a>
       </div>
       <p class="mt-3 text-sm text-textMuted">Contato: prativinicius@gmail.com</p>
       <p class="text-sm text-textMuted">
@@ -137,7 +122,6 @@
         >
       </p>
     </footer>
-
-    <script type="module" src="./script.js"></script>
+    <script type="module" src="../script.js"></script>
   </body>
 </html>

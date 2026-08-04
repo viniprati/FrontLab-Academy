@@ -6,9 +6,9 @@
     <link
       rel="icon"
       type="image/png"
-      href="./assets/logo.png"
+      href="/assets/logo.png"
     />
-    <title>Roadmap - Front Lab Academy</title>
+    <title>Desafios - Front Lab Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -40,7 +40,6 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body class="font-inter bg-bgMain text-textMain">
     <div class="bg-grid"></div>
@@ -52,12 +51,12 @@
           <img
             id="brand-logo-header"
             class="brand-logo-header"
-            src="./assets/logo_barra.png"
+            src="/assets/logo_barra.png"
             alt="Front Lab Academy Logo Horizontal"
           /><img
             id="brand-logo-compact"
             class="brand-logo-compact"
-            src="./assets/logo.png"
+            src="/assets/logo.png"
             alt="Front Lab Academy Logo Compacto"
           />
         </div>
@@ -71,10 +70,10 @@
           id="mainNav"
           class="hidden gap-8 text-sm text-textSecondary md:flex"
         >
-          <a href="./trilhas.html">Trilhas</a><a href="./roadmap.html">Roadmap</a
+          <a href="./trilhas.html">Trilhas</a><a href="./roteiro.html">Roadmap</a
           ><a href="./exercicios.html">Exercícios</a
           ><a href="./desafios.html">Desafios</a
-          ><a href="./projetos.html">Projetos</a><a href="./docs.html">Docs</a
+          ><a href="./projetos.html">Projetos</a><a href="./documentacao.html">Docs</a
           ><a href="./mini-ide.html">Mini IDE</a><a href="./sobre.html">Sobre</a>
         </nav>
         <a
@@ -87,28 +86,42 @@
         id="mobileNav"
         class="mt-4 hidden flex-col gap-2 border-t border-borderEdge/80 pt-4 text-sm text-textSecondary md:hidden"
       >
-        <a href="./trilhas.html">Trilhas</a><a href="./roadmap.html">Roadmap</a
+        <a href="./trilhas.html">Trilhas</a><a href="./roteiro.html">Roadmap</a
         ><a href="./exercicios.html">Exercícios</a
         ><a href="./desafios.html">Desafios</a
-        ><a href="./projetos.html">Projetos</a><a href="./docs.html">Docs</a
+        ><a href="./projetos.html">Projetos</a><a href="./documentacao.html">Docs</a
         ><a href="./mini-ide.html">Mini IDE</a><a href="./sobre.html">Sobre</a>
       </nav>
     </header>
-
     <main class="mx-auto w-[94%] max-w-[1280px] py-8">
       <section class="section-block">
         <div class="section-head">
-          <h2>Roadmap front-end por fases</h2>
+          <h2>Desafios orientados a trabalho real</h2>
           <p>
-            Um caminho organizado do zero ao portfólio. Cada fase agrupa
-            conteúdos relacionados e cada card abre direto no módulo
-            recomendado.
+            Cada desafio simula uma tarefa comum de time de front-end: corrigir
+            bug, evoluir UI, integrar dados e entregar com qualidade.
           </p>
         </div>
-        <div id="roadmapSteps" class="roadmap-sections"></div>
+        <div id="challengeList" class="grid gap-3 md:grid-cols-2 lg:grid-cols-3"></div>
+      </section>
+      <section class="section-block">
+        <div class="section-head"><h2>Formato de entrega</h2></div>
+        <div class="grid gap-3 md:grid-cols-3">
+          <article class="content-card">
+            <h3>Brief técnico</h3>
+            <p>Problema, contexto, critérios de aceite e limitações.</p>
+          </article>
+          <article class="content-card">
+            <h3>Implementação</h3>
+            <p>Código, justificativa técnica e trade-offs.</p>
+          </article>
+          <article class="content-card">
+            <h3>Validação</h3>
+            <p>Checklist final + evidência de funcionamento.</p>
+          </article>
+        </div>
       </section>
     </main>
-
     <footer
       class="mx-auto mb-8 mt-8 w-[94%] max-w-[1280px] rounded-2xl border border-borderEdge/90 bg-bgSecondary/60 p-5"
     >
@@ -120,8 +133,8 @@
         <a href="./trilhas.html">Trilhas</a
         ><a href="./exercicios.html">Exercícios</a
         ><a href="./desafios.html">Desafios</a
-        ><a href="./projetos.html">Projetos</a><a href="./docs.html">Docs</a
-        ><a href="./roadmap.html">Roadmap</a>
+        ><a href="./projetos.html">Projetos</a><a href="./documentacao.html">Docs</a
+        ><a href="./roteiro.html">Roadmap</a>
       </div>
       <p class="mt-3 text-sm text-textMuted">Contato: prativinicius@gmail.com</p>
       <p class="text-sm text-textMuted">
@@ -135,7 +148,6 @@
         >
       </p>
     </footer>
-
-    <script type="module" src="./script.js"></script>
+    <script type="module" src="../script.js"></script>
   </body>
 </html>
