@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "installCommand": "cd \"Front Lab Academy\" && npm ci",
+  "installCommand": "cd \"Front Lab Academy\" && npm install",
   "buildCommand": "cd \"Front Lab Academy\" && npm run build",
   "outputDirectory": "Front Lab Academy/dist",
   "routes": [

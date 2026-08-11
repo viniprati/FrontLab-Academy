@@ -139,7 +139,7 @@ cd "Front Lab Academy"
 Instale as dependencias:
 
 ```bash
-npm ci
+npm install
 ```
 
 Inicie o ambiente de desenvolvimento:
@@ -167,7 +167,7 @@ O deploy esta configurado para a Vercel pelo arquivo `vercel.json` na raiz do re
 Comandos usados pela Vercel:
 
 ```bash
-cd "Front Lab Academy" && npm ci
+cd "Front Lab Academy" && npm install
 cd "Front Lab Academy" && npm run build
 ```
 
