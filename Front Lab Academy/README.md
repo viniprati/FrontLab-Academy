@@ -4,6 +4,8 @@ Site estático/interativo com HTML, Tailwind CSS (CDN), CSS custom e JavaScript 
 
 O conteúdo é organizado por trilhas, módulos, práticas e páginas de apoio para estudo front-end.
 
+A navegação foi pensada para consulta rápida durante aulas, revisões e exercícios.
+
 ## Scripts
 - `npm run dev`
 - `npm run build`
