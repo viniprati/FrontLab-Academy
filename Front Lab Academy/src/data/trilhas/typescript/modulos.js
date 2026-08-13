@@ -1,1 +1,11 @@
-export const typescriptModules = []
+import { mkStarter } from '../../helpers/criar-starter.js'
+
+export const typescriptModules = [
+      { title: 'Tipos básicos e inferência', learn: ['tipos primitivos', 'inference', 'strict mode'], practice: 'Tipar uma função de cálculo de preço com string, number e boolean sem usar any.', exercise: 'Conclua quando o TypeScript impedir chamadas com tipos errados.', starter: mkStarter('Tipos básicos TS', '#3178c6', 'TS básicos') },
+      { title: 'Interfaces e aliases', learn: ['interface', 'type alias', 'composição'], practice: 'Modele Product, User e Order com campos obrigatórios e opcionais.', exercise: 'Conclua quando as entidades representarem dados reais sem duplicar tipos.', starter: mkStarter('Interfaces TS', '#2563eb', 'Interfaces') },
+      { title: 'Union e narrowing', learn: ['union types', 'guards', 'discriminated unions'], practice: 'Crie estados de requisição loading, success e error usando union discriminada.', exercise: 'Conclua quando cada estado renderizar apenas os dados disponíveis para ele.', starter: mkStarter('Narrowing TS', '#1d4ed8', 'Narrowing') },
+      { title: 'Generics', learn: ['funções genéricas', 'constraints', 'reuso'], practice: 'Implemente paginate<T> para paginar listas de produtos, usuários e posts.', exercise: 'Conclua quando a função preservar o tipo dos itens retornados.', starter: mkStarter('Generics TS', '#3b82f6', 'Generics') },
+      { title: 'Tipagem de funções e eventos', learn: ['assinaturas', 'callbacks', 'event typing'], practice: 'Tipar submit de formulário e clique de botão sem acessar propriedades inexistentes.', exercise: 'Conclua quando handlers tiverem tipos explícitos e sem casts desnecessários.', starter: mkStarter('Eventos TS', '#60a5fa', 'Eventos') },
+      { title: 'Tipagem de API', learn: ['DTOs', 'erros tipados', 'mapeamento de resposta'], practice: 'Crie tipos para resposta bruta da API e para o modelo usado pela interface.', exercise: 'Conclua quando a camada de service converter DTO em dados prontos para a UI.', starter: mkStarter('API TS', '#0ea5e9', 'API TS') },
+      { title: 'Organização de tipos', learn: ['pastas de types', 'barrels', 'reuso entre módulos'], practice: 'Separe tipos por domínio em arquivos de produto, usuário e pedido.', exercise: 'Conclua quando imports ficarem previsíveis e nenhum arquivo concentrar tipos sem relação.', starter: mkStarter('Arquitetura de tipos', '#3178c6', 'Tipos organizados') }
+    ]

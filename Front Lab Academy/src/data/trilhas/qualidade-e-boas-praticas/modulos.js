@@ -1,1 +1,11 @@
-export const qualidadeEBoasPraticasModules = []
+import { mkStarter } from '../../helpers/criar-starter.js'
+
+export const qualidadeEBoasPraticasModules = [
+      { title: 'Acessibilidade prática', learn: ['teclado e foco', 'semântica avançada', 'ARIA'], practice: 'Audite uma tela com menu, formulário e cards usando teclado e leitor de estrutura.', exercise: 'Conclua quando foco, labels, landmarks e textos alternativos estiverem corrigidos.', starter: mkStarter('Acessibilidade', '#10b981', 'A11y') },
+      { title: 'Performance web', learn: ['LCP/CLS/INP', 'otimização de imagens', 'code splitting'], practice: 'Meça uma página, otimize imagens e remova trabalho desnecessário no carregamento.', exercise: 'Conclua quando registrar antes/depois de pelo menos duas métricas.', starter: mkStarter('Performance', '#059669', 'Performance') },
+      { title: 'Responsividade robusta', learn: ['layout resiliente', 'conteúdo fluido', 'testes cross-device'], practice: 'Teste uma interface em 360, 768, 1024 e 1440px corrigindo quebras reais.', exercise: 'Conclua quando não houver rolagem horizontal nem texto sobreposto.', starter: mkStarter('Responsividade', '#10b981', 'Responsive') },
+      { title: 'Testes unitários', learn: ['assertions', 'mocks', 'cobertura'], practice: 'Escreva testes para uma função de cálculo com casos válidos, limite e inválidos.', exercise: 'Conclua quando os testes falharem para uma regra errada e passarem após a correção.', starter: mkStarter('Testes unitários', '#34d399', 'Unit tests') },
+      { title: 'Testes de interface', learn: ['Testing Library', 'fluxo do usuário', 'acessibilidade em testes'], practice: 'Teste um formulário preenchendo campos, enviando e validando mensagem de erro.', exercise: 'Conclua quando o teste usar ações parecidas com as de uma pessoa usuária.', starter: mkStarter('Testes UI', '#10b981', 'UI tests') },
+      { title: 'PWA e offline', learn: ['manifest', 'service worker', 'cache'], practice: 'Adicione manifest e fallback offline para uma página estática simples.', exercise: 'Conclua quando a página abrir uma mensagem útil mesmo sem conexão.', starter: mkStarter('PWA offline', '#059669', 'PWA') },
+      { title: 'Manutenção e governança', learn: ['boas práticas de código', 'documentação viva', 'critérios de revisão'], practice: 'Crie critérios de revisão para acessibilidade, performance, testes e deploy.', exercise: 'Conclua quando a revisão puder ser usada em um PR real sem depender de explicação extra.', starter: mkStarter('Governança front-end', '#10b981', 'Governança') }
+    ]
