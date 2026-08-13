@@ -2609,7 +2609,7 @@ Acessibilidade depende de idioma, semantica, teclado, textos alternativos,
 labels, alternativas de midia e clareza.
 
 ===============================================================================
-50 CHECKLIST DE CONCLUSAO DA TRILHA
+50 REVISAO FINAL DA TRILHA
 ===============================================================================
 
 DOCUMENTO
@@ -2744,7 +2744,7 @@ const HTML_TITLE_OVERRIDES = [
   'Projeto: Pagina Institucional',
   'Projeto Final de HTML',
   'Revisao Geral da Trilha',
-  'Checklist de Conclusao da Trilha'
+  'Revisao Final da Trilha'
 ]
 
 function parseHtmlLessons(source) {

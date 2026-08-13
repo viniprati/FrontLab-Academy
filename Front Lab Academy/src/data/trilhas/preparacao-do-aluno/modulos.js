@@ -1,1 +1,8 @@
-export const preparacaoDoAlunoModules = []
+import { mkStarter } from '../../helpers/criar-starter.js'
+
+export const preparacaoDoAlunoModules = [
+      { title: 'Fundamentos da web e do front-end', learn: ['Como navegador, servidor e HTTP se conectam', 'Diferença entre front-end e back-end', 'Ciclo básico de desenvolvimento web'], practice: 'Desenhe o caminho de uma URL até a página renderizada, incluindo navegador, servidor e arquivos estáticos.', exercise: 'Conclua quando o README explicar a requisição em ordem, sem misturar front-end e back-end.', starter: mkStarter('Arquitetura Web', '#16a34a', 'Arquitetura web') },
+      { title: 'VS Code para produtividade', learn: ['Configurações essenciais', 'Extensões úteis para front-end', 'Snippets e organização'], practice: 'Configure um workspace com formatação ao salvar, tema, extensões e pastas visíveis.', exercise: 'Conclua quando a revisão permitir repetir o setup em outra máquina.', starter: mkStarter('Setup VS Code', '#15803d', 'VS Code pronto') },
+      { title: 'Terminal e linha de comando', learn: ['Navegação por diretórios', 'Comandos de criação e organização', 'Scripts npm'], practice: 'Crie pelo terminal uma pasta de projeto com index.html, styles.css, script.js e README.md.', exercise: 'Conclua quando listar os comandos usados e explicar a função de cada um.', starter: mkStarter('Terminal Essencial', '#22c55e', 'Terminal') },
+      { title: 'Git, GitHub e deploy inicial', learn: ['Commits semânticos', 'Fluxo de branch', 'Deploy de site estático'], practice: 'Versione um site estático, faça ao menos três commits pequenos e publique o deploy.', exercise: 'Conclua quando o repositório tiver README, histórico claro e link público funcionando.', starter: mkStarter('Deploy inicial', '#16a34a', 'Deploy') }
+    ]

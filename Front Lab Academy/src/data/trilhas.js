@@ -7,6 +7,7 @@ import { typescriptTrack } from './trilhas/typescript/index.js'
 import { frameworksFrontEndTrack } from './trilhas/frameworks-front-end/index.js'
 import { ferramentasTrack } from './trilhas/ferramentas/index.js'
 import { qualidadeEBoasPraticasTrack } from './trilhas/qualidade-e-boas-praticas/index.js'
+import { slugify } from '../utils/gerar-slug.js'
 
 export const tracks = [
   preparacaoDoAlunoTrack,
@@ -18,4 +19,4 @@ export const tracks = [
   frameworksFrontEndTrack,
   ferramentasTrack,
   qualidadeEBoasPraticasTrack
-]
+].map((track) => ({ ...track, slug: slugify(track.name) }))
